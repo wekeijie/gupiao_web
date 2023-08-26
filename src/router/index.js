@@ -40,7 +40,7 @@ const routes = [{
   {
     path: '/ChanrtPage',
     name: 'chanrtPage',
-    component: () => import('@/views/ChanrtPage.vue'),
+    component: () => import('@/views/market/ChanrtPage.vue'),
   },
 
   {
@@ -86,7 +86,7 @@ const routes = [{
   {
     path: '/LineList',
     name: 'lineList',
-    component: () => import('@/views/home/LineList.vue'),
+    component: () => import('@/views/home/LineLIst.vue'),
   },
   {
     path: '/TradingRules',
@@ -139,6 +139,18 @@ const routes = [{
     path: '/HelpCenter',
     name: 'helpCenter',
     component: () => import('@/views/myHomePage/HelpCenter.vue'),
+  },
+
+
+  {
+    path: '/DetailList',
+    name: 'detailList',
+    component: () => import('@/views/market/DetailList.vue'),
+  },
+  {
+    path: '/HotList',
+    name: 'hotList',
+    component: () => import('@/views/market/HotList.vue'),
   },
 
 

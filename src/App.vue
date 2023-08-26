@@ -20,6 +20,13 @@
   justify-content: flex-end;
   align-items: center;
 }
+.roseColor{
+  color: red;
+}
+.fallColor{
+  color: rgb(26, 173, 25);
+
+}
 
 .flexCenter {
   display: flex;

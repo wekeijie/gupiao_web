@@ -46,6 +46,7 @@
         <tr
           class="tr-list"
           v-for="item in 10"
+          :key="item"
         >
           <td class="tr-one">
             <p>185****7809</p>

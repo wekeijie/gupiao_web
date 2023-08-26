@@ -1,5 +1,26 @@
 <template>
   <div>
+    
+    <page-header>
+      <template v-slot:headerCenter>
+        <h2>  <span>sh</span> 上证指数（000001.sh）</h2>
+        <p>休市中 08-25 15:59:33</p>
+
+      </template>
+      
+      <template v-slot:headerRight>
+        <img class="refresh" src="../../assets/img/refresh.png" alt=""/>
+
+      </template>
+    </page-header>
+    <div class="flexCenter argument-box" :class="2>1?'roseColor':'fallColor'">
+
+      <h2>3064.07</h2>
+      <div>
+        <p>-18.17</p>
+        <p>-0.59%</p>
+      </div>
+    </div>
 
     <v-tabs v-model="model">
       <v-tab @click="cutTime(0)">分时</v-tab>
@@ -33,6 +54,11 @@
 import HQChart from 'hqchart'
 
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+
+import PageHeader from '../../components/topWrap.vue'
+import { useRouter, useRoute } from "vue-router"
+const $router = useRouter()
+const $route = useRoute()
 function DefaultData() { }
 const more = ref([
   'News', 'Maps', 'Books', 'Flights', 'Apps',
@@ -112,6 +138,7 @@ const CreateKLineChart = () => {
 }
 
 const cutTime = (number) => {
+  return
   console.log(data.KLine.Option.KLine.Period, 'kline', data.KLine.JSChart)
   data.KLine.Option.KLine.Period = 0
 
@@ -121,6 +148,37 @@ const cutTime = (number) => {
 
 </script>
 <style scoped lang="scss">
+.argument-box{
+  margin-top: 20px;
+  h2{font-size: 30px;margin-right: 20px;}
+  p{    font-size: 14px;}
+
+}
+.page-title{
+  text-align: center;
+  h2{font-size: 17px;
+    font-weight: 500;
+  span{
+    display: inline-block;margin-right: 4px;
+    color: #fff;
+    text-align: center;    
+    background-color: red;
+    font-size: 8px;
+    padding: 0px 4px;
+    color: #fff;
+    text-align: center;
+    height: 14px;
+    // margin-top: 4px;
+  }
+
+  }
+  p{font-size: 12px;
+text-align: center;
+  }
+}
+.refresh{
+  width: 17px;
+}
 #minute {
   width: 100%;
   height: 286px;

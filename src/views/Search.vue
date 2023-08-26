@@ -44,6 +44,7 @@
           v-for="item in 5"
           class="flexBetween hot-list"
           @click="goChanrt(item)"
+          :key="item"
         >
           <h5>太平洋</h5>
           <p :style="item>3?'color:green':'color:red'">-2.92%</p>

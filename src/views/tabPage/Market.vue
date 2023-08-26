@@ -7,7 +7,8 @@
         <v-tab @click="model=1">自选</v-tab>
       </v-tabs>
       <div
-        @click="goSerch"
+       
+      @click="goRouter('/Search','热门行业')"
         class="search-box"
       >
         <img src="@/assets/img/search.png">
@@ -23,6 +24,7 @@
       <v-carousel-item
         v-for="(slide, i) in 2"
         :key="i"
+        
       >
         <div
           class="new-box"
@@ -32,6 +34,8 @@
             <div
               class="exponent-list"
               v-for="item in 3"
+              :key="item"
+        @click="goRouter('/ChanrtPage','热门概念')"
             >
               <h1>标题指数</h1>
               <h2>333.333</h2>
@@ -64,15 +68,18 @@
             </div>
           </div>
 
-          <div class="sort-title">
+          <div class="sort-title" 
+              @click="goRouter('/HotList','热门概念')">
             <p>热门概念</p>
             <img src="../../assets/img/rightImg.png">
           </div>
-
+          
           <div class="list-box">
             <div
               class="list-cont"
               v-for="item in 6"
+              :key="item"
+              @click="goRouter('/DetailList','污水处理')"
             >
               <h1>污水处理</h1>
               <h2 :class="item>3?'green':'' ">{{item<4? '+':'-'}}0.10%</h2>
@@ -82,7 +89,8 @@
 
           </div>
 
-          <div class="sort-title">
+          <div class="sort-title" 
+              @click="goRouter('/HotList','热门行业')">
             <p>热门行业</p>
             <img src="../../assets/img/rightImg.png">
           </div>
@@ -91,8 +99,10 @@
             <div
               class="list-cont"
               v-for="item in 6"
+              :key="item"
+              @click="goRouter('/DetailList','房地产行业')"
             >
-              <h1>污水处理</h1>
+              <h1>房地产行业</h1>
               <h2 :class="item>3?'green':'' ">{{item<4? '+':'-'}}0.10%</h2>
               <h3>启迪环境</h3>
               <h4>+0.38 +9.97%</h4>
@@ -126,6 +136,10 @@
               <tr
                 class="tr-list"
                 v-for="item in 10"
+              :key="item"
+              @click="goRouter('/ChanrtPage','房地产行业')"
+
+
               >
                 <td class="tr-one">
                   <p>维尔利</p>
@@ -158,8 +172,17 @@
 <script setup>
 
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import { useRouter, useRoute } from "vue-router"
+const $router = useRouter()
+const $route = useRoute()
 const model = ref(0)
 const isUp = ref(true)
+const goRouter = (path,item) => {
+  $router.push({path,query:{
+    title:item
+  }})
+}
+
 watch(model, (newVal, oldVal) => {
   console.log(newVal, oldVal, 'newVal,oldVal')
 }
@@ -172,7 +195,7 @@ watch(model, (newVal, oldVal) => {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin-top: 11px;
+  // margin-top: 11px;
 }
 .list-cont {
   width: 30%;
@@ -243,7 +266,7 @@ watch(model, (newVal, oldVal) => {
 .sort-title {
   display: flex;
   justify-content: space-between;
-  padding: 20px 10px;
+  padding: 10px 10px;
   p {
     font-size: 16px;
     letter-spacing: 1px;
