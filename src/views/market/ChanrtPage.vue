@@ -1,38 +1,29 @@
 <template>
   <div>
-    
+
     <page-header>
       <template v-slot:headerCenter>
-        <h2>  <span>sh</span> 上证指数（000001.sh）</h2>
+        <h2> <span>sh</span> 上证指数（000001.sh）</h2>
         <p>休市中 08-25 15:59:33</p>
-
       </template>
-      
       <template v-slot:headerRight>
-        <img class="refresh" src="../../assets/img/refresh.png" alt=""/>
-
+        <img class="refresh" src="../../assets/img/refresh.png" alt="" />
       </template>
     </page-header>
-    <div class="flexCenter argument-box" :class="2>1?'roseColor':'fallColor'">
-
+    <div class="flexCenter argument-box" :class="2 > 1 ? 'roseColor' : 'fallColor'">
       <h2>3064.07</h2>
       <div>
         <p>-18.17</p>
         <p>-0.59%</p>
       </div>
     </div>
-
     <v-tabs v-model="model">
       <v-tab @click="cutTime(0)">分时</v-tab>
       <v-tab @click="cutTime(1)">5日</v-tab>
       <v-tab @click="cutTime(2)">日K</v-tab>
       <v-tab @click="cutTime(3)">周K</v-tab>
       <v-window v-model="currentItem">
-        <v-window-item
-          v-for="item in more"
-          :key="item"
-          :value="'tab-' + item"
-        >
+        <v-window-item v-for="item in more" :key="item" :value="'tab-' + item">
           <v-card flat>
             <v-card-text>
               <h2>{{ item }}</h2>
@@ -42,10 +33,7 @@
       </v-window>
     </v-tabs>
     <div id="app2">
-      <div
-        id="minute"
-        ref="minute"
-      ></div>
+      <div id="minute" ref="minute"></div>
     </div>
   </div>
 </template>
@@ -148,37 +136,53 @@ const cutTime = (number) => {
 
 </script>
 <style scoped lang="scss">
-.argument-box{
+.argument-box {
   margin-top: 20px;
-  h2{font-size: 30px;margin-right: 20px;}
-  p{    font-size: 14px;}
+
+  h2 {
+    font-size: 30px;
+    margin-right: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
 
 }
-.page-title{
+
+.page-title {
   text-align: center;
-  h2{font-size: 17px;
+
+  h2 {
+    font-size: 17px;
     font-weight: 500;
-  span{
-    display: inline-block;margin-right: 4px;
-    color: #fff;
-    text-align: center;    
-    background-color: red;
-    font-size: 8px;
-    padding: 0px 4px;
-    color: #fff;
-    text-align: center;
-    height: 14px;
-    // margin-top: 4px;
-  }
+
+    span {
+      display: inline-block;
+      margin-right: 4px;
+      color: #fff;
+      text-align: center;
+      background-color: red;
+      font-size: 8px;
+      padding: 0px 4px;
+      color: #fff;
+      text-align: center;
+      height: 14px;
+      // margin-top: 4px;
+    }
 
   }
-  p{font-size: 12px;
-text-align: center;
+
+  p {
+    font-size: 12px;
+    text-align: center;
   }
 }
-.refresh{
+
+.refresh {
   width: 17px;
 }
+
 #minute {
   width: 100%;
   height: 286px;
