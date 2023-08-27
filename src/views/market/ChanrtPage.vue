@@ -17,23 +17,25 @@
         <p>-0.59%</p>
       </div>
     </div>
-    <v-tabs v-model="model">
+    <v-tabs grow v-model="model">
       <v-tab @click="cutTime(0)">分时</v-tab>
       <v-tab @click="cutTime(1)">5日</v-tab>
       <v-tab @click="cutTime(2)">日K</v-tab>
       <v-tab @click="cutTime(3)">周K</v-tab>
-      <v-window v-model="currentItem">
-        <v-window-item v-for="item in more" :key="item" :value="'tab-' + item">
-          <v-card flat>
-            <v-card-text>
-              <h2>{{ item }}</h2>
-            </v-card-text>
-          </v-card>
-        </v-window-item>
-      </v-window>
+      <v-tab @click="cutTime(3)">月K</v-tab>
+
+      <v-select v-model="select" :hint="`${select.state}, ${select.abbr}`" :items="more" item-title="state"
+        item-value="abbr" label="Select" persistent-hint return-object single-line></v-select>
     </v-tabs>
     <div id="app2">
       <div id="minute" ref="minute"></div>
+    </div>
+    <div class="flexStart stati-box">
+      <div class="stati-list" v-for="itme in 9" :key="itme">
+        <p>最高</p>
+        <span>1021.65</span>
+      </div>
+
     </div>
   </div>
 </template>
@@ -48,9 +50,14 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 function DefaultData() { }
+const select = ref({ state: 'Florida', abbr: 'FL' });
 const more = ref([
-  'News', 'Maps', 'Books', 'Flights', 'Apps',
-])
+  { state: '1分', abbr: 'FL' },
+  { state: '5分', abbr: 'GA' },
+  { state: '15分', abbr: 'NE' },
+  { state: '30分', abbr: 'CA' },
+  { state: '60分', abbr: 'NY' },
+],)
 const currentitem = ref('tab-Web')
 
 DefaultData.GetKLineOption = function () {
@@ -136,6 +143,42 @@ const cutTime = (number) => {
 
 </script>
 <style scoped lang="scss">
+.stati-box {
+  flex-wrap: wrap;
+  padding: 15px 0;
+}
+
+.stati-list {
+  display: block;
+  text-align: left;
+  width: 33.3%;
+  padding: 10px;
+
+  p {
+    font-size: 13px;
+    color: #7a7e83;
+    letter-spacing: 0.5px;
+  }
+
+  span {
+    font-size: 13px;
+    color: #000;
+
+  }
+}
+
+.v-field--variant-filled .v-field__overlay {
+  background: none;
+}
+
+.v-tab.v-tab {
+  min-width: 14%;
+}
+
+.v-tab {
+  width: 5%;
+}
+
 .argument-box {
   margin-top: 20px;
 
