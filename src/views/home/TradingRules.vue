@@ -4,16 +4,9 @@
       <template v-slot:headerCenter>交易规则</template>
     </page-header>
     <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-    <div
-      class="line-box flexBetween"
-      v-for="item in list"
-      @click="goRouter(item)"
-    >
+    <div class="line-box flexBetween" v-for="item in list" :key="item" @click="goRouter(item)">
       <h2>{{ item.title }}</h2>
-      <img
-        src="../../assets/img/rightImg.png"
-        alt=""
-      >
+      <img src="../../assets/img/rightImg.png" alt="">
     </div>
   </div>
 </template>
@@ -56,12 +49,14 @@ const goRouter = (item) => {
 .line-box {
   padding: 15px;
   border-bottom: solid 0.5px #e5e5e5;
+
   h2 {
     font-size: 15px;
     letter-spacing: 0.5px;
     width: 90%;
     color: #2c2e3a;
   }
+
   img {
     width: 7px;
   }

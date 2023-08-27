@@ -32,6 +32,10 @@
 
 }
 
+.blueColor {
+  color: rgb(9, 187, 7);
+}
+
 .flexCenter {
   display: flex;
   justify-content: center;
@@ -48,4 +52,5 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}</style>
+}
+</style>

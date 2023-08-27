@@ -1,15 +1,11 @@
 <template>
   <div>
     <div class="page-Header flexBetween">
-      <img
-        class="page-back"
-        src="../assets/img/back.png"
-        @click="$router.go(-1)"
-      >
+      <img class="page-back" src="../assets/img/back.png" @click="$router.go(-1)">
       <div class="page-title">
         <slot name="headerCenter"></slot>
       </div>
-      <div>
+      <div class="top-right-box">
         <slot name="headerRight"></slot>
       </div>
 
@@ -30,6 +26,7 @@ const $route = useRoute()
 .placeholder-box {
   height: 50px;
 }
+
 .page-Header {
   align-items: center;
   width: 100%;
@@ -38,11 +35,13 @@ const $route = useRoute()
   top: 0;
   padding: 10px;
   z-index: 30;
+
   .page-title {
     font-size: 18px;
     font-weight: 500;
     letter-spacing: 1px;
   }
+
   .page-back {
     width: 11px;
   }

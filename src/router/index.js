@@ -121,6 +121,15 @@ const routes = [{
     component: () => import('@/views/common/ApplyContract.vue'),
   },
   {
+    path: '/IframeDemo',
+    name: 'iframeDemo',
+    component: () => import('@/views/common/IframeDemo.vue'),
+  },
+  
+
+
+
+  {
     path: '/VersionNumber',
     name: 'versionNumber',
     component: () => import('@/views/myHomePage/VersionNumber.vue'),
@@ -139,6 +148,21 @@ const routes = [{
     path: '/HelpCenter',
     name: 'helpCenter',
     component: () => import('@/views/myHomePage/HelpCenter.vue'),
+  },
+  {
+    path: '/MessageLIst',
+    name: 'messageLIst',
+    component: () => import('@/views/myHomePage/MessageLIst.vue'),
+  },
+  {
+    path: '/MessageDetail',
+    name: 'messageDetail',
+    component: () => import('@/views/myHomePage/MessageDetail.vue'),
+  },
+  {
+    path: '/TopUp',
+    name: 'topUp',
+    component: () => import('@/views/myHomePage/TopUp.vue'),
   },
 
 
