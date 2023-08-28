@@ -164,7 +164,23 @@ const routes = [{
     name: 'topUp',
     component: () => import('@/views/myHomePage/TopUp.vue'),
   },
-
+  {
+    path: '/SetInfor',
+    name: 'setInfor',
+    component: () => import('@/views/myHomePage/SetInfor.vue'),
+  },
+  {
+    path: '/SetName',
+    name: 'setName',
+    component: () => import('@/views/myHomePage/SetName.vue'),
+  },
+  {
+    path: '/InCoupon',
+    name: 'inCoupon',
+    component: () => import('@/views/myHomePage/InCoupon.vue'),
+  },
+  
+  
 
   {
     path: '/DetailList',

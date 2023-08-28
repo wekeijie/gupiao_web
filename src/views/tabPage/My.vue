@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="apply-box">
-        <div class="head-left">
+        <div class="head-left" @click="goRouter('/SetInfor')">
           <div class="avatat-box">
             <img src="../../assets/img/myAvaatar.png" />
             <img src="../../assets/img/muMember.png" />
@@ -33,7 +33,7 @@
 
         </div>
         <div class="sign-in-box">
-          <img src="../../assets/img/mySign.png" />
+          <img src="../../assets/img/mySign.png" @click="goRouter('/InCoupon')" />
         </div>
 
       </div>

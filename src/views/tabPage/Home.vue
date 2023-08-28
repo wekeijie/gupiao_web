@@ -44,7 +44,7 @@
             <img src="@/assets/img/tab7.png">
             <p>公司介绍</p>
           </div>
-          <div class="tab-list" @click="goRouter('/Agency')">
+          <div class="tab-list" @click="goRouter('/IframeDemo')">
             <img src="@/assets/img/tab8.png">
             <p>在线咨询</p>
           </div>
@@ -54,7 +54,7 @@
       <img class="led-img" @click="goRouter('/ApplyContract')" src="@/assets/img/led.jpg">
       <div class="title-lab">》 每日福利《</div>
       <div class="active-box">
-        <img src="@/assets/img/active1.png">
+        <img src="@/assets/img/active1.png" @click="goRouter('/InCoupon')">
         <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')">
 
       </div>
@@ -225,7 +225,7 @@ table {
   justify-content: center;
   width: 100%;
   z-index: 2;
-  height: 8vh;
+  height: 80px;
 }
 
 .search-box {

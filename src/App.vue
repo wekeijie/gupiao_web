@@ -53,4 +53,8 @@
   justify-content: flex-start;
   align-items: center;
 }
+
+.grayBackgroud {
+  background: #f6f6f6;
+}
 </style>

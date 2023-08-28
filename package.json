@@ -12,6 +12,7 @@
     "amfe-flexible": "^2.2.1",
     "hqchart": "^1.1.12314",
     "jquery": "^3.7.0",
+    "moment": "^2.29.4",
     "pinia": "^2.0.23",
     "roboto-fontface": "*",
     "vee-validate": "^4.11.1",

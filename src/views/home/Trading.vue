@@ -26,14 +26,14 @@
       <div class="flexEnd">
         <p>平安银行<span>(sz23123231)</span>
         </p>
-        <img src="../../assets/img/search.png" alt="" class="img-search" />
+        <img src="../../assets/img/search.png" alt="" class="img-search" @click="goRouter('/Search')" />
       </div>
     </div>
 
     <div class="flexBetween new-title-box">
       <p>
         最新
-        <span>11.32 - 0.24 - 2.08%</span>
+        <span :class="1 == 1 ? 'roseColor' : 'fallColor'">11.32 - 0.24 - 2.08%</span>
       </p>
       <div>
         <img src="../../assets/img/pixelsImg.png" alt="" class="img-right" />
@@ -41,8 +41,35 @@
       </div>
     </div>
     <div class="flexCenter">
-      <div></div>
       <div>
+        <div class="flexBetween">
+          <p>买入</p>
+          <p>卖出</p>
+        </div>
+        <div>
+          <p>市价委托</p>
+          <img src="../../assets/img/downPac.png" alt="">
+        </div>
+        <div>
+          <p>涨停<span class="roseColor">12.35</span></p>
+          <p>跌停<span class="roseColor">10.11</span></p>
+        </div>
+
+
+
+      </div>
+      <div>
+        <div class="">
+          <div>
+            列表
+          </div>
+          <div>
+            <p>+档</p>
+            <p>明细</p>
+          </div>
+
+        </div>
+
       </div>
     </div>
 
@@ -53,6 +80,13 @@
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
 import PageHeader from '../../components/topWrap.vue'
 import MarqueeText from 'vue-marquee-text-component'
+import { useRouter, useRoute } from "vue-router"
+const $router = useRouter()
+const $route = useRoute()
+const goRouter = (path) => {
+  $router.push(path)
+}
+
 
 </script>
 <style lang="scss" scoped>
