@@ -1,16 +1,23 @@
 <template>
     <div>
         <page-header>
-            <template v-slot:headerCenter>充值</template><template v-slot:headerRight>
-                <p @click="goRouter('/Recordslist', '充值审核记录')">账单</p>
+            <template v-slot:headerCenter>余额提现</template>
+
+            <template v-slot:headerRight>
+                <p @click="goRouter('/Recordslist', '余额提现记录')">账单</p>
             </template>
+
+
         </page-header>
         <div style="background-color: rgb(245, 245, 245);height: 3px;"></div>
         <div class="line-box flexBetween" @click="isApply = true">
-            <h2>充值方式</h2>
+            <h2>提现方式</h2>
             <div class="flexEnd" @click="isApply = true">
-                <span>EBpay</span>
-                <img class="pay-logo" src="../../assets/img/payLog.png" alt="">
+                <p>
+                    <span>中国工商银行</span>
+                    <span>123123123123123233</span>
+
+                </p>
                 <img class="right-ico" src="../../assets/img/rightImg.png" alt="">
 
             </div>
@@ -20,37 +27,37 @@
 
 
         <div class="limit-box">
-            <h5>充值金额</h5>
-        </div>
-        <div class="flexStart limit-list-box">
-            <div class="limit-list " :class="selectIndex == item ? 'pay_select' : ''" v-for="item in 6" :key="item"
-                @click="selectIndex = item">
-                <h2>{{ item }}000元</h2>
-            </div>
-
+            请输入提现金额(最低100元)
         </div>
 
 
-        <v-text-field placeholder="请输入充值金额(最低100元)" variant="none" hide-details="auto" required prefix="￥"
-            size="80"></v-text-field>
-        <div class="return-number">返现比例<span>0%</span> 返现金额 <span>0.00</span></div>
-        <div class="apply-btn" @click="isApply = true">立即充值</div>
+        <v-text-field type="number" placeholder="100.00" variant="none" hide-details="auto" required prefix="￥" size="80">
 
-        <div class="problem-tips">充值遇到问题？请联系<span>人工客服</span>解决</div>
+
+            <template v-slot:append>
+                <p class="all-btn">全部提现</p>
+
+            </template>
+
+        </v-text-field>
+        <div class="return-number">可提现<span>780.31</span> 元（不可提 <span>0</span>元</div>
+
+        <div style="background-color: rgb(245, 245, 245);height: 3px;"></div>
+
+        <div class="apply-btn" @click="isApply = true">提交提现申请</div>
+
 
         <v-bottom-sheet v-model="isApply">
             <v-list>
                 <div class="flexBetween sheet-top">
-                    <div class="sheet-sure">请选择您的充值方式</div>
+                    <div class="sheet-sure">请选择您的提现方式</div>
                     <img src="../../assets/img/close.png" alt="" @click="isApply = false">
                 </div>
                 <v-list-item class="flexCenter" v-for="tile, index in tiles" :key="tile.title" @click="typeIndex = index">
                     <div class="flexBetween type-list">
-
-                        <img class="list-pay-log" src="../../assets/img/payLog.png" alt="">
                         <v-list-item-title>
-                            <h3>EBpay-最低充值100元</h3>
-                            <p>当前成功逆袭方式可返现<span>0%</span></p>
+                            <h3>中国工商银行</h3>
+                            <p>123131231231331212313</p>
                         </v-list-item-title>
                         <img class="list-select" src="../../assets/img/select.png" alt="" v-if="index == typeIndex">
                     </div>
@@ -73,7 +80,6 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 
-const selectIndex = ref(1)
 const typeIndex = ref(1)
 
 const isApply = ref(false)
@@ -86,7 +92,6 @@ const tiles = ref([
     { title: '免息配资-操盘:30天' },
 ],)
 
-
 const goRouter = (path, title) => {
     $router.push({
         path, query: {
@@ -98,6 +103,11 @@ const goRouter = (path, title) => {
 
 </script>
 <style lang="scss" scoped>
+.all-btn {
+    font-size: 14px;
+    color: #dd5054;
+}
+
 .v-text-field {
     padding: 0px 10px;
 
@@ -114,14 +124,11 @@ const goRouter = (path, title) => {
 }
 
 .limit-box {
-    padding: 15px 10px 0px 10px;
+    padding: 10px 10px 0px 10px;
+    font-size: 13px;
+    color: #2c2e3a;
+    // line-height: 50px;
 
-    h5 {
-        font-size: 15px;
-        color: #000;
-        font-family: PingFang SC;
-        font-weight: 700;
-    }
 }
 
 .v-list-item {
@@ -154,28 +161,20 @@ const goRouter = (path, title) => {
     width: 100%;
 
 
-    .list-pay-log {
-        width: 38px;
-        margin-right: 13px;
-    }
 
     h3 {
         font-size: 15px;
         color: #2c2e3a;
+        font-weight: 400px;
     }
 
     p {
         font-size: 15px;
         color: #2c2e3a;
-
-        span {
-            margin-left: 2px;
-            color: #dd5054;
-        }
     }
 
     .list-select {
-        width: 12px;
+        width: 13px;
     }
 }
 
@@ -212,63 +211,6 @@ const goRouter = (path, title) => {
     padding: 12px 10px;
 }
 
-.problem-tips {
-    text-align: center;
-    font-size: 12px;
-    color: #7f829a;
-
-    span {
-        color: #05f;
-    }
-}
-
-.limit-list-box {
-    flex-wrap: wrap;
-
-    .pay_select {
-        box-sizing: border-box;
-        color: #333;
-        border-radius: 8px;
-        background: url('../../assets/img/select-bg.png') no-repeat 100% 100%;
-        border: 1px solid #fc4f00;
-        background-size: 27px;
-    }
-
-    // .activeBg {
-    //     background-color: #fb5c39 !important;
-    //     background-image: url("../../assets/img/activeBg.png");
-    //     background-repeat: no-repeat;
-    //     background-size: 100% 100%;
-
-    //     h2 {
-    //         color: #fff;
-    //     }
-
-    //     p {
-    //         color: #fff;
-    //     }
-    // }
-}
-
-.limit-list {
-    margin: 10px 2.6%;
-    box-sizing: border-box;
-    width: 28%;
-    // height: 56px;
-    padding: 7px 0;
-    text-align: center;
-    background: #fff;
-    // margin: 6px 0px;
-    border: 1px solid #ebebeb;
-    border-radius: 8px;
-
-    h2 {
-        font-size: 20px;
-        color: #333;
-        font-weight: 400;
-    }
-
-}
 
 
 
@@ -284,15 +226,22 @@ const goRouter = (path, title) => {
         color: #2c2e3a;
     }
 
-    span {
-        font-size: 15px;
-        color: #a4a4a4;
+    p {
+        text-align: right;
+        margin-right: 20px;
+
+        span:first-child {
+            font-size: 14px;
+            color: #a4a4a4;
+        }
+
+        span:last-child {
+            font-size: 12px;
+            color: #a4a4a4;
+        }
     }
 
-    .pay-logo {
-        width: 29px;
-        margin: 0 15px 0 10px;
-    }
+
 
     .right-ico {
         width: 7px;

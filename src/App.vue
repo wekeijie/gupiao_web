@@ -27,6 +27,16 @@
   color: red;
 }
 
+.pinkColor {
+
+  color: rgb(251, 92, 57);
+}
+
+.redBg {
+  background-color: #fb5c39 !important;
+  color: #fff !important;
+}
+
 .fallColor {
   color: rgb(26, 173, 25);
 

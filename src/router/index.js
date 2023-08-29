@@ -160,10 +160,21 @@ const routes = [{
     component: () => import('@/views/myHomePage/MessageDetail.vue'),
   },
   {
+    path: '/Recordslist',
+    name: 'recordslist',
+    component: () => import('@/views/myHomePage/Recordslist.vue'),
+  },
+  {
     path: '/TopUp',
     name: 'topUp',
     component: () => import('@/views/myHomePage/TopUp.vue'),
   },
+  {
+    path: '/Withdraw',
+    name: 'withdraw',
+    component: () => import('@/views/myHomePage/Withdraw.vue'),
+  },
+  
   {
     path: '/SetInfor',
     name: 'setInfor',
