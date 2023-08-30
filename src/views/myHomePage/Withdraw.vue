@@ -4,7 +4,7 @@
             <template v-slot:headerCenter>余额提现</template>
 
             <template v-slot:headerRight>
-                <p @click="goRouter('/Recordslist', '余额提现记录')">账单</p>
+                <p @click="goRouter('/Recordslist', '提现审核记录')">账单</p>
             </template>
 
 

@@ -47,7 +47,7 @@
           <img src="@/assets/img/myTopUp.png">
           <p>充值</p>
         </div>
-        <div class="tab-list">
+        <div class="tab-list" @click="goRouter('/Withdraw')">
           <img src="@/assets/img/myWithdraw.png">
           <p>提现</p>
         </div>
@@ -83,7 +83,7 @@
 
       <div class="active-box">
         <img src="@/assets/img/myQuest.png">
-        <img src="@/assets/img/active2.png">
+        <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')">
 
       </div>
       <div class="led-img" @click="goRouter('/Invite')">
@@ -94,14 +94,14 @@
       <div class="controls-box">
 
         <div class="flexBetween controls-list">
-          <div class="flexStart">
+          <div class="flexStart" @click="goRouter('/StarAuthor')">
             <img class="list-icp" src="@/assets/img/myStar.png">
             <span>明星投资者</span>
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png">
         </div>
         <div class="flexBetween controls-list">
-          <div class="flexStart">
+          <div class="flexStart" @click="goRouter('/Documentary')">
             <img class="list-icp" src="@/assets/img/myDocumentary.png">
             <span>我要跟单</span>
           </div>

@@ -23,6 +23,25 @@
   align-items: center;
 }
 
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexAroud {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
 .roseColor {
   color: red;
 }
@@ -44,24 +63,6 @@
 
 .blueColor {
   color: rgb(9, 187, 7);
-}
-
-.flexCenter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flexAroud {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.flexStart {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 }
 
 .grayBackgroud {

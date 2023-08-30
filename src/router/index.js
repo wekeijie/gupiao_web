@@ -190,6 +190,26 @@ const routes = [{
     name: 'inCoupon',
     component: () => import('@/views/myHomePage/InCoupon.vue'),
   },
+  {
+    path: '/DetailsFunds',
+    name: 'detailsFunds',
+    component: () => import('@/views/myHomePage/DetailsFunds.vue'),
+  },
+  {
+    path: '/BillingDetails',
+    name: 'billingDetails',
+    component: () => import('@/views/myHomePage/BillingDetails.vue'),
+  },
+  {
+    path: '/StarAuthor',
+    name: 'starAuthor',
+    component: () => import('@/views/myHomePage/StarAuthor.vue'),
+  },
+  {
+    path: '/Documentary',
+    name: 'documentary',
+    component: () => import('@/views/myHomePage/Documentary.vue'),
+  },
   
   
 

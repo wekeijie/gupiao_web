@@ -3,12 +3,11 @@
         <page-header>
             <template v-slot:headerCenter>{{ title }}</template>
         </page-header>
-        <div style="background-color: rgb(245, 245, 245);height: 5px;"></div>
 
 
         <div class="table-box flexStart">
             <p :class="model == 0 ? 'active-tab' : ''" @click="model = 0">待审核</p>
-            <p :class="model == 1 ? 'active-tab' : ''" @click="model = 1">待支付</p>
+            <p :class="model == 1 ? 'active-tab' : ''" @click="model = 1">{{ title == '提现审核记录' ? '待出款' : '待支付' }}</p>
             <p :class="model == 2 ? 'active-tab' : ''" @click="model = 2">审核通过</p>
             <p :class="model == 3 ? 'active-tab' : ''" @click="model = 3">审核失败</p>
         </div>
