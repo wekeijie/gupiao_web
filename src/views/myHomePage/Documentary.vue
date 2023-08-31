@@ -9,11 +9,16 @@
             <div class="flexBetween input-box">
                 <!-- <input placeholder="明星投资者用户名/电话/邮箱" placeholder-class="input-placeholder" /> -->
                 <v-text-field label="明星投资者用户名/电话/邮箱" prepend-inner-icon="mdi-account " size="10" density="default"
-                    variant="outlined" single-line hide-details clearable></v-text-field>
+                    variant="outlined" single-line hide-details clearable max-height="30"></v-text-field>
                 <v-btn color="#dd5054">查找</v-btn>
             </div>
-            <h3 class="star-name">
-                明星投资者：---
+            <h3 class="star-name flexBetween">
+                <p>
+                    明星投资者：---
+                </p>
+                <span>
+                    操盘记录
+                </span>
             </h3>
             <div class="flexStart star-infor">
                 <img src="../../assets/img/myAvaatar.png" alt="">
@@ -25,7 +30,7 @@
 
                 </div>
             </div>
-            <v-btn block color="#dd5054" variant="flat">确认</v-btn>
+            <v-btn block color="#dd5054" variant="flat" @click="goRouter('/Homepage')">确认</v-btn>
         </div>
 
         <div class="instructions-title">跟单如何运作？</div>
@@ -47,6 +52,10 @@ import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
+
+const goRouter = (path) => {
+    $router.push(path)
+}
 
 </script>
 <style lang="scss" scoped>
@@ -97,9 +106,20 @@ const $route = useRoute()
 }
 
 .star-name {
-    font-size: 1rem;
-    font-weight: 700;
     padding: 16px 0 10px;
+
+    p {
+
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    span {
+        font-size: 14px;
+        text-decoration: underline;
+        color: #dd5054;
+        cursor: pointer;
+    }
 }
 
 .search-box {

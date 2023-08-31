@@ -223,9 +223,31 @@ const routes = [{
     name: 'hotList',
     component: () => import('@/views/market/HotList.vue'),
   },
+  {
+    path: '/Homepage',
+    name: 'homepage',
+    component: () => import('@/views/partner/Homepage.vue'),
+  },
+  {
+    path: '/Beginner',
+    name: 'beginner',
+    component: () => import('@/views/partner/Beginner.vue'),
+  },
+  {
+    path: '/OneKey',
+    name: 'oneKey',
+    component: () => import('@/views/partner/OneKey.vue'),
+  },
+  {
+    path: '/PartnershipRule',
+    name: 'partnershipRule',
+    component: () => import('@/views/partner/PartnershipRule.vue'),
+  },
 
 
 
+  
+  
 
 ]
 

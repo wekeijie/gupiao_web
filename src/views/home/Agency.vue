@@ -3,28 +3,19 @@
     <page-header>
       <template v-slot:headerCenter>代理中心</template>
     </page-header>
-    <img
-      class="top-img"
-      alt=""
-      @click="goRouter('/Invite')"
-      src="../../assets/img/agency/top.jpg"
-    />
+    <img class="top-img" alt="" @click="goRouter('/Invite')" src="../../assets/img/agency/top.jpg" />
     <div class="flexAroud total-number-box">
-      <div @click="goRouter('/LineLIst',1)">
+      <div @click="goRouter('/LineLIst', 1)">
         <p>0</p>
         <p>累计下线</p>
       </div>
-      <div @click="goRouter('/Downline',2)">
+      <div @click="goRouter('/Downline', 2)">
         <p>0</p>
         <p>累计返佣</p>
       </div>
     </div>
     <div class="lab-title-box flexStart">
-      <img
-        class="top-img"
-        alt=""
-        src="../../assets/img/agency/left.png"
-      />
+      <img class="top-img" alt="" src="../../assets/img/agency/left.png" />
       <span>VIP等级说明</span>
     </div>
 
@@ -41,10 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="item in desserts"
-            :key="item.name"
-          >
+          <tr v-for="item in desserts" :key="item.name">
             <td class="">{{ item.name }}</td>
             <td class="list-red">{{ item.calories }}</td>
           </tr>
@@ -65,10 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="item in dessertsNormal"
-            :key="item.name"
-          >
+          <tr v-for="item in dessertsNormal" :key="item.name">
             <td class="">{{ item.name }}</td>
             <td class="list-people">{{ item.number }}</td>
             <td class="list-red">{{ item.calories }}</td>
@@ -79,11 +64,7 @@
     </div>
 
     <div class="lab-title-box flexStart">
-      <img
-        class="top-img"
-        alt=""
-        src="../../assets/img/agency/left.png"
-      />
+      <img class="top-img" alt="" src="../../assets/img/agency/left.png" />
       <span>活动规则</span>
 
     </div>
@@ -176,23 +157,28 @@ const goRouter = (path) => {
   line-height: 27px;
   color: #303133;
 }
+
 .grade-box {
   padding: 10px;
   font-size: 15px;
   border-bottom: 8px solid rgb(245, 245, 245);
+
   .v-table {
     font-weight: 700;
     --v-table-header-height: 36px;
     border: 1px #f5f5f5 solid;
+
     .list-red {
       color: rgb(251, 92, 57) !important;
       font-weight: 700;
       line-height: 16px;
     }
+
     .list-people {
       color: rgb(177, 57, 0);
     }
   }
+
   th {
     padding: 0;
     text-align: center !important;
@@ -202,39 +188,48 @@ const goRouter = (path) => {
     -moz-background-size: 100% 100%;
     color: #fff !important;
   }
+
   tr {
     background: #d0dee5;
   }
+
   td {
     text-align: center;
   }
 }
+
 .grade-list-one {
-  .v-table {
-  }
+  .v-table {}
+
   th {
     width: 50%;
   }
-  tr {
-  }
+
+  tr {}
+
   td {
     height: 46px !important;
   }
 }
+
 .grade-list-two {
   margin: 20px 0;
-  .v-table {
-  }
+
+  .v-table {}
+
   th {
     width: 33.3%;
   }
+
   tr {
     background: #d0dee5;
   }
+
   td {
     height: 46px !important;
   }
 }
+
 .grade-box {
   width: 100%;
   position: relative;
@@ -243,12 +238,15 @@ const goRouter = (path) => {
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
 }
+
 .lab-title-box {
   padding: 10px;
   align-items: center;
+
   img {
     width: 5px;
   }
+
   span {
     color: #303133;
     margin-left: 5px;
@@ -256,9 +254,11 @@ const goRouter = (path) => {
     font-weight: 700;
   }
 }
+
 .top-img {
   width: 100%;
 }
+
 .total-number-box {
   padding: 15px;
   text-align: center;
