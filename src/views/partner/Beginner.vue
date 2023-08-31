@@ -1,8 +1,9 @@
 <template>
     <div>
         <page-header>
-            <template v-slot:headerCenter>新手跟单</template>
-            <template v-slot:headerRight>跟单记录</template>
+            <template v-slot:headerCenter>新手跟单</template> <template v-slot:headerRight>
+                <p @click="goRouter('/FollowList')">跟单记录</p>
+            </template>
         </page-header>
         <v-divider :thickness="1"></v-divider>
         <div class="beginner-box

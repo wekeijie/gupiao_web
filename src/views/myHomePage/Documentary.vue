@@ -2,7 +2,9 @@
     <div>
         <page-header>
             <template v-slot:headerCenter>查找明星投资者</template>
-            <template v-slot:headerRight>跟单记录</template>
+            <template v-slot:headerRight>
+                <p @click="goRouter('/FollowList')">跟单记录</p>
+            </template>
         </page-header>
         <v-divider></v-divider>
         <div class="search-box">

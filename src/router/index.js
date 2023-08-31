@@ -243,8 +243,13 @@ const routes = [{
     name: 'partnershipRule',
     component: () => import('@/views/partner/PartnershipRule.vue'),
   },
+  {
+    path: '/FollowList',
+    name: 'followList',
+    component: () => import('@/views/partner/FollowList.vue'),
+  },
 
-
+  
 
   
   

@@ -32,7 +32,7 @@
         </div>
 
 
-        <v-carousel :show-arrows="false" hide-delimiters v-model="model">
+        <v-carousel :show-arrows="false" hide-delimiters v-model="model" height="auto">
 
           <!-- height="auto" -->
           <v-carousel-item v-for="(slide, i) in 2" :key="i">
