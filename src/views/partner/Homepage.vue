@@ -75,15 +75,15 @@
         <div class="report-title">我的团队</div>
 
         <div class="report2 flexBetween">
-            <div class="user-list">
+            <div class="user-list" @click="goRouter('/TeamRecord')">
                 <p>团队人数</p>
                 <span>80.31</span>
             </div>
-            <div class="user-list">
+            <div class="user-list" @click="goRouter('/juniorLIst')">
                 <p>直属人数</p>
                 <span>80.31</span>
             </div>
-            <div class="user-list">
+            <div class="user-list" @click="goRouter('/FollowNum')">
                 <p>三日未跟人数</p>
                 <span>80.31</span>
             </div>

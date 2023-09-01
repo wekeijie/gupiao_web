@@ -248,7 +248,22 @@ const routes = [{
     name: 'followList',
     component: () => import('@/views/partner/FollowList.vue'),
   },
-
+  {
+    path: '/FollowNum',
+    name: 'followNum',
+    component: () => import('@/views/partner/FollowNum.vue'),
+  },
+  {
+    path: '/juniorLIst',
+    name: 'juniorLIst',
+    component: () => import('@/views/partner/juniorLIst.vue'),
+  },
+  {
+    path: '/TeamRecord',
+    name: 'teamRecord',
+    component: () => import('@/views/partner/TeamRecord.vue'),
+  },
+  
   
 
   
