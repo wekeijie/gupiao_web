@@ -210,6 +210,44 @@ const routes = [{
     name: 'documentary',
     component: () => import('@/views/myHomePage/Documentary.vue'),
   },
+  {
+    path: '/SafetyManage',
+    name: 'safetyManage',
+    component: () => import('@/views/myHomePage/SafetyManage.vue'),
+  },
+  {
+    path: '/RealName',
+    name: 'realName',
+    component: () => import('@/views/myHomePage/RealName.vue'),
+  },
+  {
+    path: '/RealPhone',
+    name: 'realPhone',
+    component: () => import('@/views/myHomePage/RealPhone.vue'),
+  },
+  {
+    path: '/RealEmail',
+    name: 'realEmail',
+    component: () => import('@/views/myHomePage/RealEmail.vue'),
+  },
+  {
+    path: '/RealCard',
+    name: 'realCard',
+    component: () => import('@/views/myHomePage/RealCard.vue'),
+  },
+  {
+    path: '/RealCipher',
+    name: 'realCipher',
+    component: () => import('@/views/myHomePage/RealCipher.vue'),
+  },
+  {
+    path: '/RealTrading',
+    name: 'realTrading',
+    component: () => import('@/views/myHomePage/RealTrading.vue'),
+  },
+  
+  
+  
   
   
 
@@ -265,7 +303,8 @@ const routes = [{
   },
   
   
-
+  
+  
   
   
 

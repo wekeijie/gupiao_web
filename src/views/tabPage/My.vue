@@ -93,21 +93,21 @@
 
       <div class="controls-box">
 
-        <div class="flexBetween controls-list">
-          <div class="flexStart" @click="goRouter('/StarAuthor')">
+        <div class="flexBetween controls-list" @click="goRouter('/StarAuthor')">
+          <div class="flexStart">
             <img class="list-icp" src="@/assets/img/myStar.png">
             <span>明星投资者</span>
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png">
         </div>
-        <div class="flexBetween controls-list">
-          <div class="flexStart" @click="goRouter('/Documentary')">
+        <div class="flexBetween controls-list" @click="goRouter('/Documentary')">
+          <div class="flexStart">
             <img class="list-icp" src="@/assets/img/myDocumentary.png">
             <span>我要跟单</span>
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png">
         </div>
-        <div class="flexBetween controls-list">
+        <div class="flexBetween controls-list" @click="goRouter('/SafetyManage')">
           <div class="flexStart">
             <img class="list-icp" src="@/assets/img/mySecure.png">
             <span>账号与安全</span>

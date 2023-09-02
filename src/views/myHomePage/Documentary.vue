@@ -63,6 +63,11 @@ const goRouter = (path) => {
 <style lang="scss" scoped>
 .input-box {
     height: 30px;
+
+    .v-btn {
+        margin-left: 20px;
+    }
+
 }
 
 .instructions-cont {
@@ -105,6 +110,15 @@ const goRouter = (path) => {
 
 ::v-deep .v-btn__content {
     color: #fff !important;
+}
+
+::v-deep .v-field__input {
+    min-height: 8px !important;
+    font-size: 8px !important;
+    margin: 0 !important;
+    padding: 10px 0px !important;
+    // padding: 5px 2px;
+
 }
 
 .star-name {

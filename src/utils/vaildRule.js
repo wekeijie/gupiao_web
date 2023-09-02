@@ -25,6 +25,13 @@ export const codeRoules = ref([
 
 ])
 
+export const emailRoules = ref([
+
+  (v) => !!v || '必须输入邮箱账号!',
+
+  (v) => (v && v.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1>= 6) || '请输入正确邮箱'
+
+])
 
 
 
