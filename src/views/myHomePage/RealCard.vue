@@ -21,7 +21,8 @@
                     <v-checkbox hide-details="auto" height="auto" color="red" label="默认银行卡"></v-checkbox>
                     <div class="flexEnd card-cont-item">
                         <p><v-icon hide-details="auto" icon="mdi-delete" size="x-small"></v-icon><span>解绑</span></p>
-                        <p><v-icon hide-details="auto" height="auto" icon="mdi-eye" size="x-small"></v-icon><span>详情</span>
+                        <p @click="isApply = true"><v-icon hide-details="auto" height="auto" icon="mdi-eye"
+                                size="x-small"></v-icon><span>详情</span>
                         </p>
 
                     </div>
@@ -32,10 +33,35 @@
         </div>
 
         <div class="login-box">
-            <v-btn color="#dd5054" class="mt-4" size="x-large" block @click="handleLogin" prepend-icon="mdi-plus">
+            <v-btn color="#dd5054" class="mt-4" size="x-large" block @click="goRouter('/CardBind')" prepend-icon="mdi-plus">
                 添加银行卡
             </v-btn>
         </div>
+
+
+
+        <v-bottom-sheet v-model="isApply">
+            <v-list>
+                <div class=" sheet-top">
+                    <img src="../../assets/img/close.png" alt="" @click="isApply = false">
+                </div>
+                <div class="list-cont-box">
+
+                    <div class="list-cont flexBetween">
+                        <p>户主姓名</p>
+                        <span>you name</span>
+                    </div>
+                    <div class="list-cont flexBetween">
+                        <p>卡开户行</p>
+                        <span>中国工商很行</span>
+                    </div>
+                    <div class="list-cont flexBetween">
+                        <p>银行卡号</p>
+                        <span>12312312312312</span>
+                    </div>
+                </div>
+            </v-list>
+        </v-bottom-sheet>
 
     </div>
 </template>
@@ -43,13 +69,18 @@
 import { onMounted, ref, getCurrentInstance, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router"
 import PageHeader from '../../components/topWrap.vue'
+import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
 import { passwordRules, phoneRoules, emailRoules, codeRoules, usernameRules } from "@/utils/vaildRule.js";
 const $router = useRouter()
+const isApply = ref(true)
 const passwordType = ref('password')
 const loginData = reactive({
     phone: '',
     code: '',
 })
+const goRouter = (path) => {
+    $router.push(path)
+}
 const isSend = ref(0)
 const sendCode = () => {
     console.log(isSend, 'isSend')
@@ -87,6 +118,45 @@ const goSign = () => {
 };
 </script>
 <style lang="scss" scoped>
+.sheet-top {
+    padding: 12px 13px 0px 13px;
+    font-size: 17px;
+    line-height: 25px;
+    text-align: right;
+
+    img {
+        width: 24px;
+        text-align: right;
+    }
+
+
+}
+
+.v-list {
+    border-radius: 25px 25px 0px 0px;
+}
+
+.list-cont-box {
+    padding: 0 15px 15px;
+
+    .list-cont {
+        border-bottom: solid 1px #ebecf0;
+        padding: 15px 0;
+
+        p {
+            font-size: 12px;
+            color: #7f829a;
+        }
+
+        span {
+            font-size: 12px;
+            color: #2c2e3a;
+            text-align: right;
+
+        }
+    }
+}
+
 .card-cont-item {
     margin-left: 10px;
 

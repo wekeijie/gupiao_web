@@ -245,6 +245,11 @@ const routes = [{
     name: 'realTrading',
     component: () => import('@/views/myHomePage/RealTrading.vue'),
   },
+  {
+    path: '/CardBind',
+    name: 'cardBind',
+    component: () => import('@/views/myHomePage/CardBind.vue'),
+  },
   
   
   
