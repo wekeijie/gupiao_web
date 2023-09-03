@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="chanrt-box">
 
     <page-header>
       <template v-slot:headerCenter>
@@ -37,6 +37,16 @@
       </div>
 
     </div>
+
+    <div class="flexBetween trading-box">
+      <div @click="collect = !collect">
+        <img src="../../assets/img/selefNo.png" alt="" v-if="collect">
+        <img src="../../assets/img/selef.png" alt="" v-else>
+        <p>自选</p>
+      </div>
+      <div class="trading-btn">交易</div>
+
+    </div>
   </div>
 </template>
 
@@ -51,6 +61,7 @@ const $router = useRouter()
 const $route = useRoute()
 function DefaultData() { }
 const select = ref({ state: 'Florida', abbr: 'FL' });
+const collect = ref(true);
 const more = ref([
   { state: '1分', abbr: 'FL' },
   { state: '5分', abbr: 'GA' },
@@ -143,6 +154,39 @@ const cutTime = (number) => {
 
 </script>
 <style scoped lang="scss">
+.chanrt-box {
+  padding-bottom: 70px;
+}
+
+.trading-box {
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 10px 20px;
+  background: #fff;
+
+  p {
+    font-size: 12px;
+  }
+
+  img {
+    width: 19px;
+  }
+
+  .trading-btn {
+    background-color: #fb5c39;
+    color: #fff;
+    border-radius: 28px;
+    line-height: 45px;
+    width: 80%;
+    align-items: center;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+}
+
 .stati-box {
   flex-wrap: wrap;
   padding: 15px 0;

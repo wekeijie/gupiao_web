@@ -55,7 +55,7 @@
           <img src="@/assets/img/myCenter.png">
           <p>代理中心</p>
         </div>
-        <div class="tab-list">
+        <div class="tab-list" @click="goRouter('/DetailsFunds')">
           <img src="@/assets/img/myData.png">
           <p>资金明细</p>
         </div>
