@@ -250,6 +250,11 @@ const routes = [{
     name: 'cardBind',
     component: () => import('@/views/myHomePage/CardBind.vue'),
   },
+  {
+    path: '/MissionCenter',
+    name: 'missionCenter',
+    component: () => import('@/views/myHomePage/MissionCenter.vue'),
+  },
   
   
   

@@ -82,7 +82,7 @@
       </div>
 
       <div class="active-box">
-        <img src="@/assets/img/myQuest.png">
+        <img src="@/assets/img/myQuest.png" @click="goRouter('/MissionCenter')">
         <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')">
 
       </div>
