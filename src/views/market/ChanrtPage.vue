@@ -23,9 +23,11 @@
       <v-tab @click="cutTime(2)">日K</v-tab>
       <v-tab @click="cutTime(3)">周K</v-tab>
       <v-tab @click="cutTime(3)">月K</v-tab>
-
-      <v-select v-model="select" :hint="`${select.state}, ${select.abbr}`" :items="more" item-title="state"
-        item-value="abbr" label="Select" persistent-hint return-object single-line></v-select>
+      <div style="width: 80px;height: 20px;">
+        <v-select v-model="select" :hint="`${select.state}, ${select.abbr}`" :items="more" item-title="state"
+          autofocus="false" item-value="abbr" label="Select" persistent-hint return-object single-line density="compact"
+          loader-height="5" height="auto"></v-select>
+      </div>
     </v-tabs>
     <div id="app2">
       <div id="minute" ref="minute"></div>

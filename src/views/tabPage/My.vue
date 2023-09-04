@@ -69,7 +69,7 @@
             <p>670px</p>
             <span>余额</span>
           </div>
-          <div>
+          <div @click="goRouter('/CouponList')">
             <p>670px</p>
             <span>利息劵</span>
           </div>

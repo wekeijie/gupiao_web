@@ -255,6 +255,16 @@ const routes = [{
     name: 'missionCenter',
     component: () => import('@/views/myHomePage/MissionCenter.vue'),
   },
+  {
+    path: '/CouponList',
+    name: 'couponList',
+    component: () => import('@/views/myHomePage/CouponList.vue'),
+  },
+  {
+    path: '/CouponDetail',
+    name: 'couponDetail',
+    component: () => import('@/views/myHomePage/CouponDetail.vue'),
+  },
   
   
   
@@ -310,6 +320,11 @@ const routes = [{
     path: '/TeamRecord',
     name: 'teamRecord',
     component: () => import('@/views/partner/TeamRecord.vue'),
+  },
+  {
+    path: '/FollowDetail',
+    name: 'followDetail',
+    component: () => import('@/views/partner/FollowDetail.vue'),
   },
   
   

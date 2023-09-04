@@ -28,7 +28,8 @@
                         </div>
                         <div class="controls-box flexEnd">
                             <v-btn v-if="model == 0" color="#6a5acd">撤销</v-btn>
-                            <v-btn color="#dc143c">查看详情</v-btn>
+                            <v-btn color="#dc143c" @click="goRouter('/FollowDetail')">查看详情</v-btn>
+
                         </div>
 
                     </div>
@@ -55,6 +56,9 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 
+const goRouter = (path) => {
+    $router.push(path)
+}
 const model = ref(0)
 const list = ref([
     {
