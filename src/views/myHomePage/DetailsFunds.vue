@@ -6,8 +6,10 @@
         <div style="background-color: rgb(245, 245, 245);height: 5px;"></div>
 
         <div class="flexBetween screen-box">
-            <div @click="isApply = true"><span>全部交易类型</span> <img src="../../assets/img/downPac.png" alt=""></div>
-            <div><span>2023-08</span> <img src="../../assets/img/downPac.png" alt=""></div>
+            <div @click="isApply = true; istype = false"><span>全部交易类型</span> <img src="../../assets/img/downPac.png" alt="">
+            </div>
+            <div @click="istype = true; isApply = true"><span>2023-08</span> <img src="../../assets/img/downPac.png" alt="">
+            </div>
         </div>
         <v-divider></v-divider>
 
@@ -30,20 +32,26 @@
 
 
         <v-bottom-sheet v-model="isApply">
-            <v-list density="compact">
-                <div class="flexBetween sheet-top">
-                    <div class="sheet-close" @click="isApply = false">取消</div>
-                    <p class="sheet-sure" @click="isApply = false">完成</p>
-                </div>
-                <v-divider></v-divider>
-                <div class="list-cont-box">
-                    <v-list-item color="primary" :value="tile" v-for="tile in 15" :key="tile.title">
-                        <div class=" type-list">
-                            <h3>代理返佣</h3>
-                        </div>
-                    </v-list-item>
-                </div>
-            </v-list>
+
+            <div class="flexBetween sheet-top">
+                <div class="sheet-close" @click="isApply = false">取消</div>
+                <p class="sheet-sure" @click="isApply = false">完成</p>
+            </div>
+            <v-divider></v-divider>
+            <div class="list-cont-box" v-if="!istype">
+                <v-virtual-scroll :bench="benched" :items="list" height="300" item-height="64" class=" type-list">
+                    <v-list :items="listType" item-title="text" item-value="text" :value="selectedBank"></v-list>
+                </v-virtual-scroll>
+            </div>
+
+            <div class="flexBetween" v-else>
+                <v-virtual-scroll :bench="benched" :items="list" height="300" item-height="64">
+                    <v-list :items="items" item-title="text" item-value="text" :value="selectedBank"></v-list>
+                </v-virtual-scroll>
+                <v-virtual-scroll :bench="benched" :items="list" height="300" item-height="64"><v-list :items="items"
+                        item-title="text" item-value="text"></v-list>
+                </v-virtual-scroll>
+            </div>
         </v-bottom-sheet>
 
 
@@ -60,12 +68,53 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 const isApply = ref(false)
-const selectIndex = ref(1)
+const istype = ref(true) //false 为全部交易， true 为时间
 
 const goRouter = (path) => {
     $router.push(path)
 }
+const list = ref([
+    { text: '00:00', icon: 'mdi-clock' },
+])
+const listType = ref([
+    { text: '全部交易类型', },
+    { text: '账户充值', },
+    { text: '充值返现', },
+    { text: '提现成功', },
+    { text: '提现失败', },
+    { text: '取消提现', },
+    { text: '利息扣除', },
+    { text: '保证金扣除', },
+    { text: '首充返现', },
+])
 
+const items = ref([
+    { text: '00:00', },
+    { text: '01:00', },
+    { text: '02:00', },
+    { text: '03:00', },
+    { text: '04:00', },
+    { text: '05:00', },
+    { text: '06:00', },
+    { text: '07:00', },
+    { text: '08:00', },
+    { text: '09:00', },
+    { text: '10:00', },
+    { text: '11:00', },
+    { text: '12:00', },
+    { text: '13:00', },
+    { text: '14:00', },
+    { text: '15:00', },
+    { text: '16:00', },
+    { text: '17:00', },
+    { text: '18:00', },
+    { text: '19:00', },
+    { text: '20:00', },
+    { text: '21:00', },
+    { text: '22:00', },
+    { text: '23:00', },
+    { text: '34:00', },
+])
 </script>
 <style lang="scss" scoped>
 .v-bottom-sheet {
@@ -73,7 +122,8 @@ const goRouter = (path) => {
         padding: 1px 13px 1px 13px;
         font-size: 17px;
         line-height: 25px;
-        // border-bottom: 1px solid #000;
+        border-bottom: 1px solid #e5e5e5;
+        background: #fff;
 
         .sheet-sure {
             font-size: 17px;
@@ -94,7 +144,8 @@ const goRouter = (path) => {
     }
 
     .type-list {
-        padding: 0 25px 0 10px;
+        width: 100%;
+        // padding: 0 25px 0 10px;
         width: 100%;
         text-align: center;
 

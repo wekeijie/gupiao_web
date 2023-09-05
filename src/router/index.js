@@ -33,6 +33,11 @@ const routes = [{
     }, ]
   },
   {
+    path: '/PactDetail',
+    name: 'PactDetail',
+    component: () => import('@/views/PactDetail.vue'),
+  },
+  {
     path: '/Search',
     name: 'Search',
     component: () => import('@/views/Search.vue'),
@@ -53,6 +58,7 @@ const routes = [{
     name: 'signIn',
     component: () => import('@/views/loginBlock/SignIn.vue'),
   },
+  
   {
     path: '/ForgertPhone',
     name: 'forgertPhone',

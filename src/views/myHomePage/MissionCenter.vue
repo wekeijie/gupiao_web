@@ -35,10 +35,8 @@
                         <div>
                             <h5>注册成功会员 <span>+688.00</span></h5>
                             <p>注册成为会员即可得到688元利息</p>
-
                         </div>
-
-                        <div :class="item < 3 ? 'status-full' : 'status-await'">已领取</div>
+                        <div @click="goRouter('/CouponDetail')" :class="item < 3 ? 'status-full' : 'status-await'">已领取</div>
 
                     </div>
                 </div>
@@ -57,7 +55,8 @@
                                 </div>
                             </div>
 
-                            <div :class="item < 3 ? 'status-full' : 'status-await'">{{ item < 3 ? '已领取' : '去完成' }}</div>
+                            <div @click="goRouter('/CouponDetail')" :class="item < 3 ? 'status-full' : 'status-await'">{{
+                                item < 3 ? '已领取' : '去完成' }}</div>
                             </div>
                             <div class="task-lable">注册成为会员即可得到688元利息</div>
                         </div>
@@ -75,6 +74,11 @@ const $router = useRouter()
 const $route = useRoute()
 const model = ref(1)
 const isPop = ref(false)
+
+
+const goRouter = (path) => {
+    $router.push(path)
+}
 
 </script>
 <style lang="scss" scoped>

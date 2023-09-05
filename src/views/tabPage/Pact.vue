@@ -65,23 +65,24 @@
                   <div class="flexBetween row-box"><span>持仓时间</span><span>2023-08-11 ~2023-08-11 </span> </div>
                   <div class="flexBetween row-box"><span>资金利率</span><span>0.08% </span> </div>
                   <div class="flexBetween controls-box">
-                    <div>
+                    <div @click="overlay = true; popType = 0">
                       <img src="../../assets/img/stopPac.png">
                       <p>终止</p>
                     </div>
-                    <div>
+                    <div @click="overlay = true; popType = 1">
                       <img src="../../assets/img/expandPac.png">
                       <p>扩大</p>
                     </div>
-                    <div>
+                    <div @click="overlay = true; popType = 2">
                       <img src="../../assets/img/appendPac.png">
                       <p>追加</p>
                     </div>
-                    <div>
+
+                    <div @click="goRouter('/PactDetail')">
                       <img src="../../assets/img/curvePac.png">
                       <p>详情</p>
                     </div>
-                    <div>
+                    <div @click="overlay = true; popType = 3">
                       <img src="../../assets/img/sharePac.png">
                       <p>提盈</p>
                     </div>
@@ -101,6 +102,55 @@
     </div>
     <p class="padd-bot"></p>
 
+
+
+
+
+    <v-overlay v-model="overlay" class="align-center justify-center">
+      <v-sheet style="" width="350px" rounded="lg ">
+
+
+        <div class="">
+
+          <div class="prop-title flexCenter">
+            <p>{{ popType == 1 ? '扩大配资' : popType == 2 ? '追加保证金' : popType == 3 ? '合约提盈' : '提示' }}</p>
+          </div>
+          <div class="tips-cont" v-if="popType == 0">您确定要终止该合约吗？</div>
+          <div v-if="popType != 0">
+
+            <div class="pop-list">
+
+              <div class="flexBetween">
+                <p>合约名称</p>
+                <p>按天配资2倍</p>
+              </div>
+              <div class="flexBetween">
+                <p>合约编号</p>
+                <p>123123123123</p>
+              </div>
+              <div class="flexBetween">
+                <p>合约余额</p>
+                <p>123123元</p>
+              </div>
+            </div>
+
+            <v-text-field v-model="model" variant="underlined" clearable hide-details
+              :label="popType == 1 ? '扩大金额（元）' : popType == 2 ? '追加保证金金额（元）' : '提盈余额（元）'">
+              <template v-slot:prepend>
+                <p class="" style="font-size:30px">￥</p>
+              </template>
+            </v-text-field>
+
+
+          </div>
+          <div class="btn-box flexAroud">
+            <v-btn color="#fb5c39" @click="overlay = fasle">取消</v-btn>
+            <v-btn color="#fb5c39">确认</v-btn>
+          </div>
+        </div>
+      </v-sheet>
+    </v-overlay>
+
   </div>
 </template>
 
@@ -113,6 +163,10 @@ const $router = useRouter()
 const $route = useRoute()
 const model = ref(0)
 const isUp = ref(true)
+const popType = ref(0)//0终止 1扩大 2追加 3 提盈
+const overlay = ref(false)
+
+
 const goRouter = (path) => {
   $router.push(path)
 }
@@ -323,4 +377,63 @@ watch(model, (newVal, oldVal) => {
 // .v-tab--selected{
 
 // }
+
+
+
+
+
+.v-overlay {
+
+  .v-sheet {
+    padding: 10px;
+  }
+
+  .prop-title {
+    p {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+
+  ::v-deep .v-input__control {
+    padding: 8px 0;
+
+    .v-field {
+      padding-top: 10px;
+    }
+
+    .v-field--active .v-label.v-field-label {
+      font-size: 20px;
+      color: #000;
+      // padding: 10px 0 5px;
+    }
+  }
+
+
+}
+
+.pop-list {
+  margin-top: 15px;
+  line-height: 27px;
+  font-size: 13px;
+}
+
+.tips-cont {
+  padding: 1.5em 1.6em 1.5em;
+  min-height: 40px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #999;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.btn-box {
+  ::v-deep .v-btn__content {
+    color: #fff;
+  }
+
+}
 </style>
