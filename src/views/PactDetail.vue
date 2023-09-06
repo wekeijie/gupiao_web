@@ -89,7 +89,40 @@
         <div class="coupon-box">
             <v-carousel :show-arrows="false" hide-delimiters v-model="model" height="auto">
                 <v-carousel-item v-for="(slide, i) in 4" :key="i">
-                    <div class="new-box" v-if="i == 0">0
+                    <div class="new-box" v-if="i == 0">
+                        <table>
+                            <tbody>
+                                <tr class="tr-list">
+                                    <th style="text-align: left;">名称/代码</th>
+                                    <th style="text-align: right;">现价/涨幅</th>
+                                    <th style="text-align: right;">成本/盈亏</th>
+                                    <th style="text-align: right;">持仓/可用</th>
+                                </tr>
+                                <tr class="tr-list" v-for="item in 10" :key="item">
+                                    <td class="tr-one">
+                                        <h4>平安银行</h4>
+                                        <p><span>sz</span>0000001</p>
+                                    </td>
+                                    <td class="tr-two">
+                                        <div class="tr-two-number">48.87/ <span class="roseColor">1.42%</span></div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <div class="tr-two-number">48.87/ <span class="roseColor">1.42%</span></div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <p>100/100</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+
+
+
+
                     </div>
                     <div class="new-box" v-if="i == 1">
 
@@ -98,16 +131,145 @@
                                 <p :class="mouneyIndex == 0 ? 'active-tab' : ''" @click="mouneyIndex = 0">扩大配资</p>
                                 <p :class="mouneyIndex == 1 ? 'active-tab' : ''" @click="mouneyIndex = 1">增加保证金</p>
                             </div>
+                        </div>
+                        <div class="" v-if="mouneyIndex == 0">
+
+
+
+                            <table>
+                                <tbody>
+                                    <tr class="tr-list">
+                                        <th style="text-align: left;">序号</th>
+                                        <th style="text-align: right;">扩大金额</th>
+                                        <th style="text-align: right;">操作时间</th>
+                                    </tr>
+                                    <tr class="tr-list" v-for="item in 10" :key="item">
+                                        <td class="tr-one">
+                                            <h4>平安银行</h4>
+                                            <p><span>sz</span>0000001</p>
+                                        </td>
+                                        <td class="tr-two">
+                                            <div class="tr-two-number">48.87/ <span>买入</span></div>
+                                        </td>
+                                        <td class="tr-three" style="text-align: right;">
+                                            <div class="tr-two-number">48.87/ 1.42%</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        <div class="" v-if="mouneyIndex == 1">
+
+
+
+
+
+                            <table>
+                                <tbody>
+                                    <tr class="tr-list">
+                                        <th style="text-align: left;">序号</th>
+                                        <th style="text-align: right;">追加金额</th>
+                                        <th style="text-align: right;">操作时间</th>
+                                    </tr>
+                                    <tr class="tr-list" v-for="item in 10" :key="item">
+                                        <td class="tr-one">
+                                            <h4>平安银行</h4>
+                                            <p><span>sz</span>0000001</p>
+                                        </td>
+                                        <td class="tr-two">
+                                            <div class="tr-two-number">48.87/ <span>买入</span></div>
+                                        </td>
+                                        <td class="tr-three" style="text-align: right;">
+                                            <div class="tr-two-number">48.87/ 1.42%</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                         </div>
 
 
 
 
+
+
                     </div>
-                    <div class="new-box" v-if="i == 2">2
+                    <div class="new-box" v-if="i == 2">
+
+
+
+
+                        <table>
+                            <tbody>
+                                <tr class="tr-list">
+                                    <th style="text-align: left;">名称/代码</th>
+                                    <th style="text-align: right;">现价/买卖</th>
+                                    <th style="text-align: right;">数量/总价</th>
+                                    <th style="text-align: right;">成交时间</th>
+                                </tr>
+                                <tr class="tr-list" v-for="item in 10" :key="item">
+                                    <td class="tr-one">
+                                        <h4>平安银行</h4>
+                                        <p><span>sz</span>0000001</p>
+                                    </td>
+                                    <td class="tr-two">
+                                        <div class="tr-two-number">48.87/ <span>买入</span></div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <div class="tr-two-number">48.87/ 1.42%</div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <p>100/100</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+
+
+
+
                     </div>
-                    <div class="new-box" v-if="i == 3">3
+                    <div class="new-box" v-if="i == 3">
+
+
+
+
+                        <table>
+                            <tbody>
+                                <tr class="tr-list">
+                                    <th style="text-align: left;">委托股票</th>
+                                    <th style="text-align: right;">委托价/类型</th>
+                                    <th style="text-align: right;">已成/委托</th>
+                                    <th style="text-align: right;">状态</th>
+                                </tr>
+                                <tr class="tr-list" v-for="item in 10" :key="item">
+                                    <td class="tr-one">
+                                        <h4>平安银行</h4>
+                                        <p><span>sz</span>0000001</p>
+                                    </td>
+                                    <td class="tr-two">
+                                        <div class="tr-two-number">48.87/ <span>买入</span></div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <div class="tr-two-number">48.87/ 1.42%</div>
+                                    </td>
+                                    <td class="tr-three" style="text-align: right;">
+                                        <p>已成交</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+
                     </div>
                 </v-carousel-item>
             </v-carousel>
@@ -207,15 +369,15 @@ const mouneyIndex = ref(0)
 }
 
 .coupon-box {
-    height: calc(100vh - 105px);
-    background-color: #f6f6f6;
+    min-height: 300px;
+    // background-color: #f6f6f6;
     overflow-y: scroll;
 
 }
 
 .new-box {
-    min-height: calc(100vh - 125px);
-    padding: 10px;
+    min-height: 300px;
+    padding: 0 10px;
 }
 
 .coupon-list {
@@ -245,6 +407,86 @@ const mouneyIndex = ref(0)
         text-align: right;
         font-size: 13px;
         color: #7f829a;
+    }
+}
+
+
+
+
+
+
+
+table {
+    width: 100%;
+    padding: 10px 10px 90px 10px;
+
+    .tr-list {
+        padding: 6px 0;
+        border-bottom: solid 0.5px #f4f5f6;
+        display: flex;
+        align-items: center;
+    }
+
+    .tr-one {
+        h4 {
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            color: #000;
+        }
+
+        p {
+            font-size: 12px;
+            border-radius: 2px;
+            color: #8f8f94;
+        }
+
+        span {
+            background-color: #fb5c39;
+            padding: 0px 4px;
+            font-size: 8px;
+            color: #fff;
+        }
+    }
+
+    .tr-two {
+        text-align: center;
+
+        .tr-two-number {
+            font-size: 13px;
+            color: #000000;
+        }
+
+        p {
+            color: #8f8f94;
+            font-size: 10px;
+        }
+    }
+
+    .tr-three {
+        text-align: right;
+
+        span {
+            font-size: 12px;
+            font-size: 12px;
+            color: red;
+        }
+    }
+
+    // span {
+    //     color: rgb(230, 5, 5);
+    //     margin-left: 3px;
+    // }
+
+    th {
+        width: 33.3%;
+        color: #8f8f94;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    td {
+        width: 33%;
+        font-size: 12px;
     }
 }
 </style>
