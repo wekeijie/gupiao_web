@@ -6,8 +6,8 @@
     <div style="background-color: rgb(245, 245, 245);height: 5px;"></div>
 
     <div class="flexAroud controls-box">
-      <v-text-field v-model="searchCont" variant="none" single-line required clearable max-width="100" hide-details="auto"
-        label="请输入手机号" solo></v-text-field>
+      <v-text-field v-model="searchCont" variant="outlined" density="compact" single-line clearable max-width="100"
+        hide-details label="请输入手机号"></v-text-field>
 
       <div class="select-time" style="width:30%">选择时间</div>
 
@@ -134,18 +134,31 @@ table {
   }
 }
 
-.v-text-field {
-  border: 0.5px solid #d8d8d8;
-  height: 30px;
 
-  input {
-    height: 30px;
-  }
+
+::v-deep .v-text-field {
+  padding: 0;
+  margin: 0;
 }
 
-::v-deep .v-field__field {
-  height: 30px !important;
+::v-deep .v-text-field input.v-field__input {
+  min-height: 30px;
+  padding: 0 5px;
+  margin: 0;
 }
+
+// .v-text-field {
+//   border: 0.5px solid #d8d8d8;
+//   height: 30px;
+
+//   input {
+//     height: 30px;
+//   }
+// }
+
+// ::v-deep .v-field__field {
+//   height: 30px !important;
+// }
 
 .controls-box {
   padding: 15px;
