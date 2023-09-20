@@ -10,7 +10,7 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "amfe-flexible": "^2.2.1",
-    "hqchart": "^1.1.12314",
+    "hqchart": "^1.1.12486",
     "jquery": "^3.7.0",
     "moment": "^2.29.4",
     "pinia": "^2.0.23",
