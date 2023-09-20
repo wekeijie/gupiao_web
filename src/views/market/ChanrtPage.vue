@@ -22,16 +22,15 @@
       }}</v-tab>
       <div style="width: 80px;height: 20px;">
         <v-select v-model="select" :hint="`${select.Name}, ${select.Value}`" :items="more" item-title="Name"
-          autofocus="false" item-value="Value" label="Select" persistent-hint return-object single-line density="compact"
-          hide-details loader-height="5" height="auto"></v-select>
+          item-value="Value" label="Select" persistent-hint return-object single-line density="compact" hide-details
+          loader-height="5" height="auto"></v-select>
       </div>
     </v-tabs>
     <div id="app2">
       <!-- <div id="minute" ref="minute"></div> -->
 
-      <div id="minuteChart" ref="minute"></div>
-      <!-- v-show='Minute.IsShow' -->
-      <!-- <div id="kline" style="margin-left:39px;" ref="kline" v-show='Kline.IsShow'></div> -->
+      <div id="minuteChart" ref="minute" v-show='Minute.IsShow'></div>
+      <div id="kline" ref="kline" v-show='Kline.IsShow'></div>
     </div>
     <div class="flexStart stati-box">
       <div class="stati-list" v-for="itme in 9" :key="itme">
@@ -71,7 +70,7 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 function DefaultData() { }
-const select = ref({ state: 'Florida', abbr: 'FL' });
+const select = ref({ Name: "1分钟", Value: 4 });
 const collect = ref(true);
 
 const TabTextIndex = ref(0)
@@ -80,11 +79,6 @@ const Symbol = ref('600000.sh')
 
 
 const more = ref([
-  // { state: '1分', abbr: 'FL' },
-  // { state: '5分', abbr: 'GA' },
-  // { state: '15分', abbr: 'NE' },
-  // { state: '30分', abbr: 'CA' },
-  // { state: '60分', abbr: 'NY' },
 
   { Name: "1分钟", Value: 4 },
   { Name: "5分钟", Value: 5 },
@@ -99,52 +93,79 @@ const PeriodList = ref([
   { Name: "周线", Value: 1 },
   { Name: "月线", Value: 2 },
 ])
-const currentitem = ref('tab-Web')
-DefaultData.GetKLineOption = function () {
-  let data =
-  {
+watch(() => select.value, (newVlue, oldValue) => {
+  console.log(newVlue, oldValue)
+  ChangeChartTab(select.value.Name, select.value.Value)
+
+
+})
+
+DefaultData.GetKlineOption = function (symbol) {
+  let data = {
     Type: '历史K线图',
+    Windows: [
+      { Index: "均线", Modify: false, Change: false },
+      { Index: "VOL", Modify: false, Change: false, IsDrawTitleBG: true },
+      { Index: "MACD", Modify: false, Change: false, IsDrawTitleBG: true },
+    ], //窗口指标
+    Symbol: symbol,
+    IsAutoUpate: true, //是自动更新数据
 
-    Windows: //窗口指标
-      [
-        { Index: "MA", Modify: false, Change: false },
-        { Index: "VOL", Modify: false, Change: false }
-      ],
+    IsShowRightMenu: false, //右键菜单
 
-    IsShowCorssCursorInfo: true,
+    KLine: {
+      DragMode: 3, //拖拽模式 0 禁止拖拽 1 数据拖拽 2 区间选择
+      Right: 1, //复权 0 不复权 1 前复权 2 后复权
+      Period: 0, //周期 0 日线 1 周线 2 月线 3 年线
+      MaxReqeustDataCount: 1000, //日线数据最近1000天
+      MaxRequestMinuteDayCount: 15,    //分钟数据最近15天
+      PageSize: 50, //一屏显示多少数据
+      IsShowTooltip: false //是否显示K线提示信息
+    },
+
+    KLineTitle: //标题设置
+    {
+      IsShowName: false, //不显示股票名称
+      IsShowSettingInfo: false //不显示周期/复权
+    },
 
     Border: //边框
     {
-      Left: 1,
-      Right: 1, //右边间距
-      Top: 25,
-      Bottom: 25,
+      Left: 20, //左边间距
+      Right: 20, //右边间距
+      Top: 1,
+      Bottom: 1
     },
 
-    KLine:
-    {
-      Right: 1,                            //复权 0 不复权 1 前复权 2 后复权
-      Period: 0,                           //周期: 0 日线 1 周线 2 月线 3 年线 
-      PageSize: 70,
-      IsShowTooltip: true
-    },
-
+    Frame: //子框架设置
+      [
+        {
+          SplitCount: 3,
+          IsShowLeftText: false, 	//不显示左边刻度文字
+          IsShowRightText: true,    	//显示右边刻度文字                      
+          Custom:
+            [
+              {
+                Type: 0,
+                Position: 'left',
+              }
+            ]
+        },
+        { SplitCount: 2, StringFormat: 0 },
+        { SplitCount: 2, StringFormat: 0 }
+      ]
   };
-
   return data;
 }
 
 DefaultData.GetMinuteOption = function (symbol) {
   let data = {
-    Type: '分钟走势图横屏', //历史分钟走势图
+    Type: '分钟走势图', //历史分钟走势图
     Symbol: symbol,
     IsAutoUpate: true, //是自动更新数据
-
     IsShowRightMenu: false, //右键菜单
     IsShowCorssCursorInfo: false, //是否显示十字光标的刻度信息
     DayCount: 1,
-
-
     Border: //边框
     {
       Left: 1,
@@ -158,11 +179,11 @@ DefaultData.GetMinuteOption = function (symbol) {
       IsShowSettingInfo: false, //不显示周期/复权
     },
 
-    // Frame: //子框架设置,刻度小数位数设置
-    //   [
-    //     { SplitCount: 5, StringFormat: 0 },
-    //     { SplitCount: 3, StringFormat: 0 }
-    //   ]
+    Frame: //子框架设置,刻度小数位数设置
+      [
+        { SplitCount: 5, StringFormat: 0 },
+        { SplitCount: 3, StringFormat: 0 }
+      ]
   };
   return data;
 }
@@ -190,19 +211,10 @@ const Minute = ref({
   IsShow: true,
   Option: DefaultData.GetMinuteOption(Symbol.value)
 })
-// const Kline = ref({
-//   JSChart: null,
-//   IsShow: false,
-//   // Option: DefaultData.GetKlineOption(Symbol.value)
-// })
-const data = reactive({
-  Symbol: '600000.sh',
-  KLine:
-  {
-    JSChart: null,
-    Option: DefaultData.GetKLineOption(),
-  },
-
+const Kline = ref({
+  JSChart: null,
+  IsShow: false,
+  Option: DefaultData.GetKlineOption(Symbol.value)
 })
 
 onMounted(() => {
@@ -211,7 +223,7 @@ onMounted(() => {
 
   ChangeChartTab(Name.value, TabTextIndex.value);
 })
-let kline = ref()
+let klineRef = ref()
 let minuteRef = ref()
 
 const OnSize = () => {
@@ -219,26 +231,13 @@ const OnSize = () => {
   var chartHeight = 354;
   var chartWidth = window.innerWidth;
 
-  // kline = document.getElementById('minute')
-  // kline.style.width = chartWidth + 'px';
-  // kline.style.height = chartHeight + 'px';
-  // if (data.KLine.JSChart) data.KLine.JSChart.OnSize();
-
+  klineRef.value = document.getElementById('kline')
+  klineRef.value.style.width = chartWidth + 'px';
+  klineRef.value.style.height = chartHeight + 'px';
 
   minuteRef.value = document.getElementById('minuteChart')
   minuteRef.value.style.width = chartWidth + 'px';
   minuteRef.value.style.height = chartHeight + 'px';
-}
-const CreateKLineChart = () => {
-  if (data.KLine.JSChart) return;
-  data.KLine.Option.Symbol = data.Symbol;
-  let chart = HQChart.Chart.JSChart.Init(kline);
-  console.log(data.KLine.Option, 'data.KLine.Option', chart)
-  data.KLine.Option.NetworkFilter = (data, callback) => { NetworkFilter(data, callback); }
-
-  chart.SetOption(data.KLine.Option);
-
-  data.KLine.JSChart = chart;
 }
 const NetworkFilter = (data, callback) => {
   HQData.HQData.NetworkFilter(data, callback);
@@ -253,6 +252,19 @@ const CreateMinuteChart = () => //创建日线图
   Minute.value.JSChart = chart;
 }
 
+const CreateKLineChart = () =>  //创建K线图
+{
+  if (Kline.value.JSChart) return;
+  Kline.value.Option.Symbol = Symbol.value;
+  let chart = HQChart.Chart.JSChart.Init(klineRef.value);
+  Kline.value.Option.NetworkFilter = (data, callback) => { NetworkFilter(data, callback); }
+  chart.SetOption(Kline.value.Option);
+  // chart.AddEventCallback({event:JSCommon.JSCHART_EVENT_ID.ON_CLICK_INDEXTITLE, callback:this.OnClickIndexTitle});//点击事件通知回调
+  Kline.value.JSChart = chart;
+}
+const cutTime = () => {
+  console.log('time1321')
+}
 
 const ChangeChartTab = (name, index) => {
   // this.IsLinetype = false;
@@ -260,8 +272,8 @@ const ChangeChartTab = (name, index) => {
   // this.TabTextIndex = index;
   var period = DefaultData.GetPeriodData(name);
   if (!period) return;
-  // if (period.KLineShow) ChangeKLinePeriod(period.Value);
-  // this.Kline.IsShow = period.KLineShow;
+  if (period.KLineShow) ChangeKLinePeriod(period.Value);
+  Kline.value.IsShow = period.KLineShow;
   if (period.MinuteShow) ChangeMinutePeriod(period.Value);
   Minute.value.IsShow = period.MinuteShow;
 }
@@ -276,44 +288,32 @@ const ChangeMinutePeriod = (period) => {
     CreateMinuteChart();
   }
   else {
-    if (period == 1) {
-      this.IsFiveminute = false;
+    // if (period == 1) {
+    //   this.IsFiveminute = false;
 
-    } else if (period == 5) {
-      this.IsFiveminute = true;
-    }
-    this.OnSize();
-    this.Minute.JSChart.OnSize();
-    this.Minute.JSChart.ChangeDayCount(period);
+    // } else if (period == 5) {
+    //   this.IsFiveminute = true;
+    // }
+    OnSize();
+    Minute.value.JSChart.OnSize();
+    Minute.value.JSChart.ChangeDayCount(period);
   }
 }
 
 const ChangeKLinePeriod = (period) =>  //历史K线周期切换
 {
-  if (!this.Kline.JSChart)    //不存在创建
+  if (!Kline.value.JSChart)    //不存在创建
   {
-    this.Kline.Option.KLine.Period = period;
-    this.CreateKLineChart();
+    Kline.value.Option.KLine.Period = period;
+    CreateKLineChart();
   }
   else {
-    this.Kline.JSChart.ChangePeriod(period);
+    Kline.value.JSChart.ChangePeriod(period);
   }
 }
-
-
-
-const cutTime = (number) => {
-  // return
-  // console.log(data.KLine.Option.KLine.Period, 'kline', data.KLine.JSChart)
-  data.KLine.Option.KLine.Period = 0
-
-  let chart = HQChart.Chart.JSChart.Init(kline);
-  chart.SetOption(data.KLine.Option);
 
   //切换代码
   // data.KLine.Option.Symbol = '000001.sz'; //000001.sz 平安银行 600999.sh 招商银行
-  // HQChart.Chart.ChangeSymbol(data.KLine.Option.Symbol);
-}
 
 
 </script>
