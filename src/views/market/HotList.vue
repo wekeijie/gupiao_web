@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>{{ title }}</template>
+      <template v-slot:headerCenter>{{ store.state.market.title }}</template>
     </page-header>
 
 
@@ -17,16 +17,16 @@
         </tr>
 
         <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-        <tr class="tr-list" v-for="item in 10" :key="item" @click="goRouter('/DetailList', '房地产行业')">
+        <tr class="tr-list" v-for="item in  store.state.market.list" :key="item.code" @click="goRouter('/DetailList', item.name,item.code)">
           <td class="tr-one">
-            <p>水的生产和供应</p>
+            <p>{{ item.name }}</p>
           </td>
           <td class="tr-two" style="text-align: right;">
-            <div class="tr-two-number">+0.84%</div>
+            <div class="tr-two-number" :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</div>
           </td>
           <td class="tr-three" style="text-align: right;">
-            <p>国中水务</p>
-            <span>+3.77%</span>
+            <p>{{ item.first_name }}</p>
+            <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span>
           </td>
         </tr>
       </tbody>
@@ -36,22 +36,65 @@
 </template>
   
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick ,onUnmounted} from "vue"
 
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
 const title = ref()
+let page = ref(1)
 onMounted(() => {
   title.value = $route.query.title
-
+  getList() 
+  window.addEventListener('scroll', handleScroll);
 })
+onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll);
+      store.dispatch('market/clearList')
+});
 
-const goRouter = (path, item) => {
+const getList = () =>{
+  store.dispatch('market/getList',{'type':title.value,'page':page.value})
+}
+const updatePage = () => {
+      // Your update logic here
+      page.value = page.value + 1;
+      getList()
+};
+const handleScroll = () => {
+  let scrollHeight = document.documentElement.scrollHeight;
+  let scrollTop = document.documentElement.scrollTop;
+  let clientHeight = document.documentElement.clientHeight;
+
+  if (scrollHeight - scrollTop <= clientHeight) {
+    updatePage();
+  }
+};    
+const watchStringToColor = (price) => {
+    if (price < 0) {
+        return 'green';
+    } else if (price === 0 || price === '') {
+        return 'black';
+    } else if (price > 0) {
+        return 'red';
+    }
+}
+
+const updateStrIcon = (price) => {
+  if (price > 0) {
+        return '+' + price;
+    }else{
+        return price;
+    }
+}
+
+const goRouter = (path, item,code) => {
   $router.push({
     path, query: {
-      title: item
+      title: item,
+      code: code
     }
   })
 }

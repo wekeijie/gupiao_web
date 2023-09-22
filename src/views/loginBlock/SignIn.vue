@@ -28,28 +28,34 @@
           hide-details="auto"
           :rules="phoneRoules"
         ></v-text-field>
-        <v-text-field
-          variant="underlined"
-          v-model="loginData.code"
-          required
-          :counter="12"
-          label="验证码"
-          type="Number"
-          :rules="passwordRules"
-        >
-          <div
-            class="send-code"
-            @click="sendCode"
+        <v-row class="ma-0 pa-0">
+          <v-col cols="8" class="pa-0">
+            <v-text-field
+              variant="underlined"
+              v-model="loginData.code"
+              required
+              :counter="4"
+              label="验证码"
+              type="Number"
+              :rules="passwordRules"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="4" class="px-1">
+            <v-btn
+            class="text-none"
+            color="success"
+            rounded
+            block
+            variant="outlined"
+            @click="sendSms"
+            :disabled="isSendLock"
           >
-            <p v-if="isSend==0">
-              点击发送
-            </p>
-            <p v-else>
-              重新发送({{isSend}})
-            </p>
-          </div>
-        </v-text-field>
-
+            发送
+          </v-btn> 
+          </v-col>
+        </v-row>
+        
         <v-text-field
           variant="underlined"
           v-model="loginData.password"
@@ -120,6 +126,7 @@
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick, getCurrentInstance } from "vue"
 import { passwordRules, phoneRoules, codeRoules, usernameRules } from "@/utils/vaildRule.js";
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const passwordType = ref('password')
 const loginData = reactive({
@@ -130,18 +137,51 @@ const loginData = reactive({
   passwordAgo: '',
   recom: ''
 })
+const clock = ref(null)
+const isSendLock = ref(false)
+
+const lockBtn = () => {
+  isSendLock.value = true
+  let totalTime = 60
+  clock.value = window.setInterval(() => {
+    if (totalTime == 0) {
+      clearLock()
+    } else {
+      totalTime--
+    }
+  }, 1000)
+}
+
+const clearLock = () => {
+  clearInterval(clock.value)
+  isSendLock.value = false
+}
+
+const sendSms = () =>{
+  if(loginData.phone.length < 6 || loginData.phone.length > 11){
+    store.dispatch('snackbar/warning',{'active':true,'body':'请输入正确的手机号码'})
+    return
+  }
+  lockBtn()
+  store.dispatch('user/sendSms',loginData.phone).then(rsp => {
+    store.dispatch('snackbar/success',{'active':true,'body':'发送成功'})
+  }).catch(() => {
+    clearLock()
+  })
+}
+
 const handleLogin = async () => {
   const { valid } = await instance.ctx.$refs.form.validate();
-  console.log(valid, 'valid')
 
   if (valid) {
-    if (loginData.username == "" || loginData.password == "") {
-    } else {
-      try {
-      } catch (e) {
-        alert(e);
-      }
+    if(loginData.password != loginData.passwordAgo){
+      store.dispatch('snackbar/warning',{'active':true,'body':'两次密码不一致'})
+      return 
     }
+    store.dispatch('user/register',{'user_name':loginData.username,'mobile':loginData.phone,'password':loginData.password,'verify_code':loginData.code,'referrer':loginData.recom}).then(d => {
+      store.dispatch('snackbar/success',{'active':true,'body':'注册成功！'})
+      goRouter('Login') 
+    })
   }
 };
 
@@ -150,17 +190,7 @@ const isSend = ref(0)
 onMounted(() => {
   instance = getCurrentInstance();
 });
-const sendCode = () => {
-  console.log(isSend, 'isSend')
-  isSend.value = 60
-  let time = setInterval(() => {
-    isSend.value--
-    if (isSend.value <= 0) {
-      isSend.value = 0
-      clearInterval(time)
-    }
-  }, 1000)
-}
+
 const goRouter = (path) => {
   $router.push(path)
 };

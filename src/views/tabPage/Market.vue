@@ -33,13 +33,12 @@
           <div class="exponent-box">
             <div
               class="exponent-list"
-              v-for="item in 3"
-              :key="item"
-        @click="goRouter('/ChanrtPage','热门概念')"
+              v-for="item in store.state.market.index" :key="item.code"
+              :class="'text-' + watchStringToColor(item.ratio)"
             >
-              <h1>标题指数</h1>
-              <h2>333.333</h2>
-              <h3><span>-31.79</span><span>-1.75%</span></h3>
+              <h1>{{ item.name }}</h1>
+              <h2>{{ item.last_price }}</h2>
+              <h3><span>{{ item.price }}</span><span class="ml-2">{{item.ratio}}%</span></h3>
               <img src="../../assets/img/curve.png">
             </div>
 
@@ -49,19 +48,19 @@
           </div>
           <div class="all_number-box">
             <div>
-              <p class="">1027
+              <p class="">{{ store.state.market.day.rise }}
                 <img src="../../assets/img/curveUp.png">
               </p>
               <span class="">涨家数</span>
             </div>
             <div>
-              <p class="">3930
+              <p class="text-green">{{ store.state.market.day.fall }}
                 <img src="../../assets/img/curveDown.png">
               </p>
               <span class="">跌家数</span>
             </div>
             <div>
-              <p class="">84
+              <p class="text-black">{{ store.state.market.day.flat }}
                 <img src="../../assets/img/average.png">
               </p>
               <span class="">平盘家数</span>
@@ -69,7 +68,7 @@
           </div>
 
           <div class="sort-title" 
-              @click="goRouter('/HotList','热门概念')">
+              @click="goRouter('/HotList','gainian')">
             <p>热门概念</p>
             <img src="../../assets/img/rightImg.png">
           </div>
@@ -77,20 +76,20 @@
           <div class="list-box">
             <div
               class="list-cont"
-              v-for="item in 6"
-              :key="item"
-              @click="goRouter('/DetailList','污水处理')"
+              v-for="item in store.state.market.gainian"
+              :key="item.code"
+              @click="goRouter('/DetailList',item.name,item.code)"
             >
-              <h1>污水处理</h1>
-              <h2 :class="item>3?'green':'' ">{{item<4? '+':'-'}}0.10%</h2>
-              <h3>启迪环境</h3>
-              <h4>+0.38 +9.97%</h4>
+              <h1>{{ item.name }}</h1>
+              <h2 :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</h2>
+              <h3>{{ item.first_name }}</h3>
+              <h4><span :class="'text-' + watchStringToColor(item.quota)">{{ updateStrIcon(item.quota) }}</span> <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span></h4>
             </div>
 
           </div>
 
           <div class="sort-title" 
-              @click="goRouter('/HotList','热门行业')">
+              @click="goRouter('/HotList','hangye')">
             <p>热门行业</p>
             <img src="../../assets/img/rightImg.png">
           </div>
@@ -98,14 +97,14 @@
           <div class="list-box">
             <div
               class="list-cont"
-              v-for="item in 6"
-              :key="item"
-              @click="goRouter('/DetailList','房地产行业')"
+              v-for="item in store.state.market.hangye"
+              :key="item.code"
+              @click="goRouter('/DetailList',item.name,item.code)"
             >
-              <h1>房地产行业</h1>
-              <h2 :class="item>3?'green':'' ">{{item<4? '+':'-'}}0.10%</h2>
-              <h3>启迪环境</h3>
-              <h4>+0.38 +9.97%</h4>
+              <h1>{{ item.name }}</h1>
+              <h2 :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</h2>
+              <h3>{{ item.first_name }}</h3>
+              <h4><span :class="'text-' + watchStringToColor(item.quota)">{{ updateStrIcon(item.quota) }}</span> <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span></h4>
             </div>
 
           </div>
@@ -137,7 +136,7 @@
                 class="tr-list"
                 v-for="item in 10"
               :key="item"
-              @click="goRouter('/ChanrtPage','房地产行业')"
+              @click="goRouter('/ChanrtPage',item.name,item.code)"
 
 
               >
@@ -171,16 +170,41 @@
 
 <script setup>
 
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
 import { useRouter, useRoute } from "vue-router"
+import { store } from "@/store";
 const $router = useRouter()
 const $route = useRoute()
 const model = ref(0)
 const isUp = ref(true)
-const goRouter = (path,item) => {
+
+onMounted(() => {
+  store.dispatch('market/get')
+})
+
+const goRouter = (path,item,code = '') => {
   $router.push({path,query:{
-    title:item
+    title:item,
+    code:code
   }})
+}
+
+const watchStringToColor = (price) => {
+    if (price < 0) {
+        return 'green';
+    } else if (price === 0 || price === '') {
+        return 'black';
+    } else if (price > 0) {
+        return 'red';
+    }
+}
+
+const updateStrIcon = (price) => {
+  if (price > 0) {
+        return '+' + price;
+    }else{
+      return price
+    }
 }
 
 watch(model, (newVal, oldVal) => {

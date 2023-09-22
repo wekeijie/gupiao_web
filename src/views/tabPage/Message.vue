@@ -1,7 +1,7 @@
 <template>
   <div class="message-box">
     <div class="tab-box">
-      <v-tabs v-model="model">
+      <v-tabs v-model="model" @update:modelValue="updateItems">
         <v-tab @click="model=0">新闻</v-tab>
         <v-tab @click="model=1">快讯</v-tab>
       </v-tabs>
@@ -22,11 +22,12 @@
         >
           <div
             class="new-list"
-            v-for="item in 30"
+            v-for="item in store.state.news.list"
+            :key="item.id"
             @click="goRoute('/RichText',item)"
           >
-            <p>收盘：美股周五收盘涨跌不一 三大股指本周均录得跌幅本周均录得跌幅</p>
-            <span>2023-08-19</span>
+            <p>{{ item.title }}</p>
+            <span>{{ item.created_at }}</span>
           </div>
         </div>
         <!-- 快讯 -->
@@ -36,19 +37,20 @@
         >
 
           <div class="timeline-box">
-            <div class="years-box"> 2022-02-02</div>
+            <div class="years-box"> {{ store.state.news.flash_day }}</div>
             <div
               class="time-box "
-              v-for="item in list"
+              v-for="item in store.state.news.flash_item"
+              :key="item.time"
             >
               <div class="markers-box">
-                <p></p> <span>{{item.tiem}}</span>
+                <p></p> <span>{{item.time}}</span>
               </div>
               <div
                 class="fast-cont"
                 @click="item.show=true"
               >
-                <p :class="item.show? '':'fast-cont-show'">【英特尔成为杭州亚运会官方图形处理器供应商】英特尔中国官微消息，2023年8月15日，杭州第19届亚运会官方图形处理器供应商发布仪式在杭州举行，英特尔正式成为杭州亚运会官方图形处理器供应商。</p>
+                <p :class="item.content? '':'fast-cont-show'">{{ item.content }}</p>
               </div>
             </div>
           </div>
@@ -61,11 +63,39 @@
 
 <script setup>
 
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick, watchEffect } from "vue"
 import { useRouter, useRoute } from "vue-router"
+import {store} from "@/store"
 const $router = useRouter()
 const $route = useRoute()
 const model = ref(0)
+let page = ref(1)
+
+onMounted(()=>{
+  getList() 
+})
+
+const updateItems = () =>{
+  if(model.value === 0){
+    if(store.state.news.list.length <= 0){
+      getList()
+    }
+  }else{
+    if(store.state.news.flash_item.length <= 0){
+      getFlash()
+    }
+  } 
+}
+
+
+const getFlash = () => {
+  store.dispatch('news/flash')
+}
+
+const getList = () =>{
+  store.dispatch('news/list',page.value)
+}
+
 const list = ref([
   {
     tiem: '11:00',
@@ -96,15 +126,12 @@ const list = ref([
 const goRoute = (path, item) => {
   $router.push({
     path, query: {
-      title: '新闻',
-      id: item
+      title: item.title,
+      id: item.id
     }
   })
 }
-watch(model, (newVal, oldVal) => {
-  console.log(newVal, oldVal, 'newVal,oldVal')
-}
-)
+
 </script>
 <style scoped lang="scss">
 .tab-height {

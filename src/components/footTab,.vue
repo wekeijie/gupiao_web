@@ -58,12 +58,9 @@ const cutTab = (path, name) => {
   activeTab.value = name
 }
 onMounted(() => {
-  console.log($route.name, ' $router')
   activeTab.value = $route.name
 })
 watch($route, (newVal) => {
-  // $route.name
-  console.log($route.name, ' $router')
   activeTab.value = $route.name
 })
 

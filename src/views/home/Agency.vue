@@ -3,7 +3,12 @@
     <page-header>
       <template v-slot:headerCenter>代理中心</template>
     </page-header>
-    <img class="top-img" alt="" @click="goRouter('/Invite')" src="../../assets/img/agency/top.jpg" />
+    <img
+      class="top-img"
+      alt=""
+      @click="goRouter('/Invite')"
+      src="../../assets/img/agency/top.jpg"
+    />
     <div class="flexAroud total-number-box">
       <div @click="goRouter('/LineLIst', 1)">
         <p>0</p>
@@ -23,12 +28,8 @@
       <v-table class="grade-list-one">
         <thead>
           <tr>
-            <th class="text-left">
-              邀请人员等级
-            </th>
-            <th class="text-left">
-              返佣比列
-            </th>
+            <th class="text-left">邀请人员等级</th>
+            <th class="text-left">返佣比列</th>
           </tr>
         </thead>
         <tbody>
@@ -41,15 +42,9 @@
       <v-table class="grade-list-two">
         <thead>
           <tr>
-            <th>
-              邀请人员等级
-            </th>
-            <th>
-              有效邀请
-            </th>
-            <th>
-              额外福利
-            </th>
+            <th>邀请人员等级</th>
+            <th>有效邀请</th>
+            <th>额外福利</th>
           </tr>
         </thead>
         <tbody>
@@ -60,13 +55,11 @@
           </tr>
         </tbody>
       </v-table>
-
     </div>
 
     <div class="lab-title-box flexStart">
       <img class="top-img" alt="" src="../../assets/img/agency/left.png" />
       <span>活动规则</span>
-
     </div>
 
     <div class="activity-rule">
@@ -74,80 +67,89 @@
       <p>2.推荐人级别越高，则享有的返佣越高。</p>
       <p>3.被推荐人充值并且申请合约买票后即为有效邀请。</p>
       <p>4.达到有效邀请人数后，可立即享有额外的利息券福利，仅奖励一次。</p>
-
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick
+} from 'vue'
 
 import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from "vue-router"
+import { useRouter, useRoute } from 'vue-router'
 const $router = useRouter()
 const $route = useRoute()
 const desserts = ref([
   {
     name: '至尊VIP',
-    calories: '80 %',
+    calories: '80 %'
   },
   {
     name: '王者VIP',
-    calories: '70 %',
+    calories: '70 %'
   },
   {
     name: '钻石VIP',
-    calories: '60 %',
+    calories: '60 %'
   },
   {
     name: '白金VIP',
-    calories: '50 %',
+    calories: '50 %'
   },
   {
     name: '白银VIP',
-    calories: '40 %',
+    calories: '40 %'
   },
   {
     name: '普通会员',
-    calories: '20 %',
-  },
+    calories: '20 %'
+  }
 ])
 const dessertsNormal = ref([
   {
     name: '普通会员',
     number: '5人以上',
-    calories: '奖励利息券1288元',
+    calories: '奖励利息券1288元'
   },
   {
     name: '白银VIP',
     number: '2人及以上',
-    calories: '奖励利息券888元',
+    calories: '奖励利息券888元'
   },
   {
     name: '白金VIP',
     number: '5人及以上',
-    calories: '奖励利息券16888元',
+    calories: '奖励利息券16888元'
   },
   {
     name: '钻石VIP',
     number: '10人及以上',
-    calories: '奖励利息券2888元',
+    calories: '奖励利息券2888元'
   },
   {
     name: '王者VIP',
     number: '15人及以上',
-    calories: '奖励利息券4688元',
+    calories: '奖励利息券4688元'
   },
   {
     name: '至尊VIP',
     number: '20人及以上',
-    calories: '奖励利息券6888元',
-  },
+    calories: '奖励利息券6888元'
+  }
 ])
 const goRouter = (path) => {
   $router.push(path)
 }
-
 </script>
 <style lang="scss" scoped>
 .activity-rule {
@@ -182,7 +184,7 @@ const goRouter = (path) => {
   th {
     padding: 0;
     text-align: center !important;
-    background-image: url("../../assets/img/agency/labBg.png");
+    background-image: url('../../assets/img/agency/labBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     -moz-background-size: 100% 100%;
@@ -199,13 +201,15 @@ const goRouter = (path) => {
 }
 
 .grade-list-one {
-  .v-table {}
+  .v-table {
+  }
 
   th {
     width: 50%;
   }
 
-  tr {}
+  tr {
+  }
 
   td {
     height: 46px !important;
@@ -215,7 +219,8 @@ const goRouter = (path) => {
 .grade-list-two {
   margin: 20px 0;
 
-  .v-table {}
+  .v-table {
+  }
 
   th {
     width: 33.3%;
@@ -233,7 +238,7 @@ const goRouter = (path) => {
 .grade-box {
   width: 100%;
   position: relative;
-  background-image: url("../../assets/img/agency/bg.png");
+  background-image: url('../../assets/img/agency/bg.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;

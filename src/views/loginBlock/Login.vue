@@ -37,7 +37,7 @@
           >
         </div>
       </v-text-field>
-      <div class="flexEnd forget-box">
+      <div class="flexEnd forget-box d-none">
         <span @click="goRouter('/ForgertPhone')">忘记密码?</span>
       </div>
     </v-form>
@@ -71,21 +71,17 @@
 import { onMounted, ref, getCurrentInstance } from "vue";
 import { passwordRules, usernameRules } from "@/utils/vaildRule.js";
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const passwordType = ref('password')
 const username = ref("");
 const password = ref("");
 const handleLogin = async () => {
   const { valid } = await instance.ctx.$refs.form.validate();
-  console.log(valid, 'valid')
   if (valid) {
-    if (username.value == "" || password.value == "") {
-    } else {
-      try {
-      } catch (e) {
-        alert(e);
-      }
-    }
+    store.dispatch('user/login',{'user_name':username.value,'password':password.value}).then(()=>{
+      $router.push('/My')
+    })
   }
 };
 

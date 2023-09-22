@@ -39,6 +39,6 @@ export const passwordRules = ref([
 
   (v) => !!v || '必须输入密码!',
 
-  (v) => (v && v.length <= 12 && v.length >= 6) || '密码的长度为6到12个字符!',
+  (v) => (v && v.length <= 6 && v.length >= 4) || '密码的长度为4个字符!',
 
 ])

@@ -1,9 +1,10 @@
 <template>
   <router-view />
+  <snackbar />
 </template>
 
 <script setup>
-  //
+  import snackbar from '@/components/snackbar'
 </script>
 <style>
 * {

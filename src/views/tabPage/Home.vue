@@ -7,9 +7,8 @@
       </div>
     </div>
     <v-carousel cycle :show-arrows="false" hide-delimiters id="swiperTop">
-      <v-carousel-item v-for="(slide, i) in 5" :key="i">
-        <!-- <div class="display-3">{{ slide }} Slide</div> -->
-        <v-img src="@/assets/img/carouselImg.jpg"></v-img>
+      <v-carousel-item v-for="item in store.state.bannerAndRank.banner" :key="item.id">
+        <v-img :src="item.image"></v-img>
 
       </v-carousel-item>
     </v-carousel>
@@ -68,17 +67,17 @@
             <th style="text-align: right;">盈利[万]</th>
             <th style="text-align: right;">会员等级</th>
           </tr>
-          <tr class="tr-list" v-for="item in 10">
+          <tr class="tr-list" v-for="item in store.state.bannerAndRank.rank" :key="item.id">
             <td class="tr-one">
-              <p>185****7809</p>
-              <span>按周配资6倍</span>
+              <p>{{ item.username }}</p>
+              <span>{{ item.contract }}</span>
             </td>
             <td class="tr-two" style="text-align: right;">
-              <div class="tr-two-number">48.87</div>
-              <p>盈利率<span>6.98%</span></p>
+              <div class="tr-two-number">{{ item.amount }}</div>
+              <p>盈利率<span>{{item.rank}}%</span></p>
             </td>
             <td class="tr-three" style="text-align: right;">
-              <span>王者vip</span>
+              <span>{{ item.level }}</span>
             </td>
           </tr>
         </tbody>
@@ -93,18 +92,17 @@ import { useRouter, useRoute } from "vue-router"
 const $router = useRouter()
 const $route = useRoute()
 import PropBox from '../../components/PropBox.vue'
-import { onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { onMounted, ref, onBeforeUnmount } from "vue";
+import { store } from "@/store";
 const isProp = ref(false)
 const isBg = ref(false)
 // const abnb = ref(require('@/assets/img/tab1.png'))
 const goRouter = (path) => {
   $router.push(path)
 }
-const getImageUrl = (name) => {
-  return new URL(`../../lib/Carousel/assets/${name}`, import.meta.url).href
-}
 onMounted(() => {
   window.addEventListener('scroll', getSwiperTop)
+  store.dispatch('bannerAndRank/get')
 })
 const getSwiperTop = () => {
   if (document.getElementById('swiperTop')) isBg.value = document.getElementById('swiperTop').getBoundingClientRect().top > -100 ? false : true
@@ -114,8 +112,6 @@ const getSwiperTop = () => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', getSwiperTop)
 })
-watch(
-)
 
 
 

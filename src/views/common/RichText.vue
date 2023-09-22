@@ -6,11 +6,11 @@
     <div class="rich-cont-box">
       <div v-if="richType==1">
 
-        <h2 class="rich-title">印花税收入降超3成!财政部最新发声 将有这些新举措</h2>
-        <p class="rich-time">2023-08-22</p>
+        <h2 class="rich-title">{{ topTitle }}</h2>
+        <p class="rich-time">{{ store.state.news.context.created_at }}</p>
       </div>
       <div
-        v-html="htmlCont"
+        v-html="store.state.news.context.content"
         style="padding: 20px 11px;"
       ></div>
     </div>
@@ -22,19 +22,18 @@ import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBef
 
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
-const topTitle = ref('新闻')
+const topTitle = ref('')
 const richType = ref(1);//1为有标题富文本 2为有无标题
-const htmlCont = ref(
-  '<div>这是后台编辑的富文本</div><p>这是第一段</p>'
-)
-onMounted(
-  () => {
+
+const id = ref()
+onMounted(()=>{
     if ($route.query.title) topTitle.value = $route.query.title
-    if ($route.query.type) richType.value = $route.query.type
-  }
-)
+    id.value = $route.query.id
+    store.dispatch('news/show',id.value)
+})
 </script>
 <style lang="scss" scoped>
 .rich-cont-box {

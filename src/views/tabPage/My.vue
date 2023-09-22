@@ -14,13 +14,16 @@
       <div class="apply-box">
         <div class="head-left" @click="goRouter('/SetInfor')">
           <div class="avatat-box">
-            <img src="../../assets/img/myAvaatar.png" />
-            <img src="../../assets/img/muMember.png" />
+            <img v-if="store.state.user.info.avatar" src="store.state.user.info.avatar" />
+            <img v-else src="../../assets/img/myAvaatar.png" />
+            <v-img src="../../assets/img/muMember.png" class="mt-n6 text-caption ma-0 pa-0 w-full">
+              <span class="ml-5 mt-2 text-blue-grey-darken-2">{{ store.state.user.info.level }}</span>
+            </v-img>
           </div>
 
           <div class="user-infor">
-            <h2>554476</h2>
-            <h3 class="flexBetween">推荐码 <span>RI8kPt</span>
+            <h2>{{ store.state.user.info.user_name }}</h2>
+            <h3 class="flexBetween">推荐码 <span>{{ store.state.user.info.code }}</span>
               <img src="../../assets/img/myCopy.png" />
             </h3>
             <div class="user-info-ico">
@@ -66,15 +69,15 @@
         <h1>账户预览</h1>
         <div class="flexBetween preview-cont">
           <div>
-            <p>670px</p>
+            <p>{{ store.state.user.info.balance }}</p>
             <span>余额</span>
           </div>
           <div @click="goRouter('/CouponList')">
-            <p>670px</p>
+            <p>{{ store.state.user.info.interest_amount }}</p>
             <span>利息劵</span>
           </div>
           <div>
-            <p>670px</p>
+            <p>{{ store.state.user.info.collateral_total }}</p>
             <span>保证金</span>
           </div>
 
@@ -150,11 +153,14 @@
 
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
 const model = ref(0)
 const isUp = ref(true)
-
+onMounted(() => {
+  store.dispatch('user/userInfo')
+})
 const goRouter = (path) => {
   $router.push(path)
 }

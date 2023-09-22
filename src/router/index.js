@@ -18,6 +18,9 @@ const routes = [{
       path: '/My',
       name: 'my',
       component: () => import('@/views/tabPage/My.vue'),
+      meta:{
+        requiresAuth:true
+      },
     }, {
       path: '/Message',
       name: 'message',

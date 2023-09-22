@@ -2,24 +2,25 @@
   "name": "vueMboile",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --mode development",
+    "build": "vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
     "amfe-flexible": "^2.2.1",
+    "axios": "^1.5.0",
     "hqchart": "^1.1.12314",
     "jquery": "^3.7.0",
     "moment": "^2.29.4",
-    "pinia": "^2.0.23",
     "roboto-fontface": "*",
     "vee-validate": "^4.11.1",
     "vue": "^3.2.0",
     "vue-marquee-text-component": "^2.0.1",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
+    "vuex": "^4.0.2",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

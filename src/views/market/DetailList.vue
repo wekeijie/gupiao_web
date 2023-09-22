@@ -16,16 +16,16 @@
         </tr>
 
         <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-        <tr class="tr-list" v-for="item in 10" :key="item" @click="goRouter('/ChanrtPage', '房地产行业')">
+        <tr class="tr-list" v-for="item in store.state.market.list" :key="item.code" @click="goRouter('/ChanrtPage', '房地产行业')">
           <td class="tr-one">
-            <p>维尔利</p>
-            <span>sz300123</span>
+            <p>{{ item.name }}</p>
+            <span>{{ item.code }}</span>
           </td>
           <td class="tr-two" style="text-align: right;">
-            <div class="tr-two-number">48.87</div>
+            <div class="tr-two-number">{{ item.price }}</div>
           </td>
           <td class="tr-three" style="text-align: right;">
-            <span>+3.77%</span>
+            <span :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</span>
           </td>
         </tr>
       </tbody>
@@ -35,17 +35,62 @@
 </template>
   
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick,onUnmounted } from "vue"
 
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
 const title = ref()
+const code = ref()
+const page = ref(1)
 onMounted(() => {
   title.value = $route.query.title
-
+  code.value = $route.query.code
+  getList()
+  window.addEventListener('scroll', handleScroll);
 })
+
+onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll);
+      store.dispatch('market/clearList')
+});
+
+const getList = () =>{
+  store.dispatch('market/getListDetail',{'code':code.value,'page':page.value})
+}
+const updatePage = () => {
+      // Your update logic here
+      page.value = page.value + 1;
+      getList()
+};
+const handleScroll = () => {
+  let scrollHeight = document.documentElement.scrollHeight;
+  let scrollTop = document.documentElement.scrollTop;
+  let clientHeight = document.documentElement.clientHeight;
+
+  if (scrollHeight - scrollTop <= clientHeight) {
+    updatePage();
+  }
+};  
+const watchStringToColor = (price) => {
+    if (price < 0) {
+        return 'green';
+    } else if (price === 0 || price === '') {
+        return 'black';
+    } else if (price > 0) {
+        return 'red';
+    }
+}
+
+const updateStrIcon = (price) => {
+  if (price > 0) {
+        return '+' + price;
+    }else{
+        return price;
+    }
+}
 
 const goRouter = (path, item) => {
   $router.push({

@@ -59,13 +59,14 @@ import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBef
 
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import request from '@/utils/request'
 const $router = useRouter()
 const $route = useRoute()
 function DefaultData() { }
-const select = ref({ state: 'Florida', abbr: 'FL' });
+const select = ref({ state: 'Florida', abbr: 'GA' });
 const collect = ref(true);
+let symbol = ref(300466)
 const more = ref([
-  { state: '1分', abbr: 'FL' },
   { state: '5分', abbr: 'GA' },
   { state: '15分', abbr: 'NE' },
   { state: '30分', abbr: 'CA' },
@@ -112,7 +113,7 @@ DefaultData.GetKLineOption = function () {
   return data;
 }
 const data = reactive({
-  Symbol: '600000.sh',
+  Symbol: '300466',
   KLine:
   {
     JSChart: null,
@@ -122,6 +123,7 @@ const data = reactive({
 })
 
 onMounted(() => {
+  // HQChart.Chart.JSChart.SetDomain('http://gupiao.test:8080')
   OnSize();
   CreateKLineChart()
 })
@@ -140,9 +142,91 @@ const OnSize = () => {
 const CreateKLineChart = () => {
   if (data.KLine.JSChart) return;
   data.KLine.Option.Symbol = data.Symbol;
+  data.KLine.Option.NetworkFilter = (data,callback) => {NetworkFilter(data,callback)}
   let chart = HQChart.Chart.JSChart.Init(kline);
   chart.SetOption(data.KLine.Option);
   data.KLine.JSChart = chart;
+}
+
+const NetworkFilter = (data, callback) =>{
+    console.log('[BitKLine::NetworkFilter] data', data);
+    switch(data.Name) 
+    {
+        case 'KLineChartContainer::ReqeustHistoryMinuteData':   //分钟全量数据下载
+            ReqeustHistoryMinuteData(data,callback,{ PageSize:50 });
+            break;
+        case 'KLineChartContainer::RequestHistoryData':         //日线全量数据下载
+            RequestHistoryData(data,callback);
+            break;
+        // case 'KLineChartContainer::RequestMinuteRealtimeData':  //分钟实时数据更新
+        //     this.RequestMinuteRealtimeData(data,callback);
+        //     break;
+        // case 'KLineChartContainer::RequestRealtimeData':        //日线实时数据更新
+        //     this.RequestRealtimeData(data,callback);
+        //     break;
+    }
+}
+
+const ReqeustHistoryMinuteData = (data,callback,option) => {
+  request.post('market/stock',{'symbpl':symbol.value}).then(d => {
+    klineData = jsonToHQChartMinuteData(d)
+    let hqChartData = {code:0,data:klineData,name:d.name,symbol:d.code}
+    console.log('----------hqChartData-----------------',hqChartData)
+    callback(hqChartData)
+  })
+}
+
+const jsonToHQChartMinuteData = (data) => {
+  let newData = []
+  let yClose = null
+  data.items.forEach(function(item){
+    let arr = item.split(',')
+    let [date,time] = arr[0].split(' ')
+    let formatDate = date.replace(/-/g,'')
+    let formatTime = time.replace(/:/g, '')
+    newData.push([
+      formatTime,
+      parseFloat(arr[1]),
+      parseFloat(yClose),
+      parseFloat(arr[3]),
+      parseFloat(arr[4]),
+      parseFloat(arr[5]),
+      parseFloat(arr[6]),
+      parseFloat(arr[7]),
+      formatDate
+    ])
+    yClose = arr[4]
+  })
+  return newData
+}
+
+const RequestHistoryData = (data,callback) => {
+  request.post('market/dayKLine',{'symbol':symbol.value}).then(d => {
+    let config = {}
+    config.name = d.name;
+    config.symbol = d.code;
+    resetDayFotmat(d,callback,config) 
+  })
+}
+
+const resetDayFotmat = (data,callback,config) => {
+  let newData = []
+  let yclose = null
+  data.items.forEach(function(item){
+    let arr = item.split(',')
+    newData.push([arr[0].split("-").join(""),
+    yclose,
+    parseFloat(arr[1]),
+    parseFloat(arr[3]),
+    parseFloat(arr[4]),
+    parseFloat(arr[2]),
+    parseFloat(arr[7]),
+    parseFloat(arr[8])])
+    yclose = parseFloat(arr[2])
+  })
+  config.code = 0
+  config.data = newData
+  callback(config)
 }
 
 const cutTime = (number) => {
