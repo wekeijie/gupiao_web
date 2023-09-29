@@ -1,18 +1,15 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>{{topTitle}}</template>
+      <template v-slot:headerCenter>{{ topTitle }}</template>
     </page-header>
     <div class="rich-cont-box">
-      <div v-if="richType==1">
+      <div v-if="richType == 1">
 
         <h2 class="rich-title">印花税收入降超3成!财政部最新发声 将有这些新举措</h2>
         <p class="rich-time">2023-08-22</p>
       </div>
-      <div
-        v-html="htmlCont"
-        style="padding: 20px 11px;"
-      ></div>
+      <div v-html="htmlCont" style="padding: 20px 11px;"></div>
     </div>
   </div>
 </template>
@@ -27,17 +24,18 @@ const $route = useRoute()
 const topTitle = ref('新闻')
 const richType = ref(1);//1为有标题富文本 2为有无标题
 const htmlCont = ref(
-  '<div>这是后台编辑的富文本</div><p>这是第一段</p>'
 )
 onMounted(
   () => {
     if ($route.query.title) topTitle.value = $route.query.title
     if ($route.query.type) richType.value = $route.query.type
+    if ($route.query.rich) htmlCont.value = $route.query.rich
   }
 )
 </script>
 <style lang="scss" scoped>
 .rich-cont-box {
+
   // padding: 0px 0;
   .rich-title {
     flex-wrap: wrap;
@@ -48,6 +46,7 @@ onMounted(
     letter-spacing: 1px;
     border-top: 5px solid rgb(245, 245, 245);
   }
+
   .rich-time {
     padding: 0 11px 11px;
     display: flex;
