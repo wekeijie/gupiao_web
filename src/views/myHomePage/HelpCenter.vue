@@ -23,7 +23,7 @@ const list = ref(
   [
     {
       title: '新手入门',
-      rich_text: '<p data-v-623ecdf6=""><img data-v-623ecdf6="" src="https://stockpz-hk.oss-accelerate.aliyuncs.com/zhongjin/uploads/20220919/e54cd11f63b7af309d2398305a0d5fab.jpg" width="100%"></p>',
+      srcImg: '1',
       id: 1,
     },
     {
@@ -48,12 +48,13 @@ const list = ref(
     },
     {
       title: '推广赚钱',
-      rich_text: '<div style="position: relative;"><p data-v-623ecdf6=""><img data-v-623ecdf6="" src="https://stockpz-hk.oss-accelerate.aliyuncs.com/zhongjin/uploads/20220804/22cf0f1e887afa84af3563f5b00b7fc2.jpg" width="100%"></p><uni-resize-sensor><div><div></div></div><div><div></div></div></uni-resize-sensor></div>',
+
+      srcImg: '2',
       id: 3,
     },
     {
       title: '跟单规则',
-      rich_text: '<div style="position: relative;"><p data-v-623ecdf6=""><img data-v-623ecdf6="" src="https://stockpz-hk.oss-accelerate.aliyuncs.com/zhongjin/uploads/20221120/e8de9af9920b2ae0f9431045206a0662.png?time=854512" width="100%"></p><uni-resize-sensor><div><div></div></div><div><div></div></div></uni-resize-sensor></div>',
+      srcImg: '3',
       id: 2,
     },
     {
@@ -64,13 +65,25 @@ const list = ref(
   ]
 )
 const goRouter = (item) => {
-  $router.push({
-    path: '/RichText', query: {
-      title: item.title,
-      type: 2, id: item.id,
-      rich: item.rich_text
-    }
-  })
+  if (item.rich_text) {
+
+    $router.push({
+      path: '/RichText', query: {
+        title: item.title,
+        type: 2, id: item.id,
+        rich: item.rich_text
+      }
+    })
+  } else {
+
+    $router.push({
+      path: '/longImg', query: {
+        title: item.title,
+        type: 2, id: item.id,
+        srcImg: item.srcImg
+      }
+    })
+  }
 }
 
 

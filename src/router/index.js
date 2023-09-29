@@ -122,6 +122,15 @@ const routes = [{
     component: () => import('@/views/common/RichText.vue'),
   },
   {
+    path: '/longImg',
+    name: 'longImg',
+    component: () => import('@/views/common/longImg.vue'),
+  },
+
+
+
+  
+  {
     path: '/ApplyContract',
     name: 'applyContract',
     component: () => import('@/views/common/ApplyContract.vue'),
