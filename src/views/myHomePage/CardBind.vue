@@ -3,10 +3,9 @@
         <page-header>
             <template v-slot:headerCenter>银行卡绑定</template>
         </page-header>
-
         <div class="bind-list">
 
-            <v-text-field variant="none" v-model="userInfor.name" required clearable label="姓名" hide-details="auto"
+            <v-text-field variant="none" v-model="userInfor.name" required clearable label="请输入开户名" hide-details="auto"
                 single-line>
 
                 <template v-slot:prepend>
@@ -15,18 +14,18 @@
             </v-text-field>
 
         </div>
-        <div class="line-box flexBetween" @click="isApply = true">
-            <div class="flexStart">
-                <h2>账户密码</h2>
-                <img class="card-logo" src="../../assets/img/myBack.png" alt="">
-                <span>请选择所属银行</span>
-            </div>
-            <img class="line-right-img" src="../../assets/img/rightImg.png" alt="">
+        <div class="line-box flexBetween">
+            <v-text-field variant="none" v-model="userInfor.bank_name" required clearable label="请输入银行名称" hide-details="auto"
+                single-line>
+
+                <template v-slot:prepend>
+                    <p>银行名称</p>
+                </template>
+            </v-text-field>
         </div>
 
         <div class="bind-list">
-            <v-text-field variant="none" v-model="idCard" required clearable label="请输入银行卡号" hide-details="auto" single-line
-                :rules="emailRoules">
+            <v-text-field variant="none" v-model="userInfor.bank_code" required clearable label="请输入银行卡号" hide-details="auto" single-line>
 
                 <template v-slot:prepend>
                     <p>银行卡号</p>
@@ -34,41 +33,18 @@
             </v-text-field>
         </div>
 
-        <v-checkbox hide-details="auto" height="auto" color="red" label="设置为默认"></v-checkbox>
+        <v-checkbox hide-details="auto" v-model="userInfor.is_default" value="1" height="auto" color="red" label="设置为默认"></v-checkbox>
         <div class="bind-list">
 
 
             <div class="login-box">
-                <v-btn color="#dd5054" class="mt-4" size="x-large" block>
+                <v-btn color="#dd5054" class="mt-4" size="x-large" block @click="create">
                     添加
                 </v-btn>
             </div>
 
         </div>
 
-
-
-        <v-bottom-sheet v-model="isApply">
-            <v-list>
-                <div class="flexBetween sheet-top">
-                    <div class="sheet-sure">请选择您的充值方式</div>
-                    <img src="../../assets/img/close.png" alt="" @click="isApply = false">
-                </div>
-                <div class="list-cont-box">
-                    <v-list-item class="flexCenter" v-for="tile, index in 10" :key="tile.title"
-                        @click="typeIndex = index; isApply = false">
-                        <div class="flexBetween type-list">
-
-                            <img class="list-pay-log" src="../../assets/img/payLog.png" alt="">
-                            <v-list-item-title>
-                                <h3>EBpay-最低充值100元</h3>
-                            </v-list-item-title>
-                            <img class="list-select" src="../../assets/img/select.png" alt="" v-if="index == typeIndex">
-                        </div>
-                    </v-list-item>
-                </div>
-            </v-list>
-        </v-bottom-sheet>
     </div>
 </template>
   
@@ -77,6 +53,7 @@ import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBef
 
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 
 import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
 const $router = useRouter()
@@ -84,9 +61,27 @@ const $route = useRoute()
 const ex11 = ref(true)
 const isApply = ref(true)
 const userInfor = ref({
-    name: 'you name',
-    idCard: '',
+    name: '',
+    bank_name: '',
+    bank_code:'',
+    is_default:0
 })
+
+const create = () => {
+   if(userInfor.value.name == '' && userInfor.value.bank_name == '' && userInfor.value.bank_code == ''){
+      store.dispatch('snackbar/warning', {
+        active: true,
+        body: '内容不能为空',
+      })
+      return
+   }
+   const is_default = userInfor.value.is_default == false ? 0 : 1
+   store.dispatch('bank/create',{'user_name':userInfor.value.name,'bank_name':userInfor.value.bank_name,'code':userInfor.value.bank_code,'is_default':is_default}).then(d=>{
+        $router.go(-1)
+   })
+
+}
+
 const goRouter = (path) => {
     $router.push(path)
 }

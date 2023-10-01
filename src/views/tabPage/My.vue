@@ -4,26 +4,42 @@
       <div class="flexBetween my-top-box">
         <p>我的</p>
         <div class="flexCenter">
-          <img src="../../assets/img/myCustomer.png" @click="goRouter('/IframeDemo')" />
+          <img
+            src="../../assets/img/myCustomer.png"
+            @click="goRouter('/IframeDemo')"
+          />
           <div class="message-list">
-            <img src="../../assets/img/myMessage.png" @click="goRouter('/MessageLIst')" />
+            <img
+              src="../../assets/img/myMessage.png"
+              @click="goRouter('/MessageLIst')"
+            />
             <span v-if="3 > 0">3</span>
           </div>
         </div>
       </div>
       <div class="apply-box">
-        <div class="head-left" @click="goRouter('/SetInfor')">
+        <!-- <div class="head-left" @click="goRouter('/SetInfor')"> -->
+        <div class="head-left">
           <div class="avatat-box">
-            <img v-if="store.state.user.info.avatar" src="store.state.user.info.avatar" />
-            <img v-else src="../../assets/img/myAvaatar.png" />
-            <v-img src="../../assets/img/muMember.png" class="mt-n6 text-caption ma-0 pa-0 w-full">
-              <span class="ml-5 mt-2 text-blue-grey-darken-2">{{ store.state.user.info.level }}</span>
+            <!-- <img
+              v-if="store.state.user.info.avatar"
+              src="store.state.user.info.avatar"
+            /> -->
+            <img src="../../assets/img/myAvaatar.png" />
+            <v-img
+              src="../../assets/img/muMember.png"
+              class="mt-n6 text-caption ma-0 pa-0 w-full"
+            >
+              <span class="ml-5 mt-2 text-blue-grey-darken-2">{{
+                store.state.user.info.level
+              }}</span>
             </v-img>
           </div>
 
           <div class="user-infor">
             <h2>{{ store.state.user.info.user_name }}</h2>
-            <h3 class="flexBetween">推荐码 <span>{{ store.state.user.info.code }}</span>
+            <h3 class="flexBetween" @click="copy">
+              推荐码 <span>{{ store.state.user.info.code }}</span>
               <img src="../../assets/img/myCopy.png" />
             </h3>
             <div class="user-info-ico">
@@ -33,36 +49,34 @@
               <img src="../../assets/img/myEmail.png" />
             </div>
           </div>
-
         </div>
         <div class="sign-in-box">
-          <img src="../../assets/img/mySign.png" @click="goRouter('/InCoupon')" />
+          <img
+            src="../../assets/img/mySign.png"
+            @click="goRouter('/InCoupon')"
+          />
         </div>
-
       </div>
-
     </div>
 
     <div class="pact-cont-box">
-
       <div class="tab-cont">
         <div class="tab-list" @click="goRouter('/TopUp')">
-          <img src="@/assets/img/myTopUp.png">
+          <img src="@/assets/img/myTopUp.png" />
           <p>充值</p>
         </div>
         <div class="tab-list" @click="goRouter('/Withdraw')">
-          <img src="@/assets/img/myWithdraw.png">
+          <img src="@/assets/img/myWithdraw.png" />
           <p>提现</p>
         </div>
         <div class="tab-list" @click="goRouter('/Agency')">
-          <img src="@/assets/img/myCenter.png">
+          <img src="@/assets/img/myCenter.png" />
           <p>代理中心</p>
         </div>
         <div class="tab-list" @click="goRouter('/DetailsFunds')">
-          <img src="@/assets/img/myData.png">
+          <img src="@/assets/img/myData.png" />
           <p>资金明细</p>
         </div>
-
       </div>
 
       <div class="preview-box">
@@ -80,94 +94,126 @@
             <p>{{ store.state.user.info.collateral_total }}</p>
             <span>保证金</span>
           </div>
-
         </div>
       </div>
 
       <div class="active-box">
-        <img src="@/assets/img/myQuest.png" @click="goRouter('/MissionCenter')">
-        <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')">
-
+        <img
+          src="@/assets/img/myQuest.png"
+          @click="goRouter('/MissionCenter')"
+        />
+        <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')" />
       </div>
       <div class="led-img" @click="goRouter('/Invite')">
-
-        <img src="@/assets/img/mymanage.png">
+        <img src="@/assets/img/mymanage.png" />
       </div>
 
       <div class="controls-box">
-
         <div class="flexBetween controls-list" @click="goRouter('/StarAuthor')">
           <div class="flexStart">
-            <img class="list-icp" src="@/assets/img/myStar.png">
+            <img class="list-icp" src="@/assets/img/myStar.png" />
             <span>明星投资者</span>
           </div>
-          <img class="right-img" src="@/assets/img/rightImg.png">
+          <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
-        <div class="flexBetween controls-list" @click="goRouter('/Documentary')">
+        <div
+          class="flexBetween controls-list"
+          @click="goRouter('/Documentary')"
+        >
           <div class="flexStart">
-            <img class="list-icp" src="@/assets/img/myDocumentary.png">
+            <img class="list-icp" src="@/assets/img/myDocumentary.png" />
             <span>我要跟单</span>
           </div>
-          <img class="right-img" src="@/assets/img/rightImg.png">
+          <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
-        <div class="flexBetween controls-list" @click="goRouter('/SafetyManage')">
+        <div
+          class="flexBetween controls-list"
+          @click="goRouter('/SafetyManage')"
+        >
           <div class="flexStart">
-            <img class="list-icp" src="@/assets/img/mySecure.png">
+            <img class="list-icp" src="@/assets/img/mySecure.png" />
             <span>账号与安全</span>
           </div>
-          <img class="right-img" src="@/assets/img/rightImg.png">
+          <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
         <div class="flexBetween controls-list" @click="goRouter('/HelpCenter')">
           <div class="flexStart">
-            <img class="list-icp" src="@/assets/img/myHelp.png">
+            <img class="list-icp" src="@/assets/img/myHelp.png" />
 
             <span>帮助中心</span>
           </div>
-          <img class="right-img" src="@/assets/img/rightImg.png">
+          <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
-        <div class="flexBetween controls-list" @click="goRouter('/CommonSet')">
+        <!-- <div class="flexBetween controls-list" @click="goRouter('/CommonSet')">
           <div class="flexStart">
             <img class="list-icp" src="@/assets/img/mySeting.png">
             <span>通用设置</span>
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png">
-        </div>
-        <div class="flexBetween controls-list" @click="goRouter('/VersionNumber')">
+        </div> -->
+        <div
+          class="flexBetween controls-list"
+          @click="goRouter('/VersionNumber')"
+        >
           <div class="flexStart">
-            <img class="list-icp" src="@/assets/img/myAbout.png">
+            <img class="list-icp" src="@/assets/img/myAbout.png" />
             <span>关于</span>
           </div>
-          <img class="right-img" src="@/assets/img/rightImg.png">
+          <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
-
       </div>
-
     </div>
 
     <p class="padd-bot"></p>
-
   </div>
 </template>
 
 <script setup>
-
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const $route = useRoute()
-const model = ref(0)
-const isUp = ref(true)
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+import useClipboard from "vue-clipboard3";
+const $router = useRouter();
+const $route = useRoute();
+const model = ref(0);
+const isUp = ref(true);
 onMounted(() => {
-  store.dispatch('user/userInfo')
-})
+  store.dispatch("user/userInfo");
+});
+
+const { toClipboard } = useClipboard();
+
+const copy = async () => {
+  try {
+    await toClipboard(store.state.user.info.code);
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "复制成功！",
+    });
+  } catch (e) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "操作错误！",
+    });
+  }
+};
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
 watch(model, (newVal, oldVal) => {
-  console.log(newVal, oldVal, 'newVal,oldVal')
-}
-)
+  console.log(newVal, oldVal, "newVal,oldVal");
+});
 </script>
 <style scoped lang="scss">
 .message-box {
@@ -211,7 +257,7 @@ watch(model, (newVal, oldVal) => {
     top: 3px;
     color: #fff;
     background-color: #f0ad4e;
-    transform: scale(.8);
+    transform: scale(0.8);
     -webkit-transform-origin: center center;
     transform-origin: center center;
     border-radius: 50%;

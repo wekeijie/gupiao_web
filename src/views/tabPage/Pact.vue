@@ -4,17 +4,16 @@
       <h1>合约</h1>
       <div class="apply-box">
         <div class="head-left">
-
           <img src="../../assets/img/pactAvat.png" />
           <div>
             <h2>申请合约</h2>
             <h3>及时审批，快速操盘</h3>
           </div>
         </div>
-        <div class="apply-btn" @click="goRouter('/ApplyContract')">立即申请</div>
-
+        <div class="apply-btn" @click="goRouter('/ApplyContract')">
+          立即申请
+        </div>
       </div>
-
     </div>
 
     <div class="pact-cont-box">
@@ -27,74 +26,205 @@
         </div> -->
 
         <div class="table-box flexStart">
-          <p :class="model == 0 ? 'active-tab' : ''" @click="model = 0">有效合约</p>
-          <p :class="model == 1 ? 'active-tab' : ''" @click="model = 1">历史合约</p>
+          <p :class="model == 0 ? 'active-tab' : ''" @click="cheangeModel(0)">
+            有效合约
+          </p>
+          <p :class="model == 1 ? 'active-tab' : ''" @click="cheangeModel(1)">
+            历史合约
+          </p>
         </div>
 
-
-        <v-carousel :show-arrows="false" hide-delimiters v-model="model" height="auto">
-
+        <v-carousel
+          :show-arrows="false"
+          hide-delimiters
+          v-model="model"
+          height="auto"
+        >
           <!-- height="auto" -->
-          <v-carousel-item v-for="(slide, i) in 2" :key="i">
+          <v-carousel-item v-for="(slid, i) in 2" :key="i">
             <div class="new-box" v-if="i == 0">
-
-              <div class="pact-list-box" v-for="item in 5" :key="item">
-                <div class="pact-name flexBetween" @click="isUp = !isUp">按天配资2倍[CN202308112021289732290036] <img
-                    src="../../assets/img/downPac.png" v-if="isUp"><img src="../../assets/img/upPac.png" v-else></div>
+              <div
+                class="pact-list-box"
+                v-for="item in store.state.contract.list"
+                :key="item"
+              >
+                <div class="pact-name flexBetween" @click="isUp = !isUp">
+                  {{ item.type_title + item.contract_limit }}倍[{{
+                    item.order_id
+                  }}]
+                  <img src="../../assets/img/downPac.png" v-if="isUp" />
+                  <img src="../../assets/img/upPac.png" v-else />
+                </div>
                 <div class="flexBetween balance-box">
                   <div class="">
-                    <p>1500</p>
+                    <p>{{ item.total_amount }}</p>
                     <span>操盘资金</span>
                   </div>
 
                   <div class="">
-                    <p>1500</p>
+                    <p>{{ item.balance }}</p>
                     <span>可用余额</span>
                   </div>
                   <div class="">
-                    <p>1500</p>
+                    <p>{{ item.caution_line }}</p>
                     <span>触发警戒</span>
                   </div>
                   <div class="">
-                    <p>1500</p>
+                    <p>{{ item.stop_loss }}</p>
                     <span>触发止损</span>
                   </div>
                 </div>
 
                 <div v-show="isUp">
-                  <div class="flexBetween row-box"><span>持仓时间</span><span>2023-08-11 ~2023-08-11 </span> </div>
-                  <div class="flexBetween row-box"><span>资金利率</span><span>0.08% </span> </div>
+                  <div class="flexBetween row-box">
+                    <span>持仓时间</span
+                    ><span>{{ item.start_time + "~" + item.stop_time }} </span>
+                  </div>
+                  <div class="flexBetween row-box">
+                    <span>资金利率</span><span>0.08% </span>
+                  </div>
                   <div class="flexBetween controls-box">
-                    <div @click="overlay = true; popType = 0">
-                      <img src="../../assets/img/stopPac.png">
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 0;
+                      "
+                    >
+                      <img src="../../assets/img/stopPac.png" />
                       <p>终止</p>
                     </div>
-                    <div @click="overlay = true; popType = 1">
-                      <img src="../../assets/img/expandPac.png">
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 1;
+                      "
+                    >
+                      <img src="../../assets/img/expandPac.png" />
                       <p>扩大</p>
                     </div>
-                    <div @click="overlay = true; popType = 2">
-                      <img src="../../assets/img/appendPac.png">
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 2;
+                      "
+                    >
+                      <img src="../../assets/img/appendPac.png" />
                       <p>追加</p>
                     </div>
 
                     <div @click="goRouter('/PactDetail')">
-                      <img src="../../assets/img/curvePac.png">
+                      <img src="../../assets/img/curvePac.png" />
                       <p>详情</p>
                     </div>
-                    <div @click="overlay = true; popType = 3">
-                      <img src="../../assets/img/sharePac.png">
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 3;
+                      "
+                    >
+                      <img src="../../assets/img/sharePac.png" />
                       <p>提盈</p>
                     </div>
+                  </div>
+                </div>
+              </div>
 
+              <no-data
+                class="no-data-cont"
+                v-if="store.state.contract.list.length <= 0"
+              ></no-data>
+            </div>
+            <div class="new-box" v-if="i == 1">
+              <div
+                class="pact-list-box"
+                v-for="item in store.state.contract.list"
+                :key="item"
+              >
+                <div class="pact-name flexBetween" @click="isUp = !isUp">
+                  {{ item.type_title + item.contract_limit }}倍[{{
+                    item.order_id
+                  }}]
+                  <img src="../../assets/img/downPac.png" v-if="isUp" />
+                  <img src="../../assets/img/upPac.png" v-else />
+                </div>
+                <div class="flexBetween balance-box">
+                  <div class="">
+                    <p>{{ item.total_amount }}</p>
+                    <span>操盘资金</span>
+                  </div>
+
+                  <div class="">
+                    <p>{{ item.balance }}</p>
+                    <span>可用余额</span>
+                  </div>
+                  <div class="">
+                    <p>{{ item.caution_line }}</p>
+                    <span>触发警戒</span>
+                  </div>
+                  <div class="">
+                    <p>{{ item.stop_loss }}</p>
+                    <span>触发止损</span>
                   </div>
                 </div>
 
-              </div>
-            </div>
-            <div class="new-box" v-if="i == 1">
+                <div v-show="isUp">
+                  <div class="flexBetween row-box">
+                    <span>持仓时间</span
+                    ><span>{{ item.start_time + "~" + item.stop_time }} </span>
+                  </div>
+                  <div class="flexBetween row-box">
+                    <span>资金利率</span><span>0.08% </span>
+                  </div>
+                  <div class="flexBetween controls-box">
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 0;
+                      "
+                    >
+                      <img src="../../assets/img/stopPac.png" />
+                      <p>终止</p>
+                    </div>
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 1;
+                      "
+                    >
+                      <img src="../../assets/img/expandPac.png" />
+                      <p>扩大</p>
+                    </div>
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 2;
+                      "
+                    >
+                      <img src="../../assets/img/appendPac.png" />
+                      <p>追加</p>
+                    </div>
 
-              <no-data class="no-data-cont"></no-data>
+                    <div @click="goRouter('/PactDetail')">
+                      <img src="../../assets/img/curvePac.png" />
+                      <p>详情</p>
+                    </div>
+                    <div
+                      @click="
+                        overlay = true;
+                        popType = 3;
+                      "
+                    >
+                      <img src="../../assets/img/sharePac.png" />
+                      <p>提盈</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <no-data
+                class="no-data-cont"
+                v-if="store.state.contract.list.length <= 0"
+              ></no-data>
             </div>
           </v-carousel-item>
         </v-carousel>
@@ -102,24 +232,27 @@
     </div>
     <p class="padd-bot"></p>
 
-
-
-
-
     <v-overlay v-model="overlay" class="align-center justify-center">
       <v-sheet style="" width="350px" rounded="lg ">
-
-
         <div class="">
-
           <div class="prop-title flexCenter">
-            <p>{{ popType == 1 ? '扩大配资' : popType == 2 ? '追加保证金' : popType == 3 ? '合约提盈' : '提示' }}</p>
+            <p>
+              {{
+                popType == 1
+                  ? "扩大配资"
+                  : popType == 2
+                  ? "追加保证金"
+                  : popType == 3
+                  ? "合约提盈"
+                  : "提示"
+              }}
+            </p>
           </div>
-          <div class="tips-cont" v-if="popType == 0">您确定要终止该合约吗？</div>
+          <div class="tips-cont" v-if="popType == 0">
+            您确定要终止该合约吗？
+          </div>
           <div v-if="popType != 0">
-
             <div class="pop-list">
-
               <div class="flexBetween">
                 <p>合约名称</p>
                 <p>按天配资2倍</p>
@@ -134,14 +267,23 @@
               </div>
             </div>
 
-            <v-text-field v-model="model" variant="underlined" clearable hide-details
-              :label="popType == 1 ? '扩大金额（元）' : popType == 2 ? '追加保证金金额（元）' : '提盈余额（元）'">
+            <v-text-field
+              v-model="model"
+              variant="underlined"
+              clearable
+              hide-details
+              :label="
+                popType == 1
+                  ? '扩大金额（元）'
+                  : popType == 2
+                  ? '追加保证金金额（元）'
+                  : '提盈余额（元）'
+              "
+            >
               <template v-slot:prepend>
-                <p class="" style="font-size:30px">￥</p>
+                <p class="" style="font-size: 30px">￥</p>
               </template>
             </v-text-field>
-
-
           </div>
           <div class="btn-box flexAroud">
             <v-btn color="#fb5c39" @click="overlay = fasle">取消</v-btn>
@@ -150,30 +292,52 @@
         </div>
       </v-sheet>
     </v-overlay>
-
   </div>
 </template>
 
 <script setup>
-import NoData from '../../components/noData.vue'
+import NoData from "../../components/noData.vue";
 
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
-const model = ref(0)
-const isUp = ref(true)
-const popType = ref(0)//0终止 1扩大 2追加 3 提盈
-const overlay = ref(false)
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const $route = useRoute();
+const model = ref(0);
+const isUp = ref(true);
+const popType = ref(0); //0终止 1扩大 2追加 3 提盈
+const overlay = ref(false);
 
+onMounted(() => {
+  getList();
+});
+
+const cheangeModel = (index) => {
+  model.value = index;
+  getList();
+};
+
+const getList = () => {
+  store.dispatch("contract/getList", model.value);
+};
 
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
 watch(model, (newVal, oldVal) => {
-  console.log(newVal, oldVal, 'newVal,oldVal')
-}
-)
+  console.log(newVal, oldVal, "newVal,oldVal");
+});
 </script>
 <style scoped lang="scss">
 // .v-slide-group__container {
@@ -227,7 +391,7 @@ watch(model, (newVal, oldVal) => {
   .active-tab::after {
     position: absolute;
     bottom: 0;
-    content: '';
+    content: "";
 
     width: 20px;
     height: 6px;
@@ -378,12 +542,7 @@ watch(model, (newVal, oldVal) => {
 
 // }
 
-
-
-
-
 .v-overlay {
-
   .v-sheet {
     padding: 10px;
   }
@@ -408,8 +567,6 @@ watch(model, (newVal, oldVal) => {
       // padding: 10px 0 5px;
     }
   }
-
-
 }
 
 .pop-list {
@@ -434,6 +591,5 @@ watch(model, (newVal, oldVal) => {
   ::v-deep .v-btn__content {
     color: #fff;
   }
-
 }
 </style>

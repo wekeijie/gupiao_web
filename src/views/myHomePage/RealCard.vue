@@ -5,26 +5,23 @@
         </page-header>
         <div class="login-box">
 
-            <div v-for="item, index in 3" :key="index" class="card-box">
+            <div v-for="item, index in store.state.bank.list" :key="index" class="card-box">
                 <div class="flexBetween cars-up">
                     <div class="flexStart card-infor">
 
                         <img class="list-pay-log" src="../../assets/img/payLog.png" alt="">
                         <div>
-                            <h3>中国工商很行</h3>
-                            <p>1231231333</p>
+                            <h3>{{ item.bank_name }}</h3>
+                            <p>{{ item.code }}</p>
                         </div>
                     </div>
-                    <h5>you name</h5>
+                    <h5>{{ item.name }}</h5>
                 </div>
                 <div class="flexBetween card-controls">
-                    <v-checkbox hide-details="auto" height="auto" color="red" label="默认银行卡"></v-checkbox>
-                    <div class="flexEnd card-cont-item">
+                    <v-checkbox hide-details="auto" v-model="default_value" :value="item.is_default" height="auto" color="red" label="默认银行卡" @update:modelValue="changeDefault(item.id)"></v-checkbox>
+                    <div class="flexEnd card-cont-item" @click="deleteBank(item.id)">
                         <p><v-icon hide-details="auto" icon="mdi-delete" size="x-small"></v-icon><span>解绑</span></p>
-                        <p @click="isApply = true"><v-icon hide-details="auto" height="auto" icon="mdi-eye"
-                                size="x-small"></v-icon><span>详情</span>
-                        </p>
-
+                        
                     </div>
                 </div>
 
@@ -38,31 +35,6 @@
             </v-btn>
         </div>
 
-
-
-        <v-bottom-sheet v-model="isApply">
-            <v-list>
-                <div class=" sheet-top">
-                    <img src="../../assets/img/close.png" alt="" @click="isApply = false">
-                </div>
-                <div class="list-cont-box">
-
-                    <div class="list-cont flexBetween">
-                        <p>户主姓名</p>
-                        <span>you name</span>
-                    </div>
-                    <div class="list-cont flexBetween">
-                        <p>卡开户行</p>
-                        <span>中国工商很行</span>
-                    </div>
-                    <div class="list-cont flexBetween">
-                        <p>银行卡号</p>
-                        <span>12312312312312</span>
-                    </div>
-                </div>
-            </v-list>
-        </v-bottom-sheet>
-
     </div>
 </template>
 <script  setup>
@@ -70,7 +42,7 @@ import { onMounted, ref, getCurrentInstance, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router"
 import PageHeader from '../../components/topWrap.vue'
 import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
-import { passwordRules, phoneRoules, emailRoules, codeRoules, usernameRules } from "@/utils/vaildRule.js";
+import {store} from '@/store'
 const $router = useRouter()
 const isApply = ref(true)
 const passwordType = ref('password')
@@ -78,6 +50,7 @@ const loginData = reactive({
     phone: '',
     code: '',
 })
+const default_value = ref(1)
 const goRouter = (path) => {
     $router.push(path)
 }
@@ -111,7 +84,22 @@ let instance = ref();
 
 onMounted(() => {
     instance = getCurrentInstance();
+    getList()
 });
+const getList = () => {
+    store.dispatch('bank/getList')
+}
+const deleteBank = (id) => {
+    store.dispatch('bank/delete',{'id':id}).then(() => {
+        $router.go(0);
+    })
+}
+const changeDefault = id => {
+    store.dispatch('bank/changeDefault',{'id':id}).then(() => {
+        $router.go(0);
+    })
+}
+
 const goSign = () => {
     $router.push('/SignIn')
 

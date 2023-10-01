@@ -1,4 +1,4 @@
-import { marketApi,listApi,listDetailsApi } from "@/api/marketApi"
+import { marketApi,listApi,listDetailsApi,stockInfoApi,searchApi } from "@/api/marketApi"
 export default {
   namespaced: true,
   state: () => ({
@@ -7,7 +7,9 @@ export default {
     hangye:[],
     day:{},
     list:[],
-    title:""
+    title:"",
+    stock_info:{},
+    search_list :[]
   }),
   mutations: {
     setInfo(state,info){
@@ -26,6 +28,12 @@ export default {
     },
     steListDetail(state,rsp){
         state.list = state.list.concat(rsp)
+    },
+    setStock(state,rsp){
+      state.stock_info = JSON.parse(JSON.stringify(rsp))
+    },
+    setSearch(state,rsp){
+      state.search_list = rsp
     }
   },
   actions: {
@@ -43,6 +51,14 @@ export default {
     async getListDetail(context,info){
         const rsp = await listDetailsApi(info.code,info.page)
         context.commit('steListDetail',rsp) 
+    },
+    async getStockInfo(context,symbol){
+      const rsp = await stockInfoApi(symbol)
+      context.commit('setStock',rsp)
+    },
+    async search(content,keyword){
+      const rsp = await searchApi(keyword)
+      content.commit('setSearch',rsp)
     }
     
   }

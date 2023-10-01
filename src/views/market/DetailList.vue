@@ -4,66 +4,89 @@
       <template v-slot:headerCenter>{{ title }}</template>
     </page-header>
 
-
-
     <table>
       <tbody>
         <tr class="tr-list">
-          <th style="text-align: left;">代码名称</th>
-          <th style="text-align: right;">最新价格</th>
-          <th style="text-align: right;" class="cutUp" @click="isUp = !isUp">涨跌幅 <img src="../../assets/img/dowm.png"
-              v-if="isUp"><img src="../../assets/img/up.png" v-else> </th>
+          <th style="text-align: left">代码名称</th>
+          <th style="text-align: right">最新价格</th>
+          <th style="text-align: right" class="cutUp" @click="isUp = !isUp">
+            涨跌幅 <img src="../../assets/img/dowm.png" v-if="isUp" /><img
+              src="../../assets/img/up.png"
+              v-else
+            />
+          </th>
         </tr>
 
-        <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-        <tr class="tr-list" v-for="item in store.state.market.list" :key="item.code" @click="goRouter('/ChanrtPage', '房地产行业')">
+        <div style="background-color: rgb(245, 245, 245); height: 2px"></div>
+        <tr
+          class="tr-list"
+          v-for="item in store.state.market.list"
+          :key="item.code"
+          @click="goRouter('/ChanrtPage', item.name, item.code, item.prefix)"
+        >
           <td class="tr-one">
             <p>{{ item.name }}</p>
             <span>{{ item.code }}</span>
           </td>
-          <td class="tr-two" style="text-align: right;">
+          <td class="tr-two" style="text-align: right">
             <div class="tr-two-number">{{ item.price }}</div>
           </td>
-          <td class="tr-three" style="text-align: right;">
-            <span :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</span>
+          <td class="tr-three" style="text-align: right">
+            <span :class="'text-' + watchStringToColor(item.rank)">{{
+              updateStrIcon(item.rank) + "%"
+            }}</span>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
-  
+
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick,onUnmounted } from "vue"
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+  onUnmounted,
+} from "vue";
 
-import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const $route = useRoute()
-const title = ref()
-const code = ref()
-const page = ref(1)
+import PageHeader from "../../components/topWrap.vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const $route = useRoute();
+const title = ref();
+const code = ref();
+const page = ref(1);
 onMounted(() => {
-  title.value = $route.query.title
-  code.value = $route.query.code
-  getList()
-  window.addEventListener('scroll', handleScroll);
-})
-
-onUnmounted(() => {
-      window.removeEventListener('scroll', handleScroll);
-      store.dispatch('market/clearList')
+  title.value = $route.query.title;
+  code.value = $route.query.code;
+  getList();
+  window.addEventListener("scroll", handleScroll);
 });
 
-const getList = () =>{
-  store.dispatch('market/getListDetail',{'code':code.value,'page':page.value})
-}
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+  store.dispatch("market/clearList");
+});
+
+const getList = () => {
+  store.dispatch("market/getListDetail", {
+    code: code.value,
+    page: page.value,
+  });
+};
 const updatePage = () => {
-      // Your update logic here
-      page.value = page.value + 1;
-      getList()
+  // Your update logic here
+  page.value = page.value + 1;
+  getList();
 };
 const handleScroll = () => {
   let scrollHeight = document.documentElement.scrollHeight;
@@ -73,32 +96,35 @@ const handleScroll = () => {
   if (scrollHeight - scrollTop <= clientHeight) {
     updatePage();
   }
-};  
+};
 const watchStringToColor = (price) => {
-    if (price < 0) {
-        return 'green';
-    } else if (price === 0 || price === '') {
-        return 'black';
-    } else if (price > 0) {
-        return 'red';
-    }
-}
+  if (price < 0) {
+    return "green";
+  } else if (price === 0 || price === "") {
+    return "black";
+  } else if (price > 0) {
+    return "red";
+  }
+};
 
 const updateStrIcon = (price) => {
   if (price > 0) {
-        return '+' + price;
-    }else{
-        return price;
-    }
-}
+    return "+" + price;
+  } else {
+    return price;
+  }
+};
 
-const goRouter = (path, item) => {
+const goRouter = (path, name, code, prefix) => {
   $router.push({
-    path, query: {
-      title: item
-    }
-  })
-}
+    path,
+    query: {
+      code: code,
+      title: name,
+      prefix: prefix,
+    },
+  });
+};
 </script>
 <style lang="scss" scoped>
 table {
@@ -171,4 +197,3 @@ table {
   }
 }
 </style>
-  

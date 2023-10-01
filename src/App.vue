@@ -1,15 +1,24 @@
 <template>
   <router-view />
   <snackbar />
+  <LiveChatWidget license="16250373" visibility="minimized" />
 </template>
 
 <script setup>
-  import snackbar from '@/components/snackbar'
+import { onMounted } from "vue";
+import { LiveChatWidget } from "@livechat/widget-vue";
+import snackbar from "@/components/snackbar";
+onMounted(() => {
+  LiveChatWidget.onGreetingHidden;
+});
 </script>
 <style>
 * {
   margin: 0;
   padding: 0;
+}
+#chat-widget-container {
+  z-index: 99 !important;
 }
 
 .flexBetween {
@@ -42,13 +51,11 @@
   align-items: center;
 }
 
-
 .roseColor {
   color: red;
 }
 
 .pinkColor {
-
   color: rgb(251, 92, 57);
 }
 
@@ -59,7 +66,6 @@
 
 .fallColor {
   color: rgb(26, 173, 25);
-
 }
 
 .blueColor {

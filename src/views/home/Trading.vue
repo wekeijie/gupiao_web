@@ -7,33 +7,45 @@
       </template>
     </page-header>
     <div class="hores-race-lamp flexStart">
-      <img src="../../assets/img/tab8.png" alt="" class="refresh-data" /> <marquee-text :repeat="1"><span
-          style="color:#f90">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna.</span>
+      <img src="../../assets/img/tab8.png" alt="" class="refresh-data" />
+      <marquee-text :repeat="1"
+        ><span style="color: #f90">
+          该平台可以直接扩大股票配资客户的交易资金，使股票配资客户获得充裕的资金，成本低，盈利100%属于用户。</span
+        >
       </marquee-text>
     </div>
     <div class="row-tab-box flexBetween">
       <h2>合约</h2>
       <div class="flexEnd" @click="isApply = true">
-        <p v-if="1 == 1">按天配资2倍<span>(1500.00元)</span></p>
-        <p v-else>请选择合约</p>
+        <p>{{ heyuename }}</p>
         <img src="../../assets/img/rightImg.png" alt="" class="img-right" />
       </div>
     </div>
     <div class="row-tab-box flexBetween">
       <h2>股票名称/代码</h2>
       <div class="flexEnd">
-        <p>平安银行<span>(sz23123231)</span>
+        <p>
+          {{ store.state.trading.title
+          }}<span>({{ store.state.trading.code }})</span>
         </p>
-        <img src="../../assets/img/search.png" alt="" class="img-search" @click="goRouter('/Search')" />
+        <img
+          src="../../assets/img/search.png"
+          alt=""
+          class="img-search"
+          @click="goRouter('/Search')"
+        />
       </div>
     </div>
 
     <div class="flexBetween new-title-box">
       <p>
         最新
-        <span :class="1 == 1 ? 'roseColor' : 'fallColor'">11.32 - 0.24 - 2.08%</span>
+        <span
+          :class="'text-' + watchStringToColor(store.state.trading.info.f169)"
+          >{{ store.state.trading.info.f43 }}
+          {{ updateStrIcon(store.state.trading.info.f169) }}
+          {{ updateStrIcon(store.state.trading.info.f170) + "%" }}</span
+        >
       </p>
       <div>
         <img src="../../assets/img/pixelsImg.png" alt="" class="img-right" />
@@ -49,16 +61,33 @@
         </div>
         <div class="contracts-box flexCenter">
           <p>市价委托</p>
-          <img src="../../assets/img/downPac.png" alt="">
+          <img src="../../assets/img/downPac.png" alt="" />
         </div>
         <div class="up-down-number flexBetween">
-          <p>涨停<span class="roseColor">12.35</span></p>
-          <p>跌停<span class="fallColor">10.11</span></p>
+          <p>
+            涨停<span class="roseColor">{{
+              store.state.trading.info.f51
+            }}</span>
+          </p>
+          <p>
+            跌停<span class="fallColor">{{
+              store.state.trading.info.f52
+            }}</span>
+          </p>
         </div>
 
         <div class="input-box">
-          <v-text-field type="number" v-model="numberValue" placeholder="请输入数值" clearable :disabled="false"
-            density="default" variant="outlined" single-line hide-details>
+          <v-text-field
+            type="number"
+            v-model="numberValue"
+            placeholder="请输入数值"
+            clearable
+            :disabled="false"
+            density="default"
+            variant="outlined"
+            single-line
+            hide-details
+          >
             <template v-slot:append>
               <v-icon color="black" @click="--numberValue" class="down-num">
                 mdi-minus
@@ -70,9 +99,18 @@
           </v-text-field>
         </div>
 
-        <div class="input-box" style="margin-top: 15px;">
-          <v-text-field type="number" v-model="numberValue" placeholder="请输入数值" clearable :disabled="false"
-            density="default" variant="outlined" single-line hide-details>
+        <div class="input-box" style="margin-top: 15px">
+          <v-text-field
+            type="number"
+            v-model="numberValue"
+            placeholder="请输入数值"
+            clearable
+            :disabled="false"
+            density="default"
+            variant="outlined"
+            single-line
+            hide-details
+          >
             <template v-slot:append>
               <v-icon color="black" @click="--numberValue" class="down-num">
                 mdi-minus
@@ -85,40 +123,109 @@
         </div>
 
         <div class="component-box flexBetween">
-          <p :class="componentIndx == 1 ? 'redBg' : ''" @click="componentIndx = 1">1/4 </p>
-          <p :class="componentIndx == 2 ? 'redBg' : ''" @click="componentIndx = 2">1/3</p>
-          <p :class="componentIndx == 3 ? 'redBg' : ''" @click="componentIndx = 3">1/2</p>
-          <p :class="componentIndx == 4 ? 'redBg' : ''" @click="componentIndx = 4">全仓</p>
+          <p
+            :class="componentIndx == 1 ? 'redBg' : ''"
+            @click="componentIndx = 1"
+          >
+            1/4
+          </p>
+          <p
+            :class="componentIndx == 2 ? 'redBg' : ''"
+            @click="componentIndx = 2"
+          >
+            1/3
+          </p>
+          <p
+            :class="componentIndx == 3 ? 'redBg' : ''"
+            @click="componentIndx = 3"
+          >
+            1/2
+          </p>
+          <p
+            :class="componentIndx == 4 ? 'redBg' : ''"
+            @click="componentIndx = 4"
+          >
+            全仓
+          </p>
         </div>
-
 
         <div class="up-down-number flexBetween">
-          <p>交易额<span class="roseColor">12.35</span></p>
-          <p>可买股数<span class="fallColor">10.11</span></p>
+          <p>
+            交易额<span class="roseColor">{{ yu_order.amount }}</span>
+          </p>
+          <p>
+            可买股数<span class="fallColor">{{ yu_order.limit }}</span>
+          </p>
         </div>
-
-
       </div>
       <div class="controls-right">
-
-        <v-carousel :show-arrows="false" hide-delimiters v-model="model" height="auto">
-
+        <v-carousel
+          :show-arrows="false"
+          hide-delimiters
+          v-model="model"
+          height="auto"
+        >
           <!-- height="auto" -->
           <v-carousel-item v-for="(slide, i) in 2" :key="i">
             <div class="new-box" v-if="i == 0">
-
               <div>
-                <div v-for="item, index in 10" :key="index" class="flexBetween records-list">
-                  <p>卖 {{ index + 1 }}</p>
-                  <p class="fallColor">11.39</p>
-                  <p>2391</p>
+                <div class="flexBetween records-list">
+                  <p>卖5</p>
+                  <p class="fallColor">{{ store.state.trading.info.f31 }}</p>
+                  <p>{{ store.state.trading.info.f32 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>卖4</p>
+                  <p class="fallColor">{{ store.state.trading.info.f33 }}</p>
+                  <p>{{ store.state.trading.info.f34 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>卖3</p>
+                  <p class="fallColor">{{ store.state.trading.info.f35 }}</p>
+                  <p>{{ store.state.trading.info.f36 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>卖2</p>
+                  <p class="fallColor">{{ store.state.trading.info.f37 }}</p>
+                  <p>{{ store.state.trading.info.f38 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>卖1</p>
+                  <p class="fallColor">{{ store.state.trading.info.f39 }}</p>
+                  <p>{{ store.state.trading.info.f40 }}</p>
                 </div>
 
-                <div style="background-color: rgb(245, 245, 245);height: 2px;margin: 5px 0;"></div>
-                <div v-for="item, index in 10" :key="index" class="flexBetween records-list">
-                  <p>买 {{ index + 1 }}</p>
-                  <p class="pinkColor">11.39</p>
-                  <p>2391</p>
+                <div
+                  style="
+                    background-color: rgb(245, 245, 245);
+                    height: 2px;
+                    margin: 5px 0;
+                  "
+                ></div>
+                <div class="flexBetween records-list">
+                  <p>买1</p>
+                  <p class="pinkColor">{{ store.state.trading.info.f19 }}</p>
+                  <p>{{ store.state.trading.info.f20 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>买2</p>
+                  <p class="pinkColor">{{ store.state.trading.info.f17 }}</p>
+                  <p>{{ store.state.trading.info.f18 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>买3</p>
+                  <p class="pinkColor">{{ store.state.trading.info.f15 }}</p>
+                  <p>{{ store.state.trading.info.f16 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>买4</p>
+                  <p class="pinkColor">{{ store.state.trading.info.f13 }}</p>
+                  <p>{{ store.state.trading.info.f14 }}</p>
+                </div>
+                <div class="flexBetween records-list">
+                  <p>买5</p>
+                  <p class="pinkColor">{{ store.state.trading.info.f11 }}</p>
+                  <p>{{ store.state.trading.info.f12 }}</p>
                 </div>
               </div>
             </div>
@@ -128,22 +235,23 @@
                 <p>价格</p>
                 <p>量</p>
               </div>
-              <div v-for="item, index in 10" :key="index" class="flexBetween records-list">
-                <p>卖 {{ index + 1 }}</p>
-                <p class="pinkColor">11.39</p>
-                <p>2391 <span class="pinkColor">B</span></p>
+              <div
+                v-for="(item, index) in store.state.trading.dayDetails"
+                :key="index"
+                class="flexBetween records-list"
+              >
+                <p>{{ timeToFormat(item.t) }}</p>
+                <p class="pinkColor">{{ priceToFormat(item.p) }}</p>
+                <p>{{ item.v }}</p>
               </div>
             </div>
           </v-carousel-item>
         </v-carousel>
-
       </div>
     </div>
 
-
     <div class="flexAroud">
-
-      <v-btn class="sure-btn">交易</v-btn>
+      <v-btn class="sure-btn" @click="submitOK">交易</v-btn>
 
       <div class="flexCenter cut-detail">
         <p :class="model == 0 ? 'roseColor' : ''" @click="model = 0">+档</p>
@@ -151,198 +259,345 @@
       </div>
     </div>
 
-
-
-    <div style="background-color: rgb(245, 245, 245);height: 5px;margin: 10px 0"></div>
+    <div
+      style="background-color: rgb(245, 245, 245); height: 5px; margin: 10px 0"
+    ></div>
 
     <div class="table-box flexStart">
-      <p :class="tabIndex == 0 ? 'active-tab' : ''" @click="tabIndex = 0">持仓</p>
-      <p :class="tabIndex == 1 ? 'active-tab' : ''" @click="tabIndex = 1">订单</p>
+      <p :class="tabIndex == 0 ? 'active-tab' : ''" @click="tabIndex = 0">
+        持仓
+      </p>
+      <p :class="tabIndex == 1 ? 'active-tab' : ''" @click="tabIndex = 1">
+        订单
+      </p>
     </div>
 
-
-
-    <v-carousel :show-arrows="false" hide-delimiters v-model="tabIndex" height="auto">
-
+    <v-carousel
+      :show-arrows="false"
+      hide-delimiters
+      v-model="tabIndex"
+      height="auto"
+    >
       <!-- height="auto" -->
       <v-carousel-item v-for="(slide, i) in 2" :key="i">
         <div class="new-box" v-if="i == 0">
-
-
-
           <table>
             <tbody>
               <tr class="tr-list">
-                <th style="text-align: left;">名称|代码</th>
-                <th style="text-align: right;">现价|成本</th>
-                <th style="text-align: right;">可用|持仓</th>
-                <th style="text-align: right;" class="cutUp">浮动盈亏 </th>
+                <th style="text-align: left">名称|代码</th>
+                <th style="text-align: right">现价|成本</th>
+                <th style="text-align: right">可用|持仓</th>
+                <th style="text-align: right" class="cutUp">浮动盈亏</th>
               </tr>
 
-              <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-              <tr class="tr-list" v-for="item in 10" :key="item">
+              <div
+                style="background-color: rgb(245, 245, 245); height: 2px"
+              ></div>
+              <!-- <tr class="tr-list" v-for="item in 10" :key="item">
                 <td class="tr-one">
                   <p>维尔利</p>
                   <span>sz300123</span>
                 </td>
-                <td class="tr-two" style="text-align: right;">
+                <td class="tr-two" style="text-align: right">
                   <div class="tr-two-number">11.31/11.31</div>
                 </td>
-                <td class="tr-three" style="text-align: right;">
+                <td class="tr-three" style="text-align: right">
                   <span>100/买入</span>
                 </td>
-                <td class="tr-four" style="text-align: right;">
-
-                  <p>22.29:05
-                  </p>
-                  <p>2023-08-29
-                  </p>
+                <td class="tr-four" style="text-align: right">
+                  <p>22.29:05</p>
+                  <p>2023-08-29</p>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
-
-
-
-
-
         </div>
         <div class="new-box" v-if="i == 1">
-
           <div class="tab-box">
-            <v-tabs v-model="orderIndex" bg-color="white" color="black" align-tabs="left">
+            <v-tabs
+              v-model="orderIndex"
+              bg-color="white"
+              color="black"
+              align-tabs="left"
+            >
               <v-tab @click="orderIndex = 0">待成交</v-tab>
               <v-tab @click="orderIndex = 1">已成交</v-tab>
               <v-tab @click="orderIndex = 2">已撤单</v-tab>
             </v-tabs>
           </div>
 
-
           <table>
             <tbody v-if="orderIndex == 0 || orderIndex == 1">
               <tr class="tr-list">
-                <th style="text-align: left;">名称|代码</th>
-                <th style="text-align: right;">现价|委托</th>
-                <th style="text-align: right;">数量|类型</th>
-                <th style="text-align: right;" class="cutUp">时间 </th>
+                <th style="text-align: left">名称|代码</th>
+                <th style="text-align: right">现价|委托</th>
+                <th style="text-align: right">数量|类型</th>
+                <th style="text-align: right" class="cutUp">时间</th>
               </tr>
 
-              <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-              <tr class="tr-list" v-for="item in 10" :key="item">
+              <div
+                style="background-color: rgb(245, 245, 245); height: 2px"
+              ></div>
+              <!-- <tr class="tr-list" v-for="item in 10" :key="item">
                 <td class="tr-one">
                   <p>维尔利</p>
                   <span>sz300123</span>
                 </td>
-                <td class="tr-two" style="text-align: right;">
+                <td class="tr-two" style="text-align: right">
                   <div class="tr-two-number">11.31/11.31</div>
                 </td>
-                <td class="tr-three" style="text-align: right;">
+                <td class="tr-three" style="text-align: right">
                   <span>100/买入</span>
                 </td>
-                <td class="tr-four" style="text-align: right;">
-                  <p>22.29:05
-                  </p>
-                  <p>2023-08-29
-                  </p>
+                <td class="tr-four" style="text-align: right">
+                  <p>22.29:05</p>
+                  <p>2023-08-29</p>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
 
             <tbody v-if="orderIndex == 2">
               <tr class="tr-list">
-                <th style="text-align: left;">委托股票</th>
-                <th style="text-align: right;">价格|类型</th>
-                <th style="text-align: right;">已成|委托</th>
-                <th style="text-align: right;" class="cutUp">状态 </th>
+                <th style="text-align: left">委托股票</th>
+                <th style="text-align: right">价格|类型</th>
+                <th style="text-align: right">已成|委托</th>
+                <th style="text-align: right" class="cutUp">状态</th>
               </tr>
 
-              <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-              <tr class="tr-list" v-for="item in 10" :key="item">
+              <div
+                style="background-color: rgb(245, 245, 245); height: 2px"
+              ></div>
+              <!-- <tr class="tr-list" v-for="item in 10" :key="item">
                 <td class="tr-one">
                   <p>维尔利</p>
                   <span>sz300123</span>
                 </td>
-                <td class="tr-two" style="text-align: right;">
+                <td class="tr-two" style="text-align: right">
                   <div class="tr-two-number">11.31/11.31</div>
                 </td>
-                <td class="tr-three" style="text-align: right;">
+                <td class="tr-three" style="text-align: right">
                   <span>100/买入</span>
                 </td>
-                <td class="tr-four" style="text-align: right;">
-                  <p>22.29:05
-                  </p>
-                  <p>2023-08-29
-                  </p>
+                <td class="tr-four" style="text-align: right">
+                  <p>22.29:05</p>
+                  <p>2023-08-29</p>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
-
-
-
-
-
-
         </div>
       </v-carousel-item>
     </v-carousel>
-
-
-
-
 
     <v-bottom-sheet v-model="isApply">
       <v-list>
         <div class="flexBetween sheet-top">
           <div class="sheet-sure">请选择您的合约<span>[新开合约]</span></div>
-          <img src="../../assets/img/close.png" alt="" @click="isApply = false">
+          <img
+            src="../../assets/img/close.png"
+            alt=""
+            @click="isApply = false"
+          />
         </div>
-        <v-list-item class="flexCenter" v-for="tile, index in tiles" :key="tile.title"
-          @click="typeIndex = index; isApply = false">
+        <v-list-item
+          class="flexCenter"
+          v-for="(tile, index) in store.state.contract.minList"
+          :key="tile.order_id"
+          @click="
+            isApply = false;
+            selectHeyue(index);
+          "
+        >
           <div class="flexBetween type-list">
             <v-list-item-title>
-              <h3>按天配资2倍- <span>369.00</span>元</h3>
-              <p>合约号:CN202308112021289732290036</p>
+              <h3>
+                {{ tile.contract_type_title + tile.contract_limit_limit }}倍-
+                <span>{{ tile.balance }}</span
+                >元
+              </h3>
+              <p>合约号:{{ tile.order_id }}</p>
             </v-list-item-title>
-            <img class="list-select" src="../../assets/img/select.png" alt="" v-show="index == typeIndex">
+            <img
+              class="list-select"
+              src="../../assets/img/select.png"
+              alt=""
+              v-show="index == typeIndex"
+            />
           </div>
         </v-list-item>
       </v-list>
     </v-bottom-sheet>
-
-
-
-
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
-import PageHeader from '../../components/topWrap.vue'
-import MarqueeText from 'vue-marquee-text-component'
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
-const numberValue = ref(0.1)
-const componentIndx = ref(1)
-const tabIndex = ref(0)
-const model = ref(0)
-const orderIndex = ref(0)
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
+import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+import PageHeader from "../../components/topWrap.vue";
+import MarqueeText from "vue-marquee-text-component";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+import request from "@/utils/request";
+const $router = useRouter();
+const $route = useRoute();
+const numberValue = ref(0.1);
+const componentIndx = ref(1);
+const tabIndex = ref(0);
+const model = ref(0);
+const orderIndex = ref(0);
 
-const isApply = ref(true)
-const tiles = ref([
-  { title: '按天配资-操盘:2天' },
-  { title: '按周配资-操盘:7天' },
-  { title: '按月配资-操盘:30天' },
-  { title: '免息配资-操盘:30天' },
-],)
+const isApply = ref(false);
+
+const is_open = ref(false);
+const stock_date = ref("");
+const yu_order = reactive({
+  amount: 0,
+  limit: 0,
+});
+const heyue_info = {};
+
+onMounted(() => {
+  const title = $route.query.title ?? null;
+  const code = $route.query.code ?? null;
+  const prefix = $route.query.prefix ?? null;
+
+  store.dispatch("trading/getInfo", prefix);
+  store.dispatch("trading/getDayDetail", prefix);
+  if (store.getters.token) {
+    store.dispatch("contract/getMinList");
+  } else {
+    heyuename.value = "请登录选择合约";
+  }
+
+  request.post("market/stock", { symbol: prefix }).then((d) => {
+    stock_date.value = d.date;
+    checkDateStatus();
+  });
+});
+
+const submitOK = () => {
+  if (is_open.value) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "休市中！",
+    });
+    return;
+  }
+  if (!store.getters.token) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请登录！",
+    });
+    return;
+  }
+};
 
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
 
+const checkDateStatus = () => {
+  let beijingDate = new Date()
+    .toLocaleDateString("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\//g, "-");
+  let beijingTime = new Date().toLocaleString("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    hour12: false,
+    timeStyle: "short",
+  });
 
+  if (beijingDate != stock_date.value || checkTime() == false) {
+    is_open.value = true;
+  }
+};
+
+const checkTime = () => {
+  let currentBeijingTime = new Date(
+    new Date().toLocaleString("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      hour12: false,
+    })
+  );
+  let morningStart = new Date(currentBeijingTime);
+  morningStart.setHours(9, 30, 0, 0); // 设置时间为当天的9:30:00.000
+
+  let morningEnd = new Date(currentBeijingTime);
+  morningEnd.setHours(11, 30, 0, 0); // 设置时间为当天的11:30:00.000
+
+  let afternoonStart = new Date(currentBeijingTime);
+  afternoonStart.setHours(13, 0, 0, 0); // 设置时间为当天的13:00:00.000
+
+  let afternoonEnd = new Date(currentBeijingTime);
+  afternoonEnd.setHours(15, 0, 0, 0); // 设置时间为当天的15:00:00.000
+
+  if (currentBeijingTime > morningStart && currentBeijingTime < morningEnd) {
+    return true;
+  }
+  if (
+    currentBeijingTime > afternoonStart &&
+    currentBeijingTime < afternoonEnd
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const watchStringToColor = (price) => {
+  if (price < 0) {
+    return "green";
+  } else if (price === 0 || price === "") {
+    return "black";
+  } else if (price > 0) {
+    return "red";
+  }
+};
+
+const heyuename = ref("请选择合约");
+const typeIndex = ref(0);
+const selectHeyue = (index) => {
+  typeIndex.value = index;
+  heyuename.value =
+    store.state.contract.minList[index].contract_type_title +
+    store.state.contract.minList[index].contract_limit_limit +
+    "倍";
+  yu_order.amount = store.state.contract.minList[index].balance;
+  yu_order.limit = parseFloat(
+    yu_order.amount / store.state.trading.info.f43
+  ).toFixed(2);
+};
+
+const priceToFormat = (price) => {
+  return (price * 0.001).toFixed(2);
+};
+
+const timeToFormat = (timeStr) => {
+  timeStr = timeStr.toString();
+  return timeStr.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2");
+};
+
+const updateStrIcon = (price) => {
+  if (price > 0) {
+    return "+" + price;
+  } else {
+    return price;
+  }
+};
 </script>
 <style lang="scss" scoped>
 .v-list-item__content {
@@ -370,7 +625,6 @@ const goRouter = (path) => {
   padding: 0 25px 0 10px;
   width: 100vw;
 
-
   h3 {
     font-size: 14px;
     color: #2c2e3a;
@@ -389,8 +643,6 @@ const goRouter = (path) => {
     width: 15px;
   }
 }
-
-
 
 .v-slide-group__container {
   .v-slide-group-item--active {
@@ -417,7 +669,6 @@ const goRouter = (path) => {
 .v-tab--selected::after {
   color: red !important;
 }
-
 
 table {
   width: 100%;
@@ -490,9 +741,6 @@ table {
   }
 }
 
-
-
-
 .table-box {
   p {
     padding: 10px;
@@ -510,7 +758,7 @@ table {
   .active-tab::after {
     position: absolute;
     bottom: 0;
-    content: '';
+    content: "";
 
     width: 12px;
     height: 6px;
@@ -547,7 +795,6 @@ table {
   }
 }
 
-
 .records-list {
   font-size: 12px;
   line-height: 25px;
@@ -570,10 +817,6 @@ table {
   overflow-y: scroll;
   width: 50%;
   height: auto;
-
-
-
-
 }
 
 .component-box {
@@ -590,7 +833,6 @@ table {
     text-align: center;
   }
 }
-
 
 .input-box {
   // width: 300px;
@@ -641,8 +883,6 @@ table {
 .controls-box {
   width: 100%;
   padding: 0 10px;
-
-
 }
 
 .controls-left {
@@ -653,7 +893,6 @@ table {
 }
 
 .contracts-box {
-
   border: solid 0.5px #dcdcdc;
   border-radius: 4px;
   margin-top: 15px;
@@ -675,7 +914,6 @@ table {
   }
 
   img {
-
     width: 15px;
     margin-left: 6px;
     // width: 20%;
@@ -732,7 +970,6 @@ table {
     -o-transform: skewX(-20deg);
     transform: skewX(-20deg);
   }
-
 }
 
 .new-title-box {

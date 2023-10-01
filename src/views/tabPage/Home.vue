@@ -1,61 +1,69 @@
 <template>
   <div class="home-box">
-    <div class="home-top" :style="isBg ? 'background: rgba(251, 92, 57, 1)' : ''">
+    <div
+      class="home-top"
+      :style="isBg ? 'background: rgba(251, 92, 57, 1)' : ''"
+    >
       <div @click="goRouter('/Search')" class="search-box">
-        <img src="@/assets/img/search.png">
+        <img src="@/assets/img/search.png" />
         <span>输入股票名称/代码</span>
       </div>
     </div>
     <v-carousel cycle :show-arrows="false" hide-delimiters id="swiperTop">
-      <v-carousel-item v-for="item in store.state.bannerAndRank.banner" :key="item.id">
+      <v-carousel-item
+        v-for="item in store.state.bannerAndRank.banner"
+        :key="item.id"
+      >
         <v-img :src="item.image"></v-img>
-
       </v-carousel-item>
     </v-carousel>
     <div class="home-content">
       <div class="tab-box">
         <div class="tab-cont">
           <div class="tab-list" @click="goRouter('/Market')">
-            <img src="@/assets/img/tab1.png">
+            <img src="@/assets/img/tab1.png" />
             <p>自选</p>
           </div>
           <div class="tab-list" @click="goRouter('/Trading')">
-            <img src="@/assets/img/tab2.png">
+            <img src="@/assets/img/tab2.png" />
             <p>交易</p>
           </div>
           <div class="tab-list" @click="goRouter('/Agency')">
-            <img src="@/assets/img/tab3.png">
+            <img src="@/assets/img/tab3.png" />
             <p>代理中心</p>
           </div>
           <div class="tab-list" @click="goRouter('/TopUp')">
-            <img src="@/assets/img/tab4.png">
+            <img src="@/assets/img/tab4.png" />
             <p>充值返现</p>
           </div>
           <div class="tab-list">
-            <img src="@/assets/img/tab5.png">
+            <img src="@/assets/img/tab5.png" />
             <p>APP下载</p>
           </div>
           <div class="tab-list" @click="goRouter('/TradingRules')">
-            <img src="@/assets/img/tab6.png">
+            <img src="@/assets/img/tab6.png" />
             <p>交易规则</p>
           </div>
           <div class="tab-list" @click="goRouter('/CompanyIntro')">
-            <img src="@/assets/img/tab7.png">
+            <img src="@/assets/img/tab7.png" />
             <p>公司介绍</p>
           </div>
           <div class="tab-list" @click="goRouter('/IframeDemo')">
-            <img src="@/assets/img/tab8.png">
+            <img src="@/assets/img/tab8.png" />
             <p>在线咨询</p>
           </div>
         </div>
       </div>
 
-      <img class="led-img" @click="goRouter('/ApplyContract')" src="@/assets/img/led.jpg">
+      <img
+        class="led-img"
+        @click="goRouter('/ApplyContract')"
+        src="@/assets/img/led.jpg"
+      />
       <div class="title-lab">》 每日福利《</div>
       <div class="active-box">
-        <img src="@/assets/img/active1.png" @click="goRouter('/InCoupon')">
-        <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')">
-
+        <img src="@/assets/img/active1.png" @click="goRouter('/InCoupon')" />
+        <img src="@/assets/img/active2.png" @click="goRouter('/ActiveList')" />
       </div>
 
       <div class="title-lab">》 昨日收益榜《</div>
@@ -63,20 +71,26 @@
       <table>
         <tbody>
           <tr class="tr-list">
-            <th style="text-align: left;">用户|合约</th>
-            <th style="text-align: right;">盈利[万]</th>
-            <th style="text-align: right;">会员等级</th>
+            <th style="text-align: left">用户|合约</th>
+            <th style="text-align: right">盈利[万]</th>
+            <th style="text-align: right">会员等级</th>
           </tr>
-          <tr class="tr-list" v-for="item in store.state.bannerAndRank.rank" :key="item.id">
+          <tr
+            class="tr-list"
+            v-for="item in store.state.bannerAndRank.rank"
+            :key="item.id"
+          >
             <td class="tr-one">
               <p>{{ item.username }}</p>
               <span>{{ item.contract }}</span>
             </td>
-            <td class="tr-two" style="text-align: right;">
+            <td class="tr-two" style="text-align: right">
               <div class="tr-two-number">{{ item.amount }}</div>
-              <p>盈利率<span>{{item.rank}}%</span></p>
+              <p>
+                盈利率<span>{{ item.rank }}%</span>
+              </p>
             </td>
-            <td class="tr-three" style="text-align: right;">
+            <td class="tr-three" style="text-align: right">
               <span>{{ item.level }}</span>
             </td>
           </tr>
@@ -88,35 +102,36 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
-import PropBox from '../../components/PropBox.vue'
+import { useRouter, useRoute } from "vue-router";
+const $router = useRouter();
+const $route = useRoute();
+import PropBox from "../../components/PropBox.vue";
 import { onMounted, ref, onBeforeUnmount } from "vue";
 import { store } from "@/store";
-const isProp = ref(false)
-const isBg = ref(false)
+const isProp = ref(false);
+const isBg = ref(false);
+
 // const abnb = ref(require('@/assets/img/tab1.png'))
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
 onMounted(() => {
-  window.addEventListener('scroll', getSwiperTop)
-  store.dispatch('bannerAndRank/get')
-})
+  window.addEventListener("scroll", getSwiperTop);
+  store.dispatch("bannerAndRank/get");
+});
 const getSwiperTop = () => {
-  if (document.getElementById('swiperTop')) isBg.value = document.getElementById('swiperTop').getBoundingClientRect().top > -100 ? false : true
-
-}
+  if (document.getElementById("swiperTop"))
+    isBg.value =
+      document.getElementById("swiperTop").getBoundingClientRect().top > -100
+        ? false
+        : true;
+};
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', getSwiperTop)
-})
-
-
-
+  window.removeEventListener("scroll", getSwiperTop);
+});
 </script>
-<style scoped  lang="scss">
+<style scoped lang="scss">
 table {
   width: 100%;
   padding: 10px 10px 90px 10px;

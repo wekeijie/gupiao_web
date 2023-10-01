@@ -134,27 +134,27 @@
               </tr>
               <tr
                 class="tr-list"
-                v-for="item in 10"
-              :key="item"
-              @click="goRouter('/ChanrtPage',item.name,item.code)"
+                v-for="item in store.state.watchlist.list"
+              :key="item.code"
+              @click="goCaRouter('/ChanrtPage',item.name,item.code,'')"
 
 
               >
                 <td class="tr-one">
-                  <p>维尔利</p>
-                  <span>sz300123</span>
+                  <p>{{ item.name }}</p>
+                  <span>{{ item.code }}</span>
                 </td>
                 <td
                   class="tr-two"
                   style="text-align: right;"
                 >
-                  <div class="tr-two-number">48.87</div>
+                  <div class="tr-two-number">{{ item.price }}</div>
                 </td>
                 <td
                   class="tr-three"
                   style="text-align: right;"
                 >
-                  <span>+3.77%</span>
+                  <span>{{ item.percentage + '%' }}</span>
                 </td>
               </tr>
             </tbody>
@@ -180,6 +180,7 @@ const isUp = ref(true)
 
 onMounted(() => {
   store.dispatch('market/get')
+  store.dispatch('watchlist/getList')
 })
 
 const goRouter = (path,item,code = '') => {
@@ -187,6 +188,16 @@ const goRouter = (path,item,code = '') => {
     title:item,
     code:code
   }})
+}
+
+const goCaRouter = (path, name,code,prefix) => {
+  $router.push({
+    path, query: {
+      code: code,
+      title:name,
+      prefix:prefix
+    }
+  })
 }
 
 const watchStringToColor = (price) => {

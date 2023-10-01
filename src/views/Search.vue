@@ -17,6 +17,7 @@
           cols="12"
           sm="2"
         >
+        <form @submit.prevent="handleSubmit">
           <v-text-field
             v-model="searchCont"
             variant="none"
@@ -27,65 +28,38 @@
             label="搜索"
             solo
           ></v-text-field>
+          </form>
         </v-col>
       </div>
       <h3 @click="$router.go(-1)">取消</h3>
     </div>
 
-    <div v-if="!searchCont">
-
-      <div class="flexBetween class-title">
-        <h3>热门股票</h3>
-        <p>更多...</p>
-      </div>
-
-      <div class="flexBetween hot-box">
-        <div
-          v-for="item in 5"
-          class="flexBetween hot-list"
-          @click="goChanrt(item)"
-          :key="item"
-        >
-          <h5>太平洋</h5>
-          <p :style="item>3?'color:green':'color:red'">-2.92%</p>
-        </div>
-
-      </div>
-
-      <div class="flexBetween class-title">
-        <h3>历史搜索</h3>
-        <img
-          src="../assets/img/deleted.png"
-          alt=""
-        >
-      </div>
-
-    </div>
     <div
-      class="search-title"
-      v-else
+    class="search-title"
     >股票</div>
     <div
-      class="flexBetween history-box"
-      v-for="item in 10"
-      @click="goChanrt(item)"
+    class="flexBetween history-box"
+    v-for="item in store.state.market.search_list"
+    :key="item.code"
+    @click="goCaRouter('/ChanrtPage',item.name,item.prefix)"
     >
-      <div>
-        <h3>太平洋</h3>
-        <p><span>sh</span>688515</p>
-      </div>
-      <img
-        src="../assets/img/selefNo.png"
-        alt=""
-        v-if="item>3"
-      >
-      <img
-        src="../assets/img/selef.png"
-        alt=""
-        v-else
-      >
+    <div>
+      <h3>{{ item.name }}</h3>
+      <p>{{item.code}}</p>
+    </div>
+    <img
+      src="../assets/img/selefNo.png"
+      alt=""
+      v-if="item>3"
+    >
+    <img
+      src="../assets/img/selef.png"
+      alt=""
+      v-else
+    >
 
     </div>
+
 
   </div>
 </template>
@@ -93,6 +67,7 @@
 <script setup>
 import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
 const searchCont = ref()
@@ -105,6 +80,27 @@ const searchValue = (value) => {
   } else {
 
   }
+}
+
+const handleSubmit = () => {
+  if(searchCont.value.length < 2){
+    store.dispatch('snackbar/warning', {
+        active: true,
+        body: '请输入名称或者编码',
+      })
+      return
+  }
+  store.dispatch('market/search',searchCont.value)
+}
+
+const goCaRouter = (path, name,code,prefix) => {
+  $router.push({
+    path, query: {
+      code: code,
+      title:name,
+      prefix:prefix
+    }
+  })
 }
 
 </script>

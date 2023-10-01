@@ -8,9 +8,9 @@
         <div style="background-color: rgb(245, 245, 245);height: 3px;"></div>
         <div class="line-box flexBetween" @click="isApply = true">
             <h2>充值方式</h2>
-            <div class="flexEnd" @click="isApply = true">
-                <span>EBpay</span>
-                <img class="pay-logo" src="../../assets/img/payLog.png" alt="">
+            <div class="flexEnd" style="min-width: 45%;" @click="isApply = true">
+                <span class="mr-1">{{ info.title }}</span>
+                <img class="pay-logo" v-if="info.icon" :src="info.icon" alt="">
                 <img class="right-ico" src="../../assets/img/rightImg.png" alt="">
 
             </div>
@@ -18,23 +18,22 @@
 
         <div style="background-color: rgb(245, 245, 245);height: 3px;"></div>
 
-
+        <v-text-field v-model="name" label="请输入付款人姓名" v-if="isManually" class="mt-2 mb-3" density="compact" messages="为了及时到账，请务必填写真实付款姓名"></v-text-field>
         <div class="limit-box">
             <h5>充值金额</h5>
         </div>
         <div class="flexStart limit-list-box">
-            <div class="limit-list " :class="selectIndex == item ? 'pay_select' : ''" v-for="item in 6" :key="item"
-                @click="selectIndex = item">
-                <h2>{{ item }}000元</h2>
+            <div class="limit-list " :class="selectIndex == item ? 'pay_select' : ''" v-for="item in money_list" :key="item"
+                @click="checkMoney(item)">
+                <h2>{{ item }}元</h2>
             </div>
 
         </div>
 
 
-        <v-text-field placeholder="请输入充值金额(最低100元)" variant="none" hide-details="auto" required prefix="￥"
+        <v-text-field v-model="money" :messages="'请输入充值金额(最低'+ info.min +'元)'" :placeholder="'请输入充值金额(最低'+ info.min +'元)'" variant="none" hide-details="auto" required prefix="￥"
             size="80"></v-text-field>
-        <div class="return-number">返现比例<span>0%</span> 返现金额 <span>0.00</span></div>
-        <div class="apply-btn" @click="isApply = true">立即充值</div>
+        <div class="apply-btn" @click="submitJump">立即充值</div>
 
         <div class="problem-tips">充值遇到问题？请联系<span>人工客服</span>解决</div>
 
@@ -44,13 +43,13 @@
                     <div class="sheet-sure">请选择您的充值方式</div>
                     <img src="../../assets/img/close.png" alt="" @click="isApply = false">
                 </div>
-                <v-list-item class="flexCenter" v-for="tile, index in tiles" :key="tile.title" @click="typeIndex = index">
+                <v-list-item class="flexCenter" v-for="item, index in store.state.topUp.list" :key="item.slug" @click="checkPay(index)">
                     <div class="flexBetween type-list">
 
-                        <img class="list-pay-log" src="../../assets/img/payLog.png" alt="">
+                        <img class="list-pay-log" :src="item.icon" alt="">
                         <v-list-item-title>
-                            <h3>EBpay-最低充值100元</h3>
-                            <p>当前成功逆袭方式可返现<span>0%</span></p>
+                            <h3>{{item.title}}-最低充值{{item.min}}元</h3>
+                            <p>当前充值方式可返现<span>{{item.amount + '%'}}</span></p>
                         </v-list-item-title>
                         <img class="list-select" src="../../assets/img/select.png" alt="" v-if="index == typeIndex">
                     </div>
@@ -70,6 +69,7 @@ import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBef
 import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
 import PageHeader from '../../components/topWrap.vue'
 import { useRouter, useRoute } from "vue-router"
+import {store} from '@/store'
 const $router = useRouter()
 const $route = useRoute()
 
@@ -78,13 +78,77 @@ const typeIndex = ref(1)
 
 const isApply = ref(false)
 
+const info = ref({
+    'title':'请选择',
+    'icon': '',
+    'slug':'',
+    'min':0,
+    'amount':0
+})
 
-const tiles = ref([
-    { title: '按天配资-操盘:2天' },
-    { title: '按周配资-操盘:7天' },
-    { title: '按月配资-操盘:30天' },
-    { title: '免息配资-操盘:30天' },
-],)
+const money_list = ref([
+    100,
+    500,
+    1000,
+    3000,
+    5000,
+    10000
+])
+
+const money = ref(0)
+const isManually = ref(false)
+const name = ref('')
+const manually_type = ref('manually_type')
+
+onMounted(() => {
+    store.dispatch('topUp/getList').then(()=>{
+        checkPay(0) 
+    })
+})
+
+const submitJump = ()=>{
+    if(money.value < info.value.min){
+        store.dispatch('snackbar/warning', {
+            active: true,
+            body: '金额不能低于最低金额',
+        })
+        return
+    } 
+    
+        if(info.value.type == manually_type.value && name.value == ''){
+            store.dispatch('snackbar/warning', {
+                active: true,
+                body: '请输入姓名',
+            })
+            return
+        }
+
+    store.dispatch('topUp/subPut',{'name':name.value,'slug':info.value.slug,'amount':money.value}).then(()=>{
+        if(info.value.type == manually_type.value){
+            goRouter('/TopUp/manually')
+            return
+        }
+    })
+
+
+}
+
+
+const checkMoney = item => {
+    money.value = item
+    selectIndex.value = item
+}
+
+const checkPay = index => {
+    if(store.state.topUp.list[index]){
+        info.value = store.state.topUp.list[index]
+        typeIndex.value = index
+        isApply.value = false
+        if(info.value.type == manually_type.value){
+            isManually.value = true
+        }
+    }
+}
 
 
 const goRouter = (path, title) => {
@@ -298,5 +362,6 @@ const goRouter = (path, title) => {
         width: 7px;
     }
 }
+
 </style>
   
