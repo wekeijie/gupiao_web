@@ -25,16 +25,20 @@
       >
         <div
           class="eye-show"
-          @click="passwordType=='text'?passwordType='password':passwordType='text'"
+          @click="
+            passwordType == 'text'
+              ? (passwordType = 'password')
+              : (passwordType = 'text')
+          "
         >
           <img
             src="../../assets/img/eyeShow.png"
-            v-show="passwordType=='text'"
-          >
+            v-show="passwordType == 'text'"
+          />
           <img
             src="../../assets/img/eyeHide.png"
-            v-show="passwordType=='password'"
-          >
+            v-show="passwordType == 'password'"
+          />
         </div>
       </v-text-field>
       <div class="flexEnd forget-box d-none">
@@ -67,21 +71,27 @@
     </div>
   </div>
 </template>
-<script  setup>
+<script setup>
 import { onMounted, ref, getCurrentInstance } from "vue";
 import { passwordRules, usernameRules } from "@/utils/vaildRule.js";
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const passwordType = ref('password')
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const passwordType = ref("password");
 const username = ref("");
 const password = ref("");
 const handleLogin = async () => {
   const { valid } = await instance.ctx.$refs.form.validate();
+  console.log(username.value, password.value);
   if (valid) {
-    store.dispatch('user/login',{'user_name':username.value,'password':password.value}).then(()=>{
-      $router.push('/My')
-    })
+    store
+      .dispatch("user/login", {
+        user_name: username.value,
+        password: password.value,
+      })
+      .then(() => {
+        $router.push("/My");
+      });
   }
 };
 
@@ -91,7 +101,7 @@ onMounted(() => {
   instance = getCurrentInstance();
 });
 const goRouter = (path) => {
-  $router.push(path)
+  $router.push(path);
 };
 </script>
 <style lang="scss" scoped>
