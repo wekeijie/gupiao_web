@@ -81,18 +81,25 @@ const passwordType = ref("password");
 const username = ref("");
 const password = ref("");
 const handleLogin = async () => {
-  const { valid } = await instance.ctx.$refs.form.validate();
+  // const { valid } = await instance.ctx.$refs.form.validate();
   console.log(username.value, password.value);
-  if (valid) {
-    store
-      .dispatch("user/login", {
-        user_name: username.value,
-        password: password.value,
-      })
-      .then(() => {
-        $router.push("/My");
-      });
+  if (username.value.length < 3 || password.value.length < 6) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "账号或密码不能为空!",
+    });
+    return;
   }
+  // if (valid) {
+  store
+    .dispatch("user/login", {
+      user_name: username.value,
+      password: password.value,
+    })
+    .then(() => {
+      $router.push("/My");
+    });
+  // }
 };
 
 let instance = ref();
