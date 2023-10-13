@@ -1,7 +1,7 @@
 <template>
   <router-view />
   <snackbar />
-  <LiveChatWidget license="16250373" visibility="minimized" />
+  <!-- <LiveChatWidget license="16250373" visibility="minimized" /> -->
 </template>
 
 <script setup>
