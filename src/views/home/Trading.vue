@@ -55,107 +55,115 @@
     <div class="flexBetween controls-box">
       <div style="" class="controls-left">
         <div class="flexBetween buy-sell-box">
-          <p class="buy-box">买入</p>
-          <p class="sell-box">卖出</p>
+          <p class="buy-box" @click="buyTab = 0">买入</p>
+          <p class="sell-box" @click="buyTab = 1">卖出</p>
           <div class="parallelogram"></div>
         </div>
-        <div class="contracts-box flexCenter">
-          <p>市价委托</p>
-          <img src="../../assets/img/downPac.png" alt="" />
-        </div>
-        <div class="up-down-number flexBetween">
-          <p>
-            涨停<span class="roseColor">{{
-              store.state.trading.info.f51
-            }}</span>
-          </p>
-          <p>
-            跌停<span class="fallColor">{{
-              store.state.trading.info.f52
-            }}</span>
-          </p>
-        </div>
+        <div class="buy" v-if="buyTab == 0">
+          <div class="contracts-box flexCenter">
+            <p>市价委托</p>
+            <img src="../../assets/img/downPac.png" alt="" />
+          </div>
+          <div class="up-down-number flexBetween">
+            <p>
+              涨停<span class="roseColor">{{
+                store.state.trading.info.f51
+              }}</span>
+            </p>
+            <p>
+              跌停<span class="fallColor">{{
+                store.state.trading.info.f52
+              }}</span>
+            </p>
+          </div>
 
-        <div class="input-box">
-          <v-text-field
-            type="number"
-            v-model="numberValue"
-            placeholder="请输入数值"
-            clearable
-            :disabled="false"
-            density="default"
-            variant="outlined"
-            single-line
-            hide-details
+          <div class="input-box" style="margin-top: 15px">
+            <v-text-field
+              type="number"
+              v-model="numberValue"
+              placeholder="请输入数值"
+              clearable
+              :disabled="false"
+              density="default"
+              variant="outlined"
+              single-line
+              hide-details
+            >
+              <template v-slot:append>
+                <v-icon
+                  color="black"
+                  @click="changeNUmberValue('c')"
+                  class="down-num"
+                >
+                  mdi-minus
+                </v-icon>
+                <v-icon
+                  color="black"
+                  @click="changeNUmberValue('a')"
+                  class="up-num"
+                >
+                  mdi-plus
+                </v-icon>
+              </template>
+            </v-text-field>
+          </div>
+
+          <div class="component-box flexBetween">
+            <p
+              :class="componentIndx == 1 ? 'redBg' : ''"
+              @click="changeOrderNUmber(4, 1)"
+            >
+              1/4
+            </p>
+            <p
+              :class="componentIndx == 2 ? 'redBg' : ''"
+              @click="changeOrderNUmber(3, 2)"
+            >
+              1/3
+            </p>
+            <p
+              :class="componentIndx == 3 ? 'redBg' : ''"
+              @click="changeOrderNUmber(2, 3)"
+            >
+              1/2
+            </p>
+            <p
+              :class="componentIndx == 4 ? 'redBg' : ''"
+              @click="changeOrderNUmber(1, 4)"
+            >
+              全仓
+            </p>
+          </div>
+
+          <div class="up-down-number flexBetween">
+            <p>
+              交易额<span class="roseColor">{{ yu_order.amount }}</span>
+            </p>
+            <p>
+              可买股数<span class="fallColor">{{ yu_order.limit }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="sell py-10" v-if="buyTab == 1">
+          <v-select
+            label="请选择股票"
+            v-model="sellId"
+            :items="store.state.trading.active_list"
+            item-title="title"
+            item-value="id"
+            variant="underlined"
+            @update:modelValue="updateSellId"
           >
-            <template v-slot:append>
-              <v-icon color="black" @click="--numberValue" class="down-num">
-                mdi-minus
-              </v-icon>
-              <v-icon color="black" @click="++numberValue" class="up-num">
-                mdi-plus
-              </v-icon>
+            <template v-slot:item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :subtitle="item.raw.number + `/` + item.raw.unrealized_profit"
+              ></v-list-item>
             </template>
-          </v-text-field>
-        </div>
-
-        <div class="input-box" style="margin-top: 15px">
-          <v-text-field
-            type="number"
-            v-model="numberValue"
-            placeholder="请输入数值"
-            clearable
-            :disabled="false"
-            density="default"
-            variant="outlined"
-            single-line
-            hide-details
+          </v-select>
+          <v-btn block="" class="mt-4" color="success" @click="sellSub"
+            >卖出</v-btn
           >
-            <template v-slot:append>
-              <v-icon color="black" @click="--numberValue" class="down-num">
-                mdi-minus
-              </v-icon>
-              <v-icon color="black" @click="++numberValue" class="up-num">
-                mdi-plus
-              </v-icon>
-            </template>
-          </v-text-field>
-        </div>
-
-        <div class="component-box flexBetween">
-          <p
-            :class="componentIndx == 1 ? 'redBg' : ''"
-            @click="componentIndx = 1"
-          >
-            1/4
-          </p>
-          <p
-            :class="componentIndx == 2 ? 'redBg' : ''"
-            @click="componentIndx = 2"
-          >
-            1/3
-          </p>
-          <p
-            :class="componentIndx == 3 ? 'redBg' : ''"
-            @click="componentIndx = 3"
-          >
-            1/2
-          </p>
-          <p
-            :class="componentIndx == 4 ? 'redBg' : ''"
-            @click="componentIndx = 4"
-          >
-            全仓
-          </p>
-        </div>
-
-        <div class="up-down-number flexBetween">
-          <p>
-            交易额<span class="roseColor">{{ yu_order.amount }}</span>
-          </p>
-          <p>
-            可买股数<span class="fallColor">{{ yu_order.limit }}</span>
-          </p>
         </div>
       </div>
       <div class="controls-right">
@@ -251,7 +259,7 @@
     </div>
 
     <div class="flexAroud">
-      <v-btn class="sure-btn" @click="submitOK">交易</v-btn>
+      <v-btn class="sure-btn" @click="submitOK" v-if="buyTab == 0">交易</v-btn>
 
       <div class="flexCenter cut-detail">
         <p :class="model == 0 ? 'roseColor' : ''" @click="model = 0">+档</p>
@@ -293,22 +301,25 @@
               <div
                 style="background-color: rgb(245, 245, 245); height: 2px"
               ></div>
-              <!-- <tr class="tr-list" v-for="item in 10" :key="item">
+              <tr
+                class="tr-list"
+                v-for="item in store.state.trading.active_list"
+                :key="item.code"
+              >
                 <td class="tr-one">
-                  <p>维尔利</p>
-                  <span>sz300123</span>
+                  <p>{{ item.title }}</p>
+                  <span>{{ item.code }}</span>
                 </td>
                 <td class="tr-two" style="text-align: right">
-                  <div class="tr-two-number">11.31/11.31</div>
+                  <div class="tr-two-number">{{ item.cost }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
-                  <span>100/买入</span>
+                  <span>{{ item.number }}/买入</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>22.29:05</p>
-                  <p>2023-08-29</p>
+                  <p>{{ item.unrealized_profit }}</p>
                 </td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
         </div>
@@ -327,10 +338,10 @@
           </div>
 
           <table>
-            <tbody v-if="orderIndex == 0 || orderIndex == 1">
+            <tbody v-if="orderIndex == 0">
               <tr class="tr-list">
                 <th style="text-align: left">名称|代码</th>
-                <th style="text-align: right">现价|委托</th>
+                <th style="text-align: right">委托</th>
                 <th style="text-align: right">数量|类型</th>
                 <th style="text-align: right" class="cutUp">时间</th>
               </tr>
@@ -338,22 +349,56 @@
               <div
                 style="background-color: rgb(245, 245, 245); height: 2px"
               ></div>
-              <!-- <tr class="tr-list" v-for="item in 10" :key="item">
+              <!-- <tr
+                class="tr-list"
+                v-for="item in store.state.trading.end_list"
+                :key="item.code"
+              >
                 <td class="tr-one">
-                  <p>维尔利</p>
-                  <span>sz300123</span>
+                  <p>{{ item.title }}</p>
+                  <span>{{ item.code }}</span>
                 </td>
                 <td class="tr-two" style="text-align: right">
-                  <div class="tr-two-number">11.31/11.31</div>
+                  <div class="tr-two-number">{{ item.orice }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
-                  <span>100/买入</span>
+                  <span>{{ item.number }}/卖出</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>22.29:05</p>
-                  <p>2023-08-29</p>
+                  <p>{{ item.updated_at }}</p>
                 </td>
               </tr> -->
+            </tbody>
+            <tbody v-if="orderIndex == 1">
+              <tr class="tr-list">
+                <th style="text-align: left">名称|代码</th>
+                <th style="text-align: right">委托</th>
+                <th style="text-align: right">数量|类型</th>
+                <th style="text-align: right" class="cutUp">时间</th>
+              </tr>
+
+              <div
+                style="background-color: rgb(245, 245, 245); height: 2px"
+              ></div>
+              <tr
+                class="tr-list"
+                v-for="item in store.state.trading.end_list"
+                :key="item.code"
+              >
+                <td class="tr-one">
+                  <p>{{ item.title }}</p>
+                  <span>{{ item.code }}</span>
+                </td>
+                <td class="tr-two" style="text-align: right">
+                  <div class="tr-two-number">{{ item.price }}</div>
+                </td>
+                <td class="tr-three" style="text-align: right">
+                  <span>{{ item.number }}/卖出</span>
+                </td>
+                <td class="tr-four" style="text-align: right">
+                  <p>{{ item.date }}</p>
+                </td>
+              </tr>
             </tbody>
 
             <tbody v-if="orderIndex == 2">
@@ -451,11 +496,13 @@ import { store } from "@/store";
 import request from "@/utils/request";
 const $router = useRouter();
 const $route = useRoute();
-const numberValue = ref(0.1);
+const numberValue = ref(0);
 const componentIndx = ref(1);
 const tabIndex = ref(0);
 const model = ref(0);
 const orderIndex = ref(0);
+const buyTab = ref(0);
+const sellId = ref(null);
 
 const isApply = ref(false);
 
@@ -464,36 +511,79 @@ const stock_date = ref("");
 const yu_order = reactive({
   amount: 0,
   limit: 0,
+  order_id: "",
 });
 const heyue_info = {};
+const prefix = ref();
+const title = ref();
 
 onMounted(() => {
-  const title = $route.query.title ?? null;
   const code = $route.query.code ?? null;
-  const prefix = $route.query.prefix ?? null;
+  if ($route.query.prefix) {
+    prefix.value = $route.query.prefix;
+  } else {
+    prefix.value = store.state.trading.prefix;
+  }
+  if ($route.query.title) {
+    title.value = $route.query.title;
+  } else {
+    title.value = store.state.trading.title;
+  }
 
-  store.dispatch("trading/getInfo", prefix);
-  store.dispatch("trading/getDayDetail", prefix);
+  store.dispatch("trading/getInfo", prefix.value);
+  store.dispatch("trading/getDayDetail", prefix.value);
   if (store.getters.token) {
     store.dispatch("contract/getMinList");
   } else {
     heyuename.value = "请登录选择合约";
   }
 
-  request.post("market/stock", { symbol: prefix }).then((d) => {
+  request.post("market/stock", { symbol: prefix.value }).then((d) => {
     stock_date.value = d.date;
     checkDateStatus();
   });
+  getActiveList();
+  getEndList();
 });
+const updateSellId = () => {
+  console.log(sellId.value);
+};
+const getActiveList = () => {
+  store.dispatch("trading/getActiveList");
+};
 
-const submitOK = () => {
-  if (is_open.value) {
+const getEndList = () => {
+  store.dispatch("trading/getEndList");
+};
+
+const sellSub = () => {
+  if (!sellId.value) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "休市中！",
+      body: "Por favor, selecione a ordem",
     });
     return;
   }
+  store.dispatch("trading/sell", { key: sellId.value }).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "Success",
+    });
+    getActiveList();
+    getEndList();
+  });
+};
+
+const changeNUmberValue = (f) => {
+  if (f == "a") {
+    numberValue.value = numberValue.value + 1;
+  }
+  if (f == "c" && numberValue.value > 0) {
+    numberValue.value = numberValue.value - 1;
+  }
+};
+
+const submitOK = () => {
   if (!store.getters.token) {
     store.dispatch("snackbar/warning", {
       active: true,
@@ -501,6 +591,27 @@ const submitOK = () => {
     });
     return;
   }
+  if (yu_order.order_id == "") {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请选择合约！",
+    });
+    return;
+  }
+  const postData = {
+    symbol: prefix.value,
+    number: numberValue.value,
+    contract: yu_order.order_id,
+    type: "market_price",
+    title: title.value,
+  };
+  store.dispatch("trading/buy", postData).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "Success",
+    });
+    getActiveList();
+  });
 };
 
 const goRouter = (path) => {
@@ -558,6 +669,14 @@ const checkTime = () => {
   return false;
 };
 
+const changeOrderNUmber = (number, index) => {
+  if (yu_order.limit <= 0) {
+    return false;
+  }
+  numberValue.value = Math.floor(yu_order.limit / number);
+  componentIndx.value = index;
+};
+
 const watchStringToColor = (price) => {
   if (price < 0) {
     return "green";
@@ -580,6 +699,7 @@ const selectHeyue = (index) => {
   yu_order.limit = parseFloat(
     yu_order.amount / store.state.trading.info.f43
   ).toFixed(2);
+  yu_order.order_id = store.state.contract.minList[index].order_id;
 };
 
 const priceToFormat = (price) => {

@@ -261,6 +261,9 @@ const routes = [
     path: "/Documentary",
     name: "documentary",
     component: () => import("@/views/myHomePage/Documentary.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/SafetyManage",
