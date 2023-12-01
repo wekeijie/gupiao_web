@@ -13,7 +13,7 @@
       <h3>合约类型</h3>
       <div class="pact-type">
         <span>
-          {{ typeIndex.title + "-操盘 " + typeIndex.day + "天" }}
+          {{ typeIndex.title + typeIndex.day + "天" }}
         </span>
         <img src="../../assets//img/rightImg.png" alt="" />
       </div>
@@ -23,7 +23,6 @@
     <div class="input-number">
       <div class="flexBetween input-title-box">
         <h2>请输入保证金额度</h2>
-        <p>可配资金<span>500-5000000</span>元</p>
       </div>
 
       <v-text-field
@@ -31,7 +30,7 @@
         variant="underlined"
         hide-details="auto"
         required
-        prefix="￥"
+        prefix="¥"
         size="25"
       ></v-text-field>
     </div>
@@ -47,10 +46,10 @@
         v-for="(item, index) in store.state.contract.limitList"
         :key="item"
         :class="selectIndex == index ? 'activeBg' : ''"
-        @click="selectIndex = index"
+        @click="selelctLimitApply(index)"
       >
         <h4>{{ item.title }} <span></span></h4>
-        <p>{{ item.limit * amount }}元</p>
+        <p>{{ item.limit * amount }}</p>
       </div>
     </div>
     <div class="apply-btn" @click="applySub">立即申请</div>
@@ -73,7 +72,7 @@
         >
           <div class="flexBetween type-list">
             <v-list-item-title>{{
-              tile.title + "-操盘" + tile.day + "天"
+              tile.title + tile.day + "天"
             }}</v-list-item-title>
             <img
               src="../../assets/img/select.png"
@@ -87,48 +86,42 @@
 
     <v-dialog v-model="isApply" persistent class="flexCenter">
       <div class="prop-tips">
-        <h1>会员详情</h1>
+        <h1>详情</h1>
         <div class="prop-cont flexBetween">
           <p>
             总操盘资金
             <img src="../../assets/img/！.png" alt="" />
           </p>
-          <span>{{ applyInfo.total }}元</span>
+          <span>{{ applyInfo.total }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>保证金/本金</p>
-          <span>{{ amount }}元</span>
+          <span>{{ amount }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>配资资金</p>
-          <span
-            >{{ applyInfo.expand }}元/{{
-              store.state.contract.limitList[selectIndex].limit
-            }}倍</span
-          >
+          <span>{{ applyInfo.expand }}/{{ limit_data.limit }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>
             亏损预警线
             <img src="../../assets/img/！.png" alt="" />
           </p>
-          <span>{{ applyInfo.loss_waring }}元</span>
+          <span>{{ applyInfo.loss_waring }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>
             亏损平仓线
             <img src="../../assets/img/！.png" alt="" />
           </p>
-          <span>{{ applyInfo.loss_fail }}元</span>
+          <span>{{ applyInfo.loss_fail }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>
             利率
             <img src="../../assets/img/！.png" alt="" />
           </p>
-          <span>{{
-            store.state.contract.limitList[selectIndex].rate + "%"
-          }}</span>
+          <span>{{ limit_data.rate + "%" }}</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>产生利息</p>
@@ -153,7 +146,7 @@
             准备资金
             <img src="../../assets/img/！.png" alt="" />
           </p>
-          <span>{{ applyInfo.expand }}元</span>
+          <span>{{ applyInfo.expand }}</span>
         </div>
 
         <div class="prop-lab">
@@ -208,8 +201,15 @@ const checkbox = ref(true);
 const selectType = (index) => {
   if (store.state.contract.typeList[index]) {
     typeIndex.value = store.state.contract.typeList[index];
+    getLimit(typeIndex.value.id);
   }
   isProp.value = false;
+};
+const limit_data = ref({});
+
+const selelctLimitApply = (index) => {
+  selectIndex.value = index;
+  limit_data.value = store.state.contract.limitList[index];
 };
 
 const amount = ref(500);
@@ -226,19 +226,24 @@ onMounted(() => {
   store.dispatch("contract/getType").then(() => {
     selectType(0);
   });
-  store.dispatch("contract/getLimit");
 });
+
+const getLimit = (type) => {
+  store.dispatch("contract/getLimit", type).then(() => {
+    selelctLimitApply(0);
+  });
+};
 
 const submitHandle = () => {
   const data = {
     amount: amount.value,
     type_id: typeIndex.value.id,
-    limit_id: store.state.contract.limitList[selectIndex.value].id,
+    limit_id: limit_data.value.id,
   };
   store.dispatch("contract/create", data).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "申请成功！",
+      body: "Success",
     });
     isApply.value = false;
     $router.push("/Pact");
@@ -250,18 +255,18 @@ const applySub = () => {
   if (amount.value > store.state.user.info.balance) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "保证金不足，请前往充值！",
+      body: "Margem insuficiente, por favor, faça um depósito!",
     });
     return;
   }
-  applyInfo.expand =
-    amount.value * store.state.contract.limitList[selectIndex.value].limit;
+  console.log(limit_data);
+  applyInfo.expand = amount.value * limit_data.value.limit;
   applyInfo.total = applyInfo.expand + amount.value;
   applyInfo.loss_waring = applyInfo.expand + amount.value * 0.5;
   applyInfo.loss_fail = applyInfo.expand + amount.value * 0.2;
-  applyInfo.rate =
-    applyInfo.expand *
-    (store.state.contract.limitList[selectIndex.value].rate / 100);
+  applyInfo.rate = applyInfo.expand * (limit_data.value.rate / 100);
+  console.log(123);
+  console.log(applyInfo);
   isApply.value = true;
 };
 </script>

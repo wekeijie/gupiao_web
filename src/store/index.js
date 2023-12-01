@@ -19,6 +19,7 @@ import agen from "./modules/agen";
 import copyTrade from "./modules/copyTrade";
 import copyTradeList from "./modules/copyTradeList";
 import loadding from "./modules/loadding";
+import checkIn from "./modules/checkIn";
 
 export const store = createStore({
   state: {},
@@ -45,5 +46,6 @@ export const store = createStore({
     copyTrade,
     copyTradeList,
     loadding,
+    checkIn,
   },
 });

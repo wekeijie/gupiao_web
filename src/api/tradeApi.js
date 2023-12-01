@@ -9,3 +9,7 @@ export const uploadApi = (file) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const searchApi = (name) => {
+  return request.post("trade/search", name);
+};

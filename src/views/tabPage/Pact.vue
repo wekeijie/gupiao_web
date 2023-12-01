@@ -49,13 +49,13 @@
                 :key="item"
               >
                 <div class="pact-name flexBetween" @click="isUp = !isUp">
-                  {{ item.type_title + item.contract_limit }}倍[{{
+                  {{ item.type_title + item.contract_limit }}[{{
                     item.order_id
                   }}]
                   <img src="../../assets/img/downPac.png" v-if="isUp" />
                   <img src="../../assets/img/upPac.png" v-else />
                 </div>
-                <div class="flexBetween balance-box">
+                <div class="flexBetween balance-box text-center">
                   <div class="">
                     <p>{{ item.total_amount }}</p>
                     <span>操盘资金</span>
@@ -81,47 +81,28 @@
                     ><span>{{ item.start_time + "~" + item.stop_time }} </span>
                   </div>
                   <div class="flexBetween row-box">
-                    <span>资金利率</span><span>0.08% </span>
+                    <span>资金利用率</span
+                    ><span>{{ item.contract_rate + "%" }} </span>
                   </div>
                   <div class="flexBetween controls-box">
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 0;
-                      "
-                    >
+                    <div @click="showModel(item, 0, true)">
                       <img src="../../assets/img/stopPac.png" />
                       <p>终止</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 1;
-                      "
-                    >
+                    <div @click="showModel(item, 1, true)">
                       <img src="../../assets/img/expandPac.png" />
                       <p>扩大</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 2;
-                      "
-                    >
+                    <div @click="showModel(item, 2, true)">
                       <img src="../../assets/img/appendPac.png" />
                       <p>追加</p>
                     </div>
 
-                    <div @click="goRouter('/PactDetail')">
+                    <div @click="goRouter('/PactDetail', item.order_id)">
                       <img src="../../assets/img/curvePac.png" />
                       <p>详情</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 3;
-                      "
-                    >
+                    <div @click="showModel(item, 3, true)">
                       <img src="../../assets/img/sharePac.png" />
                       <p>提盈</p>
                     </div>
@@ -141,7 +122,7 @@
                 :key="item"
               >
                 <div class="pact-name flexBetween" @click="isUp = !isUp">
-                  {{ item.type_title + item.contract_limit }}倍[{{
+                  {{ item.type_title + item.contract_limit }}[{{
                     item.order_id
                   }}]
                   <img src="../../assets/img/downPac.png" v-if="isUp" />
@@ -173,47 +154,28 @@
                     ><span>{{ item.start_time + "~" + item.stop_time }} </span>
                   </div>
                   <div class="flexBetween row-box">
-                    <span>资金利率</span><span>0.08% </span>
+                    <span>资金利率</span
+                    ><span>{{ item.contract_rate + "%" }} </span>
                   </div>
                   <div class="flexBetween controls-box">
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 0;
-                      "
-                    >
+                    <div>
                       <img src="../../assets/img/stopPac.png" />
                       <p>终止</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 1;
-                      "
-                    >
+                    <div>
                       <img src="../../assets/img/expandPac.png" />
                       <p>扩大</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 2;
-                      "
-                    >
+                    <div>
                       <img src="../../assets/img/appendPac.png" />
                       <p>追加</p>
                     </div>
 
-                    <div @click="goRouter('/PactDetail')">
+                    <div @click="goRouter('/PactDetail', item.order_id)">
                       <img src="../../assets/img/curvePac.png" />
                       <p>详情</p>
                     </div>
-                    <div
-                      @click="
-                        overlay = true;
-                        popType = 3;
-                      "
-                    >
+                    <div>
                       <img src="../../assets/img/sharePac.png" />
                       <p>提盈</p>
                     </div>
@@ -241,53 +203,45 @@
                 popType == 1
                   ? "扩大配资"
                   : popType == 2
-                  ? "追加保证金"
+                  ? "增加保证金"
                   : popType == 3
                   ? "合约提盈"
                   : "提示"
               }}
             </p>
           </div>
-          <div class="tips-cont" v-if="popType == 0">
-            您确定要终止该合约吗？
-          </div>
+          <div class="tips-cont" v-if="popType == 0">您确定要终止该合约吗?</div>
           <div v-if="popType != 0">
             <div class="pop-list">
               <div class="flexBetween">
                 <p>合约名称</p>
-                <p>按天配资2倍</p>
+                <p>{{ info.type_title + info.contract_limit }}</p>
               </div>
               <div class="flexBetween">
                 <p>合约编号</p>
-                <p>123123123123</p>
+                <p>{{ info.order_id }}</p>
               </div>
               <div class="flexBetween">
-                <p>合约余额</p>
-                <p>123123元</p>
+                <p>余额</p>
+                <p>{{ info.balance }}</p>
               </div>
             </div>
 
             <v-text-field
-              v-model="model"
+              v-model="amount"
               variant="underlined"
               clearable
               hide-details
-              :label="
-                popType == 1
-                  ? '扩大金额（元）'
-                  : popType == 2
-                  ? '追加保证金金额（元）'
-                  : '提盈余额（元）'
-              "
+              label="金额"
             >
               <template v-slot:prepend>
-                <p class="" style="font-size: 30px">￥</p>
+                <p class="" style="font-size: 30px">¥</p>
               </template>
             </v-text-field>
           </div>
           <div class="btn-box flexAroud">
             <v-btn color="#fb5c39" @click="overlay = fasle">取消</v-btn>
-            <v-btn color="#fb5c39">确认</v-btn>
+            <v-btn color="#fb5c39" @click="submitok">提交</v-btn>
           </div>
         </div>
       </v-sheet>
@@ -318,26 +272,143 @@ const model = ref(0);
 const isUp = ref(true);
 const popType = ref(0); //0终止 1扩大 2追加 3 提盈
 const overlay = ref(false);
+const info = ref();
+const amount = ref(0);
 
 onMounted(() => {
   getList();
 });
+
+const showModel = (item, pop, ove) => {
+  popType.value = pop;
+  overlay.value = ove;
+  info.value = item;
+};
 
 const cheangeModel = (index) => {
   model.value = index;
   getList();
 };
 
+const submitok = () => {
+  if (info.value === null || info.value === undefined) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "Por favor, selecione o contrato",
+    });
+    return;
+  }
+  if (popType.value == 1) {
+    expend();
+    return;
+  } else if (popType.value == 2) {
+    appendAmount();
+    return;
+  } else if (popType.value == 3) {
+    withdrawal();
+    return;
+  } else if (popType.value == 0) {
+    stopPact();
+    return;
+  }
+};
+
 const getList = () => {
   store.dispatch("contract/getList", model.value);
 };
 
-const goRouter = (path) => {
-  $router.push(path);
+const clearoverlay = () => {
+  overlay.value = false;
+  amount.value = 0;
 };
-watch(model, (newVal, oldVal) => {
-  console.log(newVal, oldVal, "newVal,oldVal");
-});
+
+const stopPact = () => {
+  store
+    .dispatch("contract/stop", { order_id: info.value.order_id })
+    .then(() => {
+      store.dispatch("snackbar/success", {
+        active: true,
+        body: "success",
+      });
+      getList();
+      clearoverlay();
+    });
+};
+
+const withdrawal = () => {
+  if (amount.value < 500) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "valor não pode ser inferior a 500",
+    });
+    return;
+  }
+  const data = {
+    order_id: info.value.order_id,
+    amount: amount.value,
+  };
+  store.dispatch("contract/withdrawal", data).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "success",
+    });
+    getList();
+    clearoverlay();
+  });
+};
+
+const appendAmount = () => {
+  if (amount.value < 100) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "valor não pode ser inferior a 100",
+    });
+    return;
+  }
+  const data = {
+    order_id: info.value.order_id,
+    amount: amount.value,
+  };
+  store.dispatch("contract/append", data).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "success",
+    });
+    getList();
+    clearoverlay();
+  });
+};
+
+const expend = () => {
+  if (amount.value < 100) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "valor não pode ser inferior a 100",
+    });
+    return;
+  }
+  const data = {
+    order_id: info.value.order_id,
+    amount: amount.value,
+  };
+  store.dispatch("contract/expand", data).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "success",
+    });
+    getList();
+    clearoverlay();
+  });
+};
+const goRouter = (path, code) => {
+  console.log(path, code);
+  $router.push({
+    path,
+    query: {
+      code: code,
+    },
+  });
+};
 </script>
 <style scoped lang="scss">
 // .v-slide-group__container {

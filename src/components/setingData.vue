@@ -1,8 +1,7 @@
 <template>
   <div class="text-center">
-
     <div class="flex-wrap text-primary">
-      <div v-for="month in   monthlist  " :key="month" class="calendar-month mt-24 ">
+      <div v-for="month in monthlist" :key="month" class="calendar-month mt-24">
         <div class="date_year text-center">{{ month.date }}</div>
         <ul class="flex-wrap text-sub">
           <li class="text-tip">日</li>
@@ -17,70 +16,110 @@
             <div></div>
           </li>
 
-          <li v-for="item in   month.days  " :key="item" :data-id="item.date" @click="ClickItem(item)" class="date_list">
-            <div class="relative flexCenter"
-              :class="item.selected ? 'isSelected' : nowDay == item.day ? 'is_today' : 'no_selected'">
+          <!-- <li
+            v-for="item in month.days"
+            :key="item"
+            :data-id="item.date"
+            @click="ClickItem(item)"
+            class="date_list"
+          > -->
+          <li
+            v-for="item in month.days"
+            :key="item"
+            :data-id="item.date"
+            class="date_list"
+          >
+            <!-- <div
+              class="relative flexCenter"
+              :class="
+                item.selected
+                  ? 'isSelected'
+                  : nowDay == item.day
+                  ? 'is_today'
+                  : 'no_selected'
+              "
+            > -->
+            <div
+              class="relative flexCenter"
+              :class="
+                checkOut(check_day, item.day) ? 'is_today' : 'no_selected'
+              "
+            >
               <p class="flexCenter">{{ item.day }}</p>
             </div>
-            <p v-show="item.day >= nowDay || item.selected" class="join_number">+{{ item.price }}</p>
+            <p v-show="item.day > nowDay || item.selected" class="join_number">
+              <!-- {{ priceFormat(item.day, nowDay) }} -->
+            </p>
           </li>
-
         </ul>
       </div>
     </div>
-
   </div>
 </template>
 <script setup>
-import moment from "moment"
+import moment from "moment";
 
-import { defineComponent, reactive, customRef, toRefs, onMounted, shallowReactive, ref, watch } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  customRef,
+  toRefs,
+  onMounted,
+  shallowReactive,
+  ref,
+  watch,
+} from "vue";
 
-const selectedDate = ref()
+const selectedDate = ref();
 
 const isShow = ref(false);
 const monthlist = ref([]);
-const nowDay = ref(moment().date())
+const nowDay = ref(moment().date());
 
+const props = defineProps({
+  check_day: { type: Array },
+});
+
+const limit_price = ref(1);
+const ifAllDay = ref([]);
 
 onMounted(() => {
-
-
-  for (let i = 0; i < 1; i++) { //循环获取几个月
-    let firstdate = moment().add(i, 'month').startOf('month');
-    console.log(nowDay.value, 'onMounted')
-    let enddate = moment().add(i, 'month').endOf('month');
+  for (let i = 0; i < 1; i++) {
+    //循环获取几个月
+    let firstdate = moment().add(i, "month").startOf("month");
+    let enddate = moment().add(i, "month").endOf("month");
     let date = firstdate.toDate();
     let days = [];
-    for (let j = 0; j < enddate.diff(date, 'days') + 1; j++) {
-      let date1 = moment(date).add(j, 'day').toDate();
+    for (let j = 0; j < enddate.diff(date, "days") + 1; j++) {
+      let date1 = moment(date).add(j, "day").toDate();
       days.push({
-        date: moment(date1).format('YYYY-MM-DD'),
+        date: moment(date1).format("YYYY-MM-DD"),
         week: moment(date1).day(),
-        day: moment(date1).date() + '',
+        day: moment(date1).date() + "",
         hover: false,
         selected: false,
-        price: '2'
-      })
+        price: 2,
+      });
     }
 
     monthlist.value.push({
-      date: firstdate.format('YYYY 年 MM 月'),
+      date: firstdate.format("MM/YYYY"),
       days: days,
       week: firstdate.day(),
-    }
-    );
+    });
   }
+});
 
-  console.log(monthlist);
-
-})
+const checkOut = (check_days, day) => {
+  if (check_days) {
+    return Array.from(check_days).includes(day);
+  }
+};
 
 const ClickItem = (day) => {
   // if (nowDay.value > day.day) return
   day.selected = !day.selected;
-}
-
+};
 
 const ClickWeek = (month, week) => {
   for (let j = 0; j < month.days.length; j++) {
@@ -88,8 +127,7 @@ const ClickWeek = (month, week) => {
       month.days[j].selected = !month.days[j].selected;
     }
   }
-}
-
+};
 
 const ClickReset = () => {
   for (let i = 0; i < monthlist.value.length; i++) {
@@ -99,9 +137,7 @@ const ClickReset = () => {
       day1.hover = false;
     }
   }
-}
-
-
+};
 </script>
 <style lang="scss" scoped>
 .is_today {
@@ -112,11 +148,10 @@ const ClickReset = () => {
   }
 }
 
-
 .calendar-month .isSelected {
   p {
     color: #fff !important;
-    background-image: url('../assets/img/activeBg.png');
+    background-image: url("../assets/img/activeBg.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     -moz-background-size: 100% 100%;
@@ -139,7 +174,6 @@ const ClickReset = () => {
     width: 25px;
     height: 25px;
   }
-
 }
 
 .no_selected {
@@ -148,7 +182,7 @@ const ClickReset = () => {
     font-size: 12px;
     font-weight: 700;
     color: #000;
-    background: rgba($color: #bfbfbf, $alpha: .5);
+    background: rgba($color: #bfbfbf, $alpha: 0.5);
     width: 25px;
     height: 25px;
   }
@@ -171,7 +205,6 @@ const ClickReset = () => {
   justify-content: center;
   align-items: center;
 }
-
 
 ul {
   display: block;
@@ -210,7 +243,6 @@ div {
   flex-wrap: wrap;
   display: flex;
 }
-
 
 .text-primary {
   width: 100%;
@@ -253,7 +285,6 @@ div {
   color: #f5222d;
 }
 
-
 .absolute {
   position: absolute;
 }
@@ -294,4 +325,3 @@ div {
   color: #999;
 }
 </style>
-  

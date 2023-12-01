@@ -8,6 +8,9 @@ import {
   bindEmailApi,
   changePasswordApi,
   changePayPasswordApi,
+  taskApi,
+  logoutApi,
+  childApi,
 } from "@/api/userApi";
 import { setItem, getItem, removeAllItem, removeItem } from "@/utils/storage";
 import router from "@/router";
@@ -16,8 +19,14 @@ export default {
   namespaced: true,
   state: () => ({
     token: getItem("token") || "",
+    code: getItem("code") || "",
     info: {},
     userInfo: {},
+    task: {},
+    child: {
+      child_total: 0,
+      commission: 0,
+    },
   }),
   mutations: {
     setToken(state, token) {
@@ -26,9 +35,17 @@ export default {
     },
     setInfo(state, info) {
       state.info = info;
+      state.code = info.code;
+      setItem("code", info.code);
     },
     setUserInfo(state, rsp) {
       state.userInfo = rsp;
+    },
+    setTask(state, rsp) {
+      state.task = rsp;
+    },
+    setClid(state, rsp) {
+      state.child = rsp;
     },
   },
   actions: {
@@ -54,10 +71,10 @@ export default {
     },
     logout(context) {
       if (context.state.token) {
+        logoutApi();
         this.commit("user/setToken", "");
         this.commit("user/setInfo", {});
         removeAllItem();
-        router.push("/Login");
       }
     },
     async getInfo(content) {
@@ -81,6 +98,17 @@ export default {
     },
     changePayPassword(content, info) {
       return changePayPasswordApi(info);
+    },
+    async getTask(content, type) {
+      const rsp = await taskApi(type);
+      content.commit("setTask", rsp);
+    },
+    clearTask(content) {
+      content.commit("setTask", { amount: 0, list: [] });
+    },
+    async getChild(content) {
+      const rsp = await childApi();
+      content.commit("setClid", rsp);
     },
   },
 };

@@ -47,6 +47,9 @@ const routes = [
     path: "/PactDetail",
     name: "PactDetail",
     component: () => import("@/views/PactDetail.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/Search",
@@ -94,6 +97,9 @@ const routes = [
     path: "/Invite",
     name: "invite",
     component: () => import("@/views/home/Invite.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/Downline",
@@ -225,16 +231,25 @@ const routes = [
     path: "/SetInfor",
     name: "setInfor",
     component: () => import("@/views/myHomePage/SetInfor.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/SetName",
     name: "setName",
     component: () => import("@/views/myHomePage/SetName.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/InCoupon",
     name: "inCoupon",
     component: () => import("@/views/myHomePage/InCoupon.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/DetailsFunds",
@@ -330,16 +345,25 @@ const routes = [
     path: "/MissionCenter",
     name: "missionCenter",
     component: () => import("@/views/myHomePage/MissionCenter.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/CouponList",
     name: "couponList",
     component: () => import("@/views/myHomePage/CouponList.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/CouponDetail",
     name: "couponDetail",
     component: () => import("@/views/myHomePage/CouponDetail.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
 
   {
@@ -356,16 +380,41 @@ const routes = [
     path: "/Homepage",
     name: "homepage",
     component: () => import("@/views/partner/Homepage.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/Beginner",
     name: "beginner",
     component: () => import("@/views/partner/Beginner.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/OneKey",
     name: "oneKey",
     component: () => import("@/views/partner/OneKey.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/partner/list",
+    name: "/partner/list",
+    component: () => import("@/views/partner/Partner.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/partner/rule",
+    name: "rule",
+    component: () => import("@/views/partner/Rule.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/PartnershipRule",
@@ -376,6 +425,9 @@ const routes = [
     path: "/FollowList",
     name: "followList",
     component: () => import("@/views/partner/FollowList.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/FollowNum",
@@ -391,11 +443,25 @@ const routes = [
     path: "/TeamRecord",
     name: "teamRecord",
     component: () => import("@/views/partner/TeamRecord.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/FollowDetail",
     name: "followDetail",
     component: () => import("@/views/partner/FollowDetail.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/TradeRecordList",
+    name: "TradeRecordList",
+    component: () => import("@/views/partner/TraderRecord.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 

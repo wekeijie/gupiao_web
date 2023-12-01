@@ -20,7 +20,10 @@ export default {
     },
     async getList(content, info) {
       const rsp = await listApi(info.page, info.type, info.date);
-      content.commit("setList", rsp);
+      console.log("rsp", rsp);
+      if (rsp.length > 0) {
+        content.commit("setList", rsp);
+      }
     },
   },
 };

@@ -70,7 +70,7 @@
     <v-bottom-sheet v-model="typeOpen">
       <div class="flexBetween sheet-top">
         <div class="sheet-close" @click="typeOpen = false">取消</div>
-        <p class="sheet-sure" @click="changeType">完成</p>
+        <p class="sheet-sure" @click="changeType">确认</p>
       </div>
       <v-divider></v-divider>
       <div class="list-cont-box">

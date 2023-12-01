@@ -4,22 +4,22 @@
       <div class="flexBetween my-top-box">
         <p>我的</p>
         <div class="flexCenter">
-          <img
+          <!-- <img
             src="../../assets/img/myCustomer.png"
             @click="goRouter('/IframeDemo')"
-          />
+          /> -->
           <div class="message-list">
             <img
               src="../../assets/img/myMessage.png"
-              @click="goRouter('/MessageLIst')"
+              @click="goRouter('/Message')"
             />
             <span v-if="3 > 0">3</span>
           </div>
         </div>
       </div>
       <div class="apply-box">
-        <!-- <div class="head-left" @click="goRouter('/SetInfor')"> -->
-        <div class="head-left">
+        <div class="head-left" @click="goRouter('/SetInfor')">
+          <!-- <div class="head-left"> -->
           <div class="avatat-box">
             <!-- <img
               v-if="store.state.user.info.avatar"
@@ -123,6 +123,13 @@
           <div class="flexStart">
             <img class="list-icp" src="@/assets/img/myDocumentary.png" />
             <span>我要跟单</span>
+          </div>
+          <img class="right-img" src="@/assets/img/rightImg.png" />
+        </div>
+        <div class="flexBetween controls-list" @click="goRouter('/FollowList')">
+          <div class="flexStart">
+            <img class="list-icp" src="@/assets/img/myDocumentary.png" />
+            <span>跟单明细</span>
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>

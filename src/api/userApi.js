@@ -27,3 +27,15 @@ export const changePasswordApi = (info) => {
 export const changePayPasswordApi = (info) => {
   return request.post("user/change-pay-password", info);
 };
+
+export const taskApi = (type) => {
+  return request.get("user/task?type=" + type);
+};
+
+export const logoutApi = () => {
+  return request.get("user/logout");
+};
+
+export const childApi = () => {
+  return request.get("user/child-info");
+};

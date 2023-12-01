@@ -10,12 +10,14 @@
       src="../../assets/img/agency/top.jpg"
     />
     <div class="flexAroud total-number-box">
-      <div @click="goRouter('/LineLIst', 1)">
-        <p>0</p>
+      <!-- <div @click="goRouter('/LineLIst', 1)"> -->
+      <div>
+        <p>{{ store.state.user.child.child_total }}</p>
         <p>累计下线</p>
       </div>
-      <div @click="goRouter('/Downline', 2)">
-        <p>0</p>
+      <!-- <div @click="goRouter('/Downline', 2)"> -->
+      <div>
+        <p>{{ store.state.user.child.commission }}</p>
         <p>累计返佣</p>
       </div>
     </div>
@@ -29,13 +31,13 @@
         <thead>
           <tr>
             <th class="text-left">邀请人员等级</th>
-            <th class="text-left">返佣比列</th>
+            <th class="text-left">返佣比例</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in desserts" :key="item.name">
-            <td class="">{{ item.name }}</td>
-            <td class="list-red">{{ item.calories }}</td>
+          <tr v-for="item in store.state.agen.list" :key="item.title">
+            <td class="">{{ item.title }}</td>
+            <td class="list-red">{{ item.commission + "%" }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -48,10 +50,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in dessertsNormal" :key="item.name">
-            <td class="">{{ item.name }}</td>
+          <tr v-for="item in store.state.agen.list" :key="item.title">
+            <td class="">{{ item.title }}</td>
             <td class="list-people">{{ item.number }}</td>
-            <td class="list-red">{{ item.calories }}</td>
+            <td class="list-red">{{ parseInt(item.coupon) }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -82,74 +84,25 @@ import {
   onBeforeUnmount,
   computed,
   watch,
-  nextTick
-} from 'vue'
+  nextTick,
+} from "vue";
 
-import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from 'vue-router'
-const $router = useRouter()
-const $route = useRoute()
-const desserts = ref([
-  {
-    name: '至尊VIP',
-    calories: '80 %'
-  },
-  {
-    name: '王者VIP',
-    calories: '70 %'
-  },
-  {
-    name: '钻石VIP',
-    calories: '60 %'
-  },
-  {
-    name: '白金VIP',
-    calories: '50 %'
-  },
-  {
-    name: '白银VIP',
-    calories: '40 %'
-  },
-  {
-    name: '普通会员',
-    calories: '20 %'
+import PageHeader from "../../components/topWrap.vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const $route = useRoute();
+
+onMounted(() => {
+  store.dispatch("agen/getList");
+  if (store.getters.token) {
+    store.dispatch("user/getChild");
   }
-])
-const dessertsNormal = ref([
-  {
-    name: '普通会员',
-    number: '5人以上',
-    calories: '奖励利息券1288元'
-  },
-  {
-    name: '白银VIP',
-    number: '2人及以上',
-    calories: '奖励利息券888元'
-  },
-  {
-    name: '白金VIP',
-    number: '5人及以上',
-    calories: '奖励利息券16888元'
-  },
-  {
-    name: '钻石VIP',
-    number: '10人及以上',
-    calories: '奖励利息券2888元'
-  },
-  {
-    name: '王者VIP',
-    number: '15人及以上',
-    calories: '奖励利息券4688元'
-  },
-  {
-    name: '至尊VIP',
-    number: '20人及以上',
-    calories: '奖励利息券6888元'
-  }
-])
+});
+
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
 </script>
 <style lang="scss" scoped>
 .activity-rule {
@@ -184,7 +137,7 @@ const goRouter = (path) => {
   th {
     padding: 0;
     text-align: center !important;
-    background-image: url('../../assets/img/agency/labBg.png');
+    background-image: url("../../assets/img/agency/labBg.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     -moz-background-size: 100% 100%;
@@ -238,7 +191,7 @@ const goRouter = (path) => {
 .grade-box {
   width: 100%;
   position: relative;
-  background-image: url('../../assets/img/agency/bg.png');
+  background-image: url("../../assets/img/agency/bg.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
