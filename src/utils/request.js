@@ -1,52 +1,62 @@
-import axios from 'axios'
-import { httpErrorFormat } from './helper'
-import {store} from '@/store'
+import axios from "axios";
+import { httpErrorFormat } from "./helper";
+import { store } from "@/store";
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 5000
-})
+  timeout: 5000,
+});
 
-service.interceptors.request.use(config => {
-  if(store.getters.token){
-    config.headers.Authorization = `Bearer ${store.getters.token}`
+service.interceptors.request.use(
+  (config) => {
+    store.dispatch("loadding/show");
+    if (store.getters.token) {
+      config.headers.Authorization = `Bearer ${store.getters.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    store.dispatch("loadding/hide");
+    return Promise.reject(error);
   }
-  return config
-},error => {
-  return Promise.reject(error)
-})
+);
 
 service.interceptors.response.use(
-  response => {
-    const {code,data,message} = response.data
-    if(code === 0){
-      return data
+  (response) => {
+    store.dispatch("loadding/hide");
+    const { code, data, message } = response.data;
+    if (code === 0) {
+      return data;
     } else {
-      store.dispatch('snackbar/warning', {
+      store.dispatch("snackbar/warning", {
         active: true,
         body: message,
-      })
-      return Promise.reject(new Error(message)) 
+      });
+      return Promise.reject(new Error(message));
     }
   },
-  error => {
-    if ( error.response && error.response.status && error.response.status === 401 ){
-      store.dispatch('user/logout')
-      store.dispatch('snackbar/warning', {
+  (error) => {
+    store.dispatch("loadding/hide");
+    if (
+      error.response &&
+      error.response.status &&
+      error.response.status === 401
+    ) {
+      store.dispatch("user/logout");
+      store.dispatch("snackbar/warning", {
         active: true,
-        body: '请重新登录!',
-      })
-    }else{
-      store.dispatch('snackbar/show', {
+        body: "请重新登录!",
+      });
+    } else {
+      store.dispatch("snackbar/show", {
         active: true,
         body: httpErrorFormat(error),
-        color: 'error'
-      })
+        color: "error",
+      });
     }
-    
-    return Promise.reject(new Error(error))  
+
+    return Promise.reject(new Error(error));
   }
-)
+);
 
-
-export default service
+export default service;
