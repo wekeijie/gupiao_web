@@ -41,8 +41,25 @@
       </div>
 
       <div class="multipleList-title">申请周期</div>
+      <div class="d-flex align-content-space-around flex-wrap mb-6 text-center">
+        <v-sheet
+          v-for="(item, key) in store.state.copyTrade.one.list"
+          :key="item.id"
+          class="py-5 w-33 rounded-lg elevation-2 mb-3 mr-1"
+          :class="selectIndex == key ? 'bg-red-darken-3' : ''"
+          @click="selectList(key)"
+        >
+          <h5>{{ item.title }}</h5>
+          <p
+            class="text-caption"
+            :class="selectIndex == key ? 'text-white' : 'text-grey-darken-1'"
+          >
+            <span>{{ item.min }}</span> ~<span>{{ item.max }}</span>
+          </p>
+        </v-sheet>
+      </div>
 
-      <div class="multipleList-item flexBetween">
+      <!-- <div class="multipleList-item flexBetween">
         <div
           class="multiple-item"
           v-for="(item, key) in store.state.copyTrade.one.list"
@@ -55,7 +72,7 @@
             <span>{{ item.min }}</span> ~<span>{{ item.max }}</span>
           </p>
         </div>
-      </div>
+      </div> -->
 
       <v-btn block color="#fa3534" @click="sub">一键跟单</v-btn>
 
@@ -336,5 +353,8 @@ const goRouter = (path) => {
     font-size: 0.9rem;
     font-weight: 700;
   }
+}
+.w-33 {
+  width: 32% !important;
 }
 </style>

@@ -21,6 +21,7 @@
           clearable
           max-height="30"
           v-model="name"
+          @keyup.enter="searchSub"
         ></v-text-field>
         <v-btn color="#dd5054" @click="searchSub">查找</v-btn>
       </div>
@@ -44,7 +45,7 @@
           <p>操盘师:{{ store.state.trade.info.name }}</p>
           <p>就职于:{{ store.state.trade.info.company }}</p>
           <p>
-            最佳策略投资年数:{{ store.state.trade.info.year }}
+            投资年数:{{ store.state.trade.info.year }}
             年
           </p>
           <p>特别说明:{{ store.state.trade.info.summary }}</p>
