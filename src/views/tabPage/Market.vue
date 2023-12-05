@@ -1,17 +1,12 @@
 <template>
   <div class="message-box">
-
     <div class="tab-box">
       <v-tabs v-model="model">
-        <v-tab @click="model=0">沪深</v-tab>
-        <v-tab @click="model=1">自选</v-tab>
+        <v-tab @click="model = 0">沪深</v-tab>
+        <v-tab @click="model = 1">自选</v-tab>
       </v-tabs>
-      <div
-       
-      @click="goRouter('/Search','热门行业')"
-        class="search-box"
-      >
-        <img src="@/assets/img/search.png">
+      <div @click="goRouter('/Search', '热门行业')" class="search-box">
+        <img src="@/assets/img/search.png" />
         <span>输入股票名称/代码</span>
       </div>
     </div>
@@ -21,77 +16,82 @@
       v-model="model"
       height="auto"
     >
-      <v-carousel-item
-        v-for="(slide, i) in 2"
-        :key="i"
-        
-      >
-        <div
-          class="new-box"
-          v-if="i==0"
-        >
+      <v-carousel-item v-for="(slide, i) in 2" :key="i">
+        <div class="new-box" v-if="i == 0">
           <div class="exponent-box">
             <div
               class="exponent-list"
-              v-for="item in store.state.market.index" :key="item.code"
+              v-for="item in store.state.market.index"
+              :key="item.code"
               :class="'text-' + watchStringToColor(item.ratio)"
             >
               <h1>{{ item.name }}</h1>
               <h2>{{ item.last_price }}</h2>
-              <h3><span>{{ item.price }}</span><span class="ml-2">{{item.ratio}}%</span></h3>
-              <img src="../../assets/img/curve.png">
+              <h3>
+                <span>{{ item.price }}</span
+                ><span class="ml-2">{{ item.ratio }}%</span>
+              </h3>
+              <img src="../../assets/img/curve.png" />
             </div>
-
           </div>
           <div class="sort-title">
             <p>今日股市</p>
           </div>
           <div class="all_number-box">
             <div>
-              <p class="">{{ store.state.market.day.rise }}
-                <img src="../../assets/img/curveUp.png">
+              <p class="">
+                {{ store.state.market.day.rise }}
+                <img src="../../assets/img/curveUp.png" />
               </p>
               <span class="">涨家数</span>
             </div>
             <div>
-              <p class="text-green">{{ store.state.market.day.fall }}
-                <img src="../../assets/img/curveDown.png">
+              <p class="text-green">
+                {{ store.state.market.day.fall }}
+                <img src="../../assets/img/curveDown.png" />
               </p>
               <span class="">跌家数</span>
             </div>
             <div>
-              <p class="text-black">{{ store.state.market.day.flat }}
-                <img src="../../assets/img/average.png">
+              <p class="text-black">
+                {{ store.state.market.day.flat }}
+                <img src="../../assets/img/average.png" />
               </p>
               <span class="">平盘家数</span>
             </div>
           </div>
 
-          <div class="sort-title" 
-              @click="goRouter('/HotList','gainian')">
+          <div class="sort-title" @click="goRouter('/HotList', 'gainian')">
             <p>热门概念</p>
-            <img src="../../assets/img/rightImg.png">
+            <img src="../../assets/img/rightImg.png" />
           </div>
-          
+
           <div class="list-box">
             <div
               class="list-cont"
               v-for="item in store.state.market.gainian"
               :key="item.code"
-              @click="goRouter('/DetailList',item.name,item.code)"
+              @click="goRouter('/DetailList', item.name, item.code)"
             >
               <h1>{{ item.name }}</h1>
-              <h2 :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</h2>
+              <h2 :class="'text-' + watchStringToColor(item.rank)">
+                {{ updateStrIcon(item.rank) + "%" }}
+              </h2>
               <h3>{{ item.first_name }}</h3>
-              <h4><span :class="'text-' + watchStringToColor(item.quota)">{{ updateStrIcon(item.quota) }}</span> <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span></h4>
+              <h4>
+                <span :class="'text-' + watchStringToColor(item.quota)">{{
+                  updateStrIcon(item.quota)
+                }}</span>
+                <span :class="'text-' + watchStringToColor(item.first_rank)">{{
+                  updateStrIcon(item.first_rank) + "%"
+                }}</span>
+              </h4>
             </div>
-
           </div>
 
-          <div class="sort-title" 
-              @click="goRouter('/HotList','hangye')">
+          <div class="sort-title" @click="goRouter('/HotList', 'hangye')">
             <p>热门行业</p>
-            <img src="../../assets/img/rightImg.png">
+            <img src="../../assets/img/rightImg.png" />
           </div>
 
           <div class="list-box">
@@ -99,129 +99,132 @@
               class="list-cont"
               v-for="item in store.state.market.hangye"
               :key="item.code"
-              @click="goRouter('/DetailList',item.name,item.code)"
+              @click="goRouter('/DetailList', item.name, item.code)"
             >
               <h1>{{ item.name }}</h1>
-              <h2 :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</h2>
+              <h2 :class="'text-' + watchStringToColor(item.rank)">
+                {{ updateStrIcon(item.rank) + "%" }}
+              </h2>
               <h3>{{ item.first_name }}</h3>
-              <h4><span :class="'text-' + watchStringToColor(item.quota)">{{ updateStrIcon(item.quota) }}</span> <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span></h4>
+              <h4>
+                <span :class="'text-' + watchStringToColor(item.quota)">{{
+                  updateStrIcon(item.quota)
+                }}</span>
+                <span :class="'text-' + watchStringToColor(item.first_rank)">{{
+                  updateStrIcon(item.first_rank) + "%"
+                }}</span>
+              </h4>
             </div>
-
           </div>
-
         </div>
-        <div
-          class="new-box"
-          v-if="i==1"
-        >
-
+        <div class="new-box" v-if="i == 1">
           <table>
             <tbody>
               <tr class="tr-list">
-                <th style="text-align: left;">代码名称</th>
-                <th style="text-align: right;">最新价格</th>
+                <th style="text-align: left">代码名称</th>
+                <th style="text-align: right">最新价格</th>
                 <th
-                  style="text-align: right;"
+                  style="text-align: right"
                   class="cutUp"
-                  @click="isUp=!isUp"
-                >涨跌幅 <img
-                    src="../../assets/img/dowm.png"
-                    v-if="isUp"
-                  ><img
+                  @click="isUp = !isUp"
+                >
+                  涨跌幅 <img src="../../assets/img/dowm.png" v-if="isUp" /><img
                     src="../../assets/img/up.png"
                     v-else
-                  > </th>
+                  />
+                </th>
               </tr>
               <tr
                 class="tr-list"
                 v-for="item in store.state.watchlist.list"
-              :key="item.code"
-              @click="goCaRouter('/ChanrtPage',item.name,item.code,'')"
-
-
+                :key="item.code"
+                @click="goCaRouter('/ChanrtPage', item.name, item.code, '')"
               >
                 <td class="tr-one">
                   <p>{{ item.name }}</p>
                   <span>{{ item.code }}</span>
                 </td>
-                <td
-                  class="tr-two"
-                  style="text-align: right;"
-                >
+                <td class="tr-two" style="text-align: right">
                   <div class="tr-two-number">{{ item.price }}</div>
                 </td>
-                <td
-                  class="tr-three"
-                  style="text-align: right;"
-                >
-                  <span>{{ item.percentage + '%' }}</span>
+                <td class="tr-three" style="text-align: right">
+                  <span>{{ item.percentage + "%" }}</span>
                 </td>
               </tr>
             </tbody>
           </table>
-
         </div>
       </v-carousel-item>
     </v-carousel>
     <p class="padd-bot"></p>
-
   </div>
 </template>
 
 <script setup>
-
-import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import { useRouter, useRoute } from "vue-router"
+import {
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
-const $router = useRouter()
-const $route = useRoute()
-const model = ref(0)
-const isUp = ref(true)
+const $router = useRouter();
+const $route = useRoute();
+const model = ref(0);
+const isUp = ref(true);
 
 onMounted(() => {
-  store.dispatch('market/get')
-  store.dispatch('watchlist/getList')
-})
+  store.dispatch("market/get");
+  if (store.getters.token) {
+    store.dispatch("watchlist/getList");
+  }
+});
 
-const goRouter = (path,item,code = '') => {
-  $router.push({path,query:{
-    title:item,
-    code:code
-  }})
-}
-
-const goCaRouter = (path, name,code,prefix) => {
+const goRouter = (path, item, code = "") => {
   $router.push({
-    path, query: {
+    path,
+    query: {
+      title: item,
       code: code,
-      title:name,
-      prefix:prefix
-    }
-  })
-}
+    },
+  });
+};
+
+const goCaRouter = (path, name, code, prefix) => {
+  $router.push({
+    path,
+    query: {
+      code: code,
+      title: name,
+      prefix: prefix,
+    },
+  });
+};
 
 const watchStringToColor = (price) => {
-    if (price < 0) {
-        return 'green';
-    } else if (price === 0 || price === '') {
-        return 'black';
-    } else if (price > 0) {
-        return 'red';
-    }
-}
+  if (price < 0) {
+    return "green";
+  } else if (price === 0 || price === "") {
+    return "black";
+  } else if (price > 0) {
+    return "red";
+  }
+};
 
 const updateStrIcon = (price) => {
   if (price > 0) {
-        return '+' + price;
-    }else{
-      return price
-    }
-}
+    return "+" + price;
+  } else {
+    return price;
+  }
+};
 
 watch(model, (newVal, oldVal) => {
-  console.log(newVal, oldVal, 'newVal,oldVal')
-}
-)
+  console.log(newVal, oldVal, "newVal,oldVal");
+});
 </script>
 <style scoped lang="scss">
 .list-box {
