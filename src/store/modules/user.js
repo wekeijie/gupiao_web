@@ -76,6 +76,7 @@ export default {
         this.commit("user/setInfo", {});
         removeAllItem();
       }
+      router.push("Login");
     },
     async getInfo(content) {
       const rsp = await infoApi();
