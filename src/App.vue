@@ -1,6 +1,7 @@
 <template>
   <router-view />
   <snackbar />
+  <Loadding />
   <!-- <LiveChatWidget license="16250373" visibility="minimized" /> -->
 </template>
 
@@ -8,6 +9,7 @@
 import { onMounted } from "vue";
 import { LiveChatWidget } from "@livechat/widget-vue";
 import snackbar from "@/components/snackbar";
+import Loadding from "@/components/loading";
 onMounted(() => {
   LiveChatWidget.onGreetingHidden;
 });
