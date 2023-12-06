@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>{{ topTitle }}</template>
+      <template v-slot:headerCenter>资讯</template>
     </page-header>
     <div class="rich-cont-box">
       <div v-if="richType == 1">
