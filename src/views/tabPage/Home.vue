@@ -48,7 +48,7 @@
             <img src="@/assets/img/tab7.png" />
             <p>公司介绍</p>
           </div>
-          <div class="tab-list" @click="goRouter('/IframeDemo')">
+          <div class="tab-list">
             <img src="@/assets/img/tab8.png" />
             <p>在线咨询</p>
           </div>
@@ -110,6 +110,7 @@ import { onMounted, ref, onBeforeUnmount } from "vue";
 import { store } from "@/store";
 const isProp = ref(false);
 const isBg = ref(false);
+const myButton = ref(null);
 
 // const abnb = ref(require('@/assets/img/tab1.png'))
 const goRouter = (path) => {
@@ -119,6 +120,7 @@ onMounted(() => {
   window.addEventListener("scroll", getSwiperTop);
   store.dispatch("bannerAndRank/get");
 });
+
 const getSwiperTop = () => {
   if (document.getElementById("swiperTop"))
     isBg.value =
@@ -299,5 +301,9 @@ table {
       letter-spacing: 1px;
     }
   }
+}
+#chat-widget-container {
+  bottom: 46% !important;
+  right: 12px !important;
 }
 </style>
