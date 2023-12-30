@@ -1,5 +1,5 @@
 <template>
-  <v-main style="max-width: 408px" class="mx-auto">
+  <v-main style="max-width: 408px; min-width: 390px" class="mx-auto">
     <router-view />
     <bottomNacComponent />
   </v-main>
