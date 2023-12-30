@@ -31,8 +31,9 @@
       <div class="bg-white rounded-lg py-3 px-2 relative">
         <img
           v-if="store.state.trade.info.avatar"
-          :src="store.state.trade.info.avatar"
+          src="https://cdn.cicctx.com/20231203/XpTV53aqVg1Sz0884jmHiY34WIP9pVxEQnKsSrY2.png"
           width="90"
+          height="90"
           class="rounded-circle absolute avatar-top-left"
         />
         <img
