@@ -2,10 +2,7 @@
   <div class="search-cont">
     <div class="flexBetween search-top">
       <div class="flexStart search-box">
-        <img
-          src="../assets/img/search.png"
-          alt=""
-        >
+        <img src="../assets/img/search.png" alt="" />
         <!-- <input
           type="text"
           placeholder="搜索"
@@ -13,96 +10,97 @@
           v-model="searchCont"
           @change="searchValue"
         > -->
-        <v-col
-          cols="12"
-          sm="2"
-        >
-        <form @submit.prevent="handleSubmit">
-          <v-text-field
-            v-model="searchCont"
-            variant="none"
-            single-line
-            required
-            clearable
-            hide-details="auto"
-            label="搜索"
-            solo
-          ></v-text-field>
+        <v-col cols="12" sm="2">
+          <form @submit.prevent="handleSubmit">
+            <v-text-field
+              v-model="searchCont"
+              variant="none"
+              single-line
+              required
+              clearable
+              hide-details="auto"
+              label="搜索"
+              solo
+            ></v-text-field>
           </form>
         </v-col>
       </div>
       <h3 @click="$router.go(-1)">取消</h3>
     </div>
 
+    <div class="search-title">股票</div>
     <div
-    class="search-title"
-    >股票</div>
-    <div
-    class="flexBetween history-box"
-    v-for="item in store.state.market.search_list"
-    :key="item.code"
-    @click="goCaRouter('/ChanrtPage',item.name,item.prefix)"
+      class="flexBetween history-box"
+      v-for="item in store.state.market.search_list"
+      :key="item.code"
+      @click="goCaRouter('/ChanrtPage', item.name, item.prefix)"
     >
-    <div>
-      <h3>{{ item.name }}</h3>
-      <p>{{item.code}}</p>
+      <div>
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.code }}</p>
+      </div>
+      <img src="../assets/img/selefNo.png" alt="" v-if="item > 3" />
+      <img src="../assets/img/selef.png" alt="" v-else />
     </div>
-    <img
-      src="../assets/img/selefNo.png"
-      alt=""
-      v-if="item>3"
-    >
-    <img
-      src="../assets/img/selef.png"
-      alt=""
-      v-else
-    >
-
-    </div>
-
-
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const $route = useRoute()
-const searchCont = ref()
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const $route = useRoute();
+const searchCont = ref();
+
+onMounted(() => {
+  if ($route.query.keyword) {
+    searchCont.value = $route.query.keyword;
+    handleSubmit();
+  }
+});
+
 const goChanrt = (id) => {
-  $router.push({ path: 'ChanrtPage', query: { id: id } })
-}
+  $router.push({ path: "ChanrtPage", query: { id: id } });
+};
 const searchValue = (value) => {
   if (value) {
-
   } else {
-
   }
-}
+};
 
 const handleSubmit = () => {
-  if(searchCont.value.length < 2){
-    store.dispatch('snackbar/warning', {
-        active: true,
-        body: '请输入名称或者编码',
-      })
-      return
+  if (searchCont.value.length < 2) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入名称或者编码",
+    });
+    return;
   }
-  store.dispatch('market/search',searchCont.value)
-}
+  store.dispatch("market/search", searchCont.value);
+};
 
-const goCaRouter = (path, name,code,prefix) => {
+const goCaRouter = (path, name, code, prefix) => {
   $router.push({
-    path, query: {
+    path,
+    query: {
       code: code,
-      title:name,
-      prefix:prefix
-    }
-  })
-}
-
+      title: name,
+      prefix: prefix,
+    },
+  });
+};
 </script>
 <style lang="scss" scoped>
 .search-cont {

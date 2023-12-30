@@ -1,0 +1,55 @@
+.relative {
+  position: relative !important;
+}
+.absolute {
+  position: absolute !important;
+}
+.fixed {
+  position: fixed !important;
+}
+.bg-color {
+  background-color: #eeeff3 !important;
+}
+.nav-text-color {
+  color: #2f2f2f !important;
+}
+.border-line {
+  border: 1px solid #e3e4e8;
+}
+.text-size-05 {
+  font-size: 5px !important;
+}
+
+.list-line-bg {
+  background-color: #7ea1fa !important;
+}
+.text-ui-grey {
+  color: #5c5c5c !important;
+}
+.ui-min-height {
+  min-height: 100vh;
+}
+.border-bottom-line {
+  border-bottom: 1px solid white;
+}
+.line-height-24 {
+  line-height: 24px !important;
+}
+
+.text-indent {
+  text-indent: 2em;
+}
+.w-33 {
+  width: 33.33%;
+}
+.w-20 {
+  width: 20%;
+}
+
+.border-bottom-line-black {
+  border-bottom: 1px solid #7e7e7e;
+}
+
+.border-bottom-line-grey {
+  border-bottom: 1px solid #f6f6f8;
+}

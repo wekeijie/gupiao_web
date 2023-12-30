@@ -2,15 +2,18 @@
   <div class="text-center">
     <div class="flex-wrap text-primary">
       <div v-for="month in monthlist" :key="month" class="calendar-month mt-24">
-        <div class="date_year text-center">{{ month.date }}</div>
+        <div class="text-center text-h6 font-weight-regular text-black">
+          {{ month.date }}
+        </div>
+        <v-divider class="mt-3 mb-2"></v-divider>
         <ul class="flex-wrap text-sub">
-          <li class="text-tip">日</li>
-          <li class="text-tip">一</li>
-          <li class="text-tip">二</li>
-          <li class="text-tip">三</li>
-          <li class="text-tip">四</li>
-          <li class="text-tip">五</li>
-          <li class="text-tip">六</li>
+          <li class="text-black text-body-1">日</li>
+          <li class="text-black text-body-1">一</li>
+          <li class="text-black text-body-1">二</li>
+          <li class="text-black text-body-1">三</li>
+          <li class="text-black text-body-1">四</li>
+          <li class="text-black text-body-1">五</li>
+          <li class="text-black text-body-1">六</li>
 
           <li v-for="item in month.week" :key="item" data-id="">
             <div></div>
@@ -39,13 +42,20 @@
                   : 'no_selected'
               "
             > -->
-            <div
+            <!-- <div
               class="relative flexCenter"
               :class="
                 checkOut(check_day, item.day) ? 'is_today' : 'no_selected'
               "
+            > -->
+            <div
+              class="relative flexCenter no_selected"
+              v-if="!checkOut(check_day, item.day)"
             >
               <p class="flexCenter">{{ item.day }}</p>
+            </div>
+            <div v-else class="relative flexCenter">
+              <img src="@/assets/static/check_icon_1_06.png" width="28" />
             </div>
             <p v-show="item.day > nowDay || item.selected" class="join_number">
               <!-- {{ priceFormat(item.day, nowDay) }} -->
@@ -103,7 +113,7 @@ onMounted(() => {
     }
 
     monthlist.value.push({
-      date: firstdate.format("MM/YYYY"),
+      date: firstdate.format("YYYY-MM"),
       days: days,
       week: firstdate.day(),
     });
@@ -178,11 +188,9 @@ const ClickReset = () => {
 
 .no_selected {
   p {
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 500;
     color: #000;
-    background: rgba($color: #bfbfbf, $alpha: 0.5);
     width: 25px;
     height: 25px;
   }

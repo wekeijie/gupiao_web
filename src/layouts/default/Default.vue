@@ -1,15 +1,10 @@
 <template>
-  <v-app>
-    <default-view />
-  </v-app>
+  <v-main>
+    <router-view />
+    <bottomNacComponent />
+  </v-main>
 </template>
 
 <script setup>
-import DefaultView from './View.vue'
-import { useRouter, useRoute } from "vue-router"
-
-import { watch, ref, onMounted } from "vue"
-const $router = useRouter()
-const $route = useRoute()
-
+import bottomNacComponent from "@/components/bottomNav/Index.vue";
 </script>

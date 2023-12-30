@@ -97,7 +97,7 @@ const handleLogin = async () => {
       password: password.value,
     })
     .then(() => {
-      $router.push("/My");
+      $router.push("/user");
     });
   // }
 };

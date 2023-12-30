@@ -1,32 +1,13 @@
 <template>
-  <div>
-    <page-header>
-      <template v-slot:headerCenter>邀请奖励</template>
-    </page-header>
-
-    <div class="invite-cont">
-      <img
-        src="../../assets/img/longPicture/InviteRewards.jpg"
-        alt=""
-      >
-    </div>
-
-  </div>
+  <page-header>
+    <template v-slot:headerCenter>邀请好友</template>
+  </page-header>
+  <img src="@/assets/static/ref_1_03.png" class="w-100" />
+  <img src="@/assets/static/ref_1_04.png" class="w-100" />
+  <img src="@/assets/static/ref_1_05.png" class="w-100" />
+  <img src="@/assets/static/ref_1_07.png" class="w-100" />
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
-import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
-
+import PageHeader from "../../components/topWrap.vue";
 </script>
-<style lang="scss" scoped>
-.invite-cont {
-  padding: 15px 0;
-  img {
-    width: 100%;
-  }
-}
-</style>

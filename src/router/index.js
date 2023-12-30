@@ -8,12 +8,8 @@ const routes = [
     children: [
       {
         path: "/",
-        name: "home",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "home" */ "@/views/tabPage/Home.vue"),
+        name: "index",
+        component: () => import("@/views/index/Index.vue"),
       },
       {
         path: "/My",
@@ -24,9 +20,17 @@ const routes = [
         },
       },
       {
-        path: "/Message",
+        path: "/user",
+        name: "user",
+        component: () => import("@/views/user/Index.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/news",
         name: "message",
-        component: () => import("@/views/tabPage/Message.vue"),
+        component: () => import("@/views/tabPage/News.vue"),
       },
       {
         path: "/Market",
@@ -37,6 +41,14 @@ const routes = [
         path: "/Pact",
         name: "pact",
         component: () => import("@/views/tabPage/Pact.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/contract",
+        name: "contract",
+        component: () => import("@/views/contract/Index.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -89,17 +101,15 @@ const routes = [
     component: () => import("@/views/home/Trading.vue"),
   },
   {
-    path: "/Agency",
+    path: "/agency",
     name: "agency",
-    component: () => import("@/views/home/Agency.vue"),
+    component: () => import("@/views/index/Agency.vue"),
   },
+
   {
     path: "/Invite",
     name: "invite",
-    component: () => import("@/views/home/Invite.vue"),
-    meta: {
-      requiresAuth: true,
-    },
+    component: () => import("@/views/home/Share.vue"),
   },
   {
     path: "/Downline",
@@ -142,10 +152,11 @@ const routes = [
     name: "longImg",
     component: () => import("@/views/common/longImg.vue"),
   },
+
   {
     path: "/ApplyContract",
     name: "applyContract",
-    component: () => import("@/views/common/ApplyContract.vue"),
+    component: () => import("@/views/common/ApplyContra.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -197,7 +208,7 @@ const routes = [
   {
     path: "/TopUp",
     name: "topUp",
-    component: () => import("@/views/myHomePage/TopUp.vue"),
+    component: () => import("@/views/user/TopUp.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -213,7 +224,7 @@ const routes = [
   {
     path: "/Withdraw",
     name: "withdraw",
-    component: () => import("@/views/myHomePage/Withdraw.vue"),
+    component: () => import("@/views/user/Withdraw.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -243,10 +254,11 @@ const routes = [
       requiresAuth: true,
     },
   },
+
   {
     path: "/InCoupon",
-    name: "inCoupon",
-    component: () => import("@/views/myHomePage/InCoupon.vue"),
+    name: "InCoupon",
+    component: () => import("@/views/myHomePage/CheckIn.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -273,9 +285,17 @@ const routes = [
     },
   },
   {
+    path: "/InvestorPlan",
+    name: "InvestorPlan",
+    component: () => import("@/views/myHomePage/InvestorPlan.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/Documentary",
     name: "documentary",
-    component: () => import("@/views/myHomePage/Documentary.vue"),
+    component: () => import("@/views/user/CopyTrade.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -284,6 +304,14 @@ const routes = [
     path: "/SafetyManage",
     name: "safetyManage",
     component: () => import("@/views/myHomePage/SafetyManage.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/setting",
+    name: "setting",
+    component: () => import("@/views/myHomePage/Setting.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -379,7 +407,7 @@ const routes = [
   {
     path: "/Homepage",
     name: "homepage",
-    component: () => import("@/views/partner/Homepage.vue"),
+    component: () => import("@/views/partner/Index.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -387,7 +415,7 @@ const routes = [
   {
     path: "/Beginner",
     name: "beginner",
-    component: () => import("@/views/partner/Beginner.vue"),
+    component: () => import("@/views/partner/Newomer.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -395,7 +423,7 @@ const routes = [
   {
     path: "/OneKey",
     name: "oneKey",
-    component: () => import("@/views/partner/OneKey.vue"),
+    component: () => import("@/views/partner/OneCopy.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -409,9 +437,17 @@ const routes = [
     },
   },
   {
+    path: "/Partner/list",
+    name: "/partner/list",
+    component: () => import("@/views/partner/ListRule.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/partner/rule",
     name: "rule",
-    component: () => import("@/views/partner/Rule.vue"),
+    component: () => import("@/views/partner/RuleShow.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -424,7 +460,7 @@ const routes = [
   {
     path: "/FollowList",
     name: "followList",
-    component: () => import("@/views/partner/FollowList.vue"),
+    component: () => import("@/views/partner/CopyList.vue"),
     meta: {
       requiresAuth: true,
     },

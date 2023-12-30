@@ -109,7 +109,10 @@
       </div>
 
       <div class="controls-box">
-        <div class="flexBetween controls-list" @click="goRouter('/StarAuthor')">
+        <div
+          class="flexBetween controls-list"
+          @click="goRouter('/InvestorPlan')"
+        >
           <div class="flexStart">
             <img class="list-icp" src="@/assets/img/myStar.png" />
             <span>明星投资者</span>
@@ -133,10 +136,7 @@
           </div>
           <img class="right-img" src="@/assets/img/rightImg.png" />
         </div>
-        <div
-          class="flexBetween controls-list"
-          @click="goRouter('/SafetyManage')"
-        >
+        <div class="flexBetween controls-list" @click="goRouter('/setting')">
           <div class="flexStart">
             <img class="list-icp" src="@/assets/img/mySecure.png" />
             <span>账号与安全</span>
