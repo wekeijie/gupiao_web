@@ -2,7 +2,7 @@
   <v-dialog v-model="store.getters.loadding" hide-overlay persistent>
     <v-card color="primary">
       <v-card-text>
-        Please stand by
+        加载中...
         <v-progress-linear
           indeterminate
           color="white"
