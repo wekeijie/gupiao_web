@@ -1,4 +1,4 @@
-import { listApi, putApi, getRechargeApi } from "@/api/topUpApi";
+import { listApi, putApi, getRechargeApi, getMunterApi } from "@/api/topUpApi";
 export default {
   namespaced: true,
   state: () => ({
@@ -27,6 +27,9 @@ export default {
     },
     subPut(content, data) {
       return putApi(data);
+    },
+    getMunter(content, orderid) {
+      return getMunterApi(orderid);
     },
     async getRecharge(content, info) {
       const rsp = await getRechargeApi(info.page, info.status);

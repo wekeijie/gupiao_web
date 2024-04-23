@@ -11,6 +11,7 @@ import {
   taskApi,
   logoutApi,
   childApi,
+  getKefuApi,
 } from "@/api/userApi";
 import { setItem, getItem, removeAllItem, removeItem } from "@/utils/storage";
 import router from "@/router";
@@ -110,6 +111,9 @@ export default {
     async getChild(content) {
       const rsp = await childApi();
       content.commit("setClid", rsp);
+    },
+    getKefu() {
+      return getKefuApi();
     },
   },
 };

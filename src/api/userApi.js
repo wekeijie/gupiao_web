@@ -8,6 +8,10 @@ export const infoApi = () => {
   return request.get("user/info");
 };
 
+export const getKefuApi = () => {
+  return request.get("kefu/get");
+};
+
 export const changeNameApi = (info) => {
   return request.post("user/change-name", info);
 };

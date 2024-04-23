@@ -214,6 +214,14 @@ const routes = [
     },
   },
   {
+    path: "/TopUp/unionpay",
+    name: "unionpay",
+    component: () => import("@/views/user/UnionPay.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/TopUp/manually",
     name: "topUpManually",
     component: () => import("@/views/myHomePage/rechargeManually.vue"),
@@ -225,6 +233,14 @@ const routes = [
     path: "/Withdraw",
     name: "withdraw",
     component: () => import("@/views/user/Withdraw.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/online-service",
+    name: "onlineService",
+    component: () => import("@/views/user/OnlineService.vue"),
     meta: {
       requiresAuth: true,
     },

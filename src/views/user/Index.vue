@@ -16,7 +16,10 @@
           </div>
         </v-col>
         <v-col cols="3" class="text-white px-0 text-right">
-          <v-icon size="large" class="mr-2" @click="onOpenLink"
+          <v-icon
+            size="large"
+            class="mr-2"
+            @click="jump(router, '/online-service')"
             >mdi-face-agent</v-icon
           >
           <v-icon size="large" @click="jump(router, '/setting')"

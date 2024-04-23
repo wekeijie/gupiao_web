@@ -139,10 +139,22 @@
       </v-sheet>
     </div>
   </div>
+  <v-dialog max-width="500" v-model="store.state.bannerAndRank.has_alert">
+    <v-card :title="store.state.bannerAndRank.alert.title">
+      <v-card-text v-html="store.state.bannerAndRank.alert.content">
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn text="关闭" @click="updateAlertActive"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 <script setup>
 import searchComponent from "@/components/search/Index.vue";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { store } from "@/store";
 import { useRouter } from "vue-router";
 import { jump } from "@/utils/constName";
@@ -150,7 +162,17 @@ const router = useRouter();
 
 onMounted(() => {
   store.dispatch("bannerAndRank/get");
+  if (
+    store.state.bannerAndRank.alert &&
+    store.state.bannerAndRank.view_alert == false
+  ) {
+    store.commit("bannerAndRank/updateAlertActive", true);
+  }
 });
+
+const updateAlertActive = () => {
+  store.commit("bannerAndRank/updateAlertActive", false);
+};
 </script>
 <style scoped>
 .banner-mt-n101 {

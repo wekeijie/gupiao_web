@@ -48,6 +48,20 @@
           >
         </v-row>
       </v-sheet>
+
+      <v-sheet class="white rounded-lg py-4 mt-5 px-3">
+        <div class="text-body-1">请选择充值渠道</div>
+        <v-list density="compact" @click:select="selectChannel">
+          <v-list-item
+            v-for="(item, i) in channel"
+            :key="i"
+            :value="item"
+            color="primary"
+          >
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-sheet>
     </div>
   </div>
   <v-btn
@@ -76,16 +90,21 @@ let info = reactive({
   min: 0,
   amount: 0,
 });
+const channel = ref([]);
 
 onMounted(() => {
   store.dispatch("topUp/getList").then(() => {
     if (store.state.topUp.list[0]) {
-      info = store.state.topUp.list[0];
+      channel.value = store.state.topUp.list;
     } else {
       maintenance();
     }
   });
 });
+
+const selectChannel = (id, value, path) => {
+  info = id.id;
+};
 
 const submitJump = () => {
   if (money.value < info.min) {
