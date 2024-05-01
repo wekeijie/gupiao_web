@@ -12,8 +12,8 @@ export const activeListApi = () => {
   return request.get("market-trade/list");
 };
 
-export const endListApi = () => {
-  return request.get("market-trade/end-list");
+export const endListApi = (status = 0) => {
+  return request.get("market-trade/end-list?status=" + status);
 };
 
 export const buyApi = (data) => {

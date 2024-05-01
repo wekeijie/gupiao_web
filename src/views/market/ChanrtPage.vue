@@ -2,9 +2,11 @@
   <div class="chanrt-box">
     <page-header>
       <template v-slot:headerCenter>
-        <h2><span>sh</span> {{ title }}（{{ Symbol }}）</h2>
-        <p v-show="is_open">
-          休市中 <span>{{ last_update_date }}</span>
+        <h2>{{ title }}（{{ symbolCodeFormat(Symbol, prefix) }}）</h2>
+        <p v-show="store.state.market.stock_new_info.f292 != 2">
+          <span>{{
+            extractTxtValue(store.state.market.stock_new_info.f292)
+          }}</span>
         </p>
       </template>
       <template v-slot:headerRight>
@@ -13,12 +15,35 @@
     </page-header>
     <div
       class="flexCenter argument-box"
-      :class="'text-' + watchStringToColor(store.state.market.stock_info.l)"
+      :class="
+        'text-' + watchStringToColor(store.state.market.stock_new_info.f170)
+      "
     >
-      <h2>{{ store.state.market.stock_info.price }}</h2>
+      <h2>
+        {{
+          marketDataFormat(
+            store.state.market.stock_new_info.f43,
+            store.state.market.stock_new_info.f59
+          )
+        }}
+      </h2>
       <div>
-        <p>{{ store.state.market.stock_info.l }}</p>
-        <p>{{ store.state.market.stock_info.e + "%" }}</p>
+        <p>
+          {{
+            marketDataFormat(
+              store.state.market.stock_new_info.f169,
+              store.state.market.stock_new_info.f59
+            )
+          }}
+        </p>
+        <p>
+          {{
+            marketDataFormat(
+              store.state.market.stock_new_info.f170,
+              store.state.market.stock_new_info.f59
+            ) + "%"
+          }}
+        </p>
       </div>
     </div>
     <v-tabs grow v-model="model">
@@ -55,53 +80,103 @@
     <div class="flexStart stati-box">
       <div class="stati-list">
         <p>最高</p>
-        <span>{{ store.state.market.stock_info.high }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f44,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>最低</p>
-        <span>{{ store.state.market.stock_info.low }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f45,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>涨停</p>
-        <span>{{ store.state.market.stock_info.zhangting }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f51,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>跌停</p>
-        <span>{{ store.state.market.stock_info.dieting }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f52,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>今开</p>
-        <span>{{ store.state.market.stock_info.jinkai }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f46,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>昨收</p>
-        <span>{{ store.state.market.stock_info.zuoshou }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f60,
+            store.state.market.stock_new_info.f59
+          )
+        }}</span>
       </div>
       <div class="stati-list">
         <p>振幅</p>
-        <span>{{ store.state.market.stock_info.zhenfu + "%" }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f170,
+            store.state.market.stock_new_info.f59
+          ) + "%"
+        }}</span>
       </div>
       <div class="stati-list">
         <p>换手率</p>
-        <span>{{ store.state.market.stock_info.huanshou + "%" }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f168,
+            store.state.market.stock_new_info.f59
+          ) + "%"
+        }}</span>
       </div>
       <div class="stati-list">
         <p>成交量</p>
         <span>{{
-          toWanString(store.state.market.stock_info.jiaoliang) + "手"
+          toWanString(store.state.market.stock_new_info.f47) + "手"
         }}</span>
       </div>
       <div class="stati-list">
         <p>成交额</p>
-        <span>{{ toYiString(store.state.market.stock_info.jiaoe) }}</span>
+        <span>{{ toYiString(store.state.market.stock_new_info.f48) }}</span>
       </div>
       <div class="stati-list">
         <p>市盈率</p>
-        <span>{{ store.state.market.stock_info.yinlv + "%" }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f162,
+            store.state.market.stock_new_info.f59
+          ) + "%"
+        }}</span>
       </div>
       <div class="stati-list">
         <p>市净率</p>
-        <span>{{ store.state.market.stock_info.jinglv + "%" }}</span>
+        <span>{{
+          marketDataFormat(
+            store.state.market.stock_new_info.f167,
+            store.state.market.stock_new_info.f59
+          ) + "%"
+        }}</span>
       </div>
     </div>
 
@@ -148,11 +223,16 @@ import PageHeader from "../../components/topWrap.vue";
 import { useRouter, useRoute } from "vue-router";
 import request from "@/utils/request";
 import { store } from "@/store";
+import {
+  symbolCodeFormat,
+  extractTxtValue,
+  marketDataFormat,
+} from "@/utils/helper";
 
 const $router = useRouter();
 const $route = useRoute();
 function DefaultData() {}
-const select = ref({ Name: "1分钟", Value: 4 });
+const select = ref({ Name: "15分钟", Value: 5 });
 const collect = ref(true);
 
 const TabTextIndex = ref(0);
@@ -163,7 +243,6 @@ const is_open = ref(false);
 const last_update_date = ref();
 
 const more = ref([
-  { Name: "1分钟", Value: 4 },
   { Name: "5分钟", Value: 5 },
   { Name: "15分钟", Value: 6 },
   { Name: "30分钟", Value: 7 },
@@ -171,7 +250,6 @@ const more = ref([
 ]);
 const PeriodList = ref([
   { Name: "分时", Value: 1 },
-  { Name: "五日", Value: 5 },
   { Name: "日线", Value: 0 },
   { Name: "周线", Value: 1 },
   { Name: "月线", Value: 2 },
@@ -273,12 +351,10 @@ DefaultData.GetMinuteOption = function (symbol) {
 DefaultData.GetPeriodData = function (name) {
   const mapPeriod = new Map([
     ["分时", { Value: 1, KLineShow: false, MinuteShow: true }],
-    ["五日", { Value: 5, KLineShow: false, MinuteShow: true }],
     ["日线", { Value: 0, KLineShow: true, MinuteShow: false }],
     ["周线", { Value: 1, KLineShow: true, MinuteShow: false }],
     ["月线", { Value: 2, KLineShow: true, MinuteShow: false }],
     ["年线", { Value: 3, KLineShow: true, MinuteShow: false }],
-    ["1分钟", { Value: 4, KLineShow: true, MinuteShow: false }],
     ["5分钟", { Value: 5, KLineShow: true, MinuteShow: false }],
     ["15分钟", { Value: 6, KLineShow: true, MinuteShow: false }],
     ["30分钟", { Value: 7, KLineShow: true, MinuteShow: false }],
@@ -301,20 +377,24 @@ const Kline = ref({
 
 const prefix_symbol = ref();
 const stock_date = ref();
+const prefix = ref(0);
 
 onMounted(() => {
   title.value = $route.query.title;
   Symbol.value = $route.query.code;
   if ($route.query.prefix) {
+    prefix.value = $route.query.prefix;
     prefix_symbol.value = $route.query.prefix + "." + Symbol.value;
   } else {
     prefix_symbol.value = Symbol.value;
   }
+  getNewStockInfo();
   OnSize();
   // CreateKLineChart()
 
   ChangeChartTab(Name.value, TabTextIndex.value);
-  store.dispatch("market/getStockInfo", prefix_symbol.value);
+  // store.dispatch("market/getStockInfo", prefix_symbol.value);
+
   if (store.getters.token) {
     store.dispatch("watchlist/get", prefix_symbol.value);
     if (store.state.watchlist.status) {
@@ -322,6 +402,11 @@ onMounted(() => {
     }
   }
 });
+
+const getNewStockInfo = () => {
+  store.dispatch("market/getStockNewInfo", prefix_symbol.value);
+};
+
 let klineRef = ref();
 let minuteRef = ref();
 
@@ -432,14 +517,27 @@ const NetworkFilter = (data, callback) => {
 };
 
 const ReqeustHistoryMinuteData = (data, callback, option) => {
-  request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
-    let klineData = jsonToHQChartKLineMinuteData(d.items);
-    let hqChartData = { code: 0, data: klineData };
-    hqChartData.symbol = d.code + ".sh";
-    hqChartData.name = d.name;
-    data.Self.PageSize = option.PageSize;
-    callback(hqChartData);
-  });
+  store
+    .dispatch("market/getStockKlineNew", {
+      symbol: prefix_symbol.value,
+      klt: 1,
+    })
+    .then((d) => {
+      let klineData = jsonToHQChartKLineMinuteData(d.klines);
+      let hqChartData = { code: 0, data: klineData };
+      hqChartData.symbol = Symbol.value;
+      hqChartData.name = title.value;
+      data.Self.PageSize = option.PageSize;
+      callback(hqChartData);
+    });
+  // request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
+  //   let klineData = jsonToHQChartKLineMinuteData(d.items);
+  //   let hqChartData = { code: 0, data: klineData };
+  //   hqChartData.symbol = d.code + ".sh";
+  //   hqChartData.name = d.name;
+  //   data.Self.PageSize = option.PageSize;
+  //   callback(hqChartData);
+  // });
 };
 
 const jsonToHQChartKLineMinuteData = (data) => {
@@ -495,24 +593,47 @@ const RequestHistoryMinuteData = (data, callback, option) => {
 };
 
 const RequestMinuteData = (data, callback, option) => {
-  request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
-    let klineData = jsonToHQChartMinuteData(d, d["prePrice"]);
-    let hqChartData = {
-      stock: [
-        {
-          symbol: d.code + ".sh",
-          minute: klineData,
-          name: d.name,
-          yclose: d["prePrice"],
-          date: d.date.split("-").join(""),
-        },
-      ],
-      code: 0,
-    };
-    stock_date.value = d.date;
-    checkDateStatus();
-    callback(hqChartData);
-  });
+  store
+    .dispatch("market/getStockKlineNew", {
+      symbol: prefix_symbol.value,
+      klt: 1,
+    })
+    .then((d) => {
+      let klineData = jsonToHQChartMinuteData(d.klines, "");
+      let hqChartData = {
+        stock: [
+          {
+            symbol: Symbol.value + ".sh",
+            minute: klineData,
+            name: title.value,
+            yclose: d.prePrice,
+            // date: d.split("-").join(""),
+          },
+        ],
+        code: 0,
+      };
+      // stock_date.value = d.date;
+      checkDateStatus();
+      callback(hqChartData);
+    });
+  // request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
+  //   let klineData = jsonToHQChartMinuteData(d, d["prePrice"]);
+  //   let hqChartData = {
+  //     stock: [
+  //       {
+  //         symbol: d.code + ".sh",
+  //         minute: klineData,
+  //         name: d.name,
+  //         yclose: d["prePrice"],
+  //         date: d.date.split("-").join(""),
+  //       },
+  //     ],
+  //     code: 0,
+  //   };
+  //   stock_date.value = d.date;
+  //   checkDateStatus();
+  //   callback(hqChartData);
+  // });
 };
 
 const jsonToFiveHQChartMinuteData = (data, yClose) => {
@@ -548,7 +669,7 @@ const jsonToFiveHQChartMinuteData = (data, yClose) => {
 
 const jsonToHQChartMinuteData = (data, yClose) => {
   let newData = [];
-  data.items.forEach(function (item) {
+  data.forEach(function (item) {
     let arr = item.split(",");
     let [date, time] = arr[0].split(" ");
     let formatDate = date.replace(/-/g, "");
@@ -561,7 +682,7 @@ const jsonToHQChartMinuteData = (data, yClose) => {
       high: parseFloat(arr[3]),
       low: parseFloat(arr[4]),
       price: parseFloat(arr[1]),
-      vol: parseInt(arr[5]),
+      // vol: parseInt(arr[5]),
       amount: parseInt(arr[6]),
       avprice: parseFloat(arr[4]),
       // 'yclose':parseFloat(arr[2])
@@ -573,19 +694,29 @@ const jsonToHQChartMinuteData = (data, yClose) => {
 };
 
 const RequestHistoryData = (data, callback) => {
-  console.log("prefix_symbol.value", prefix_symbol.value);
-  request.post("market/dayKLine", { symbol: prefix_symbol.value }).then((d) => {
-    let config = {};
-    config.name = d.name;
-    config.symbol = d.code;
-    resetDayFotmat(d, callback, config);
-  });
+  // request.post("market/dayKLine", { symbol: prefix_symbol.value }).then((d) => {
+  //   let config = {};
+  //   config.name = d.name;
+  //   config.symbol = d.code;
+  //   resetDayFotmat(d, callback, config);
+  // });
+  store
+    .dispatch("market/getStockKlineNew", {
+      symbol: prefix_symbol.value,
+      klt: "d",
+    })
+    .then((d) => {
+      let config = {};
+      config.name = title.value;
+      config.symbol = Symbol.value;
+      resetDayFotmat(d.klines, callback, config);
+    });
 };
 
 const resetDayFotmat = (data, callback, config) => {
   let newData = [];
   let yclose = null;
-  data.items.forEach(function (item) {
+  data.forEach(function (item) {
     let arr = item.split(",");
     newData.push([
       arr[0].split("-").join(""),
@@ -632,12 +763,19 @@ const pushMeQuote = () => {
     });
     $router.push("Login");
   }
+
   store
     .dispatch("watchlist/push", {
       code: parseFloat(prefix_symbol.value),
       name: title.value,
-      price: store.state.market.stock_info.price,
-      percentage: store.state.market.stock_info.e,
+      price: marketDataFormat(
+        store.state.market.stock_new_info.f43,
+        store.state.market.stock_new_info.f59
+      ),
+      percentage: marketDataFormat(
+        store.state.market.stock_new_info.f170,
+        store.state.market.stock_new_info.f59
+      ),
     })
     .then((d) => {
       let status = store.state.watchlist.status ? 0 : 1;

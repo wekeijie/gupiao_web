@@ -21,15 +21,17 @@
           <div class="exponent-box">
             <div
               class="exponent-list"
-              v-for="item in store.state.market.index"
-              :key="item.code"
-              :class="'text-' + watchStringToColor(item.ratio)"
+              v-for="item in mainIndex"
+              :key="item.f12"
+              :class="'text-' + watchStringToColor(item.f4)"
             >
-              <h1>{{ item.name }}</h1>
-              <h2>{{ item.last_price }}</h2>
+              <h1>{{ item.f14 }}</h1>
+              <h2>{{ marketDataFormat(item.f2, item.f152) }}</h2>
               <h3>
-                <span>{{ item.price }}</span
-                ><span class="ml-2">{{ item.ratio }}%</span>
+                <span>{{ marketDataFormat(item.f4, item.f152) }}</span
+                ><span class="ml-2"
+                  >{{ marketDataFormat(item.f3, item.f152) }}%</span
+                >
               </h3>
               <img src="../../assets/img/curve.png" />
             </div>
@@ -40,28 +42,28 @@
           <div class="all_number-box">
             <div>
               <p class="">
-                {{ store.state.market.day.rise }}
+                {{ mainTotal.swell }}
                 <img src="../../assets/img/curveUp.png" />
               </p>
               <span class="">涨家数</span>
             </div>
             <div>
               <p class="text-green">
-                {{ store.state.market.day.fall }}
+                {{ mainTotal.fell }}
                 <img src="../../assets/img/curveDown.png" />
               </p>
               <span class="">跌家数</span>
             </div>
             <div>
               <p class="text-black">
-                {{ store.state.market.day.flat }}
+                {{ mainTotal.tie }}
                 <img src="../../assets/img/average.png" />
               </p>
               <span class="">平盘家数</span>
             </div>
           </div>
 
-          <div class="sort-title" @click="goRouter('/HotList', 'gainian')">
+          <div class="sort-title" @click="goRouter('/HotList', '热门概念', 3)">
             <p>热门概念</p>
             <img src="../../assets/img/rightImg.png" />
           </div>
@@ -69,27 +71,24 @@
           <div class="list-box">
             <div
               class="list-cont"
-              v-for="item in store.state.market.gainian"
-              :key="item.code"
-              @click="goRouter('/DetailList', item.name, item.code)"
+              v-for="item in gainianList"
+              :key="item.f12"
+              @click="goRouter('/DetailList', item.f14, item.f12)"
             >
-              <h1>{{ item.name }}</h1>
-              <h2 :class="'text-' + watchStringToColor(item.rank)">
-                {{ updateStrIcon(item.rank) + "%" }}
+              <h1>{{ item.f14 }}</h1>
+              <h2 :class="'text-' + watchStringToColor(item.f3)">
+                {{ updateStrIcon(item.f3) + "%" }}
               </h2>
-              <h3>{{ item.first_name }}</h3>
+              <h3 class="">{{ item.f128 }}</h3>
               <h4>
-                <span :class="'text-' + watchStringToColor(item.quota)">{{
-                  updateStrIcon(item.quota)
-                }}</span>
-                <span :class="'text-' + watchStringToColor(item.first_rank)">{{
-                  updateStrIcon(item.first_rank) + "%"
+                <span :class="'text-' + watchStringToColor(item.f136)">{{
+                  updateStrIcon(item.f136) + "%"
                 }}</span>
               </h4>
             </div>
           </div>
 
-          <div class="sort-title" @click="goRouter('/HotList', 'hangye')">
+          <div class="sort-title" @click="goRouter('/HotList', '热门行业', 2)">
             <p>热门行业</p>
             <img src="../../assets/img/rightImg.png" />
           </div>
@@ -97,21 +96,18 @@
           <div class="list-box">
             <div
               class="list-cont"
-              v-for="item in store.state.market.hangye"
-              :key="item.code"
-              @click="goRouter('/DetailList', item.name, item.code)"
+              v-for="item in hangyeList"
+              :key="item.f12"
+              @click="goRouter('/DetailList', item.f14, item.f12)"
             >
-              <h1>{{ item.name }}</h1>
-              <h2 :class="'text-' + watchStringToColor(item.rank)">
-                {{ updateStrIcon(item.rank) + "%" }}
+              <h1>{{ item.f14 }}</h1>
+              <h2 :class="'text-' + watchStringToColor(item.f3)">
+                {{ updateStrIcon(item.f3) + "%" }}
               </h2>
-              <h3>{{ item.first_name }}</h3>
+              <h3 class="">{{ item.f128 }}</h3>
               <h4>
-                <span :class="'text-' + watchStringToColor(item.quota)">{{
-                  updateStrIcon(item.quota)
-                }}</span>
-                <span :class="'text-' + watchStringToColor(item.first_rank)">{{
-                  updateStrIcon(item.first_rank) + "%"
+                <span :class="'text-' + watchStringToColor(item.f136)">{{
+                  updateStrIcon(item.f136) + "%"
                 }}</span>
               </h4>
             </div>
@@ -168,7 +164,9 @@ import {
   computed,
   watch,
   nextTick,
+  reactive,
 } from "vue";
+import { marketDataFormat } from "@/utils/helper";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
 const $router = useRouter();
@@ -176,8 +174,37 @@ const $route = useRoute();
 const model = ref(0);
 const isUp = ref(true);
 
+let mainTotal = {
+  fell: 0,
+  swell: 0,
+  tie: 0,
+};
+
+const mainIndex = ref([]);
+const gainianList = ref([]);
+const hangyeList = ref([]);
+let pageInfo = reactive({
+  cate: 2,
+  page: 1,
+  limit: 6,
+});
+
 onMounted(() => {
-  store.dispatch("market/get");
+  store.dispatch("market/getMainIndex").then((d) => {
+    mainIndex.value = d.diff;
+    mainTotal.fell = d.diff.reduce((acc, item) => acc + item.f105, 0);
+    mainTotal.swell = d.diff.reduce((acc, item) => acc + item.f104, 0);
+    mainTotal.tie = d.diff.reduce((acc, item) => acc + item.f106, 0);
+  });
+  pageInfo.cate = 2;
+  store.dispatch("market/getBoardList", pageInfo).then((d) => {
+    hangyeList.value = d.diff;
+  });
+  pageInfo.cate = 3;
+  store.dispatch("market/getBoardList", pageInfo).then((d) => {
+    gainianList.value = d.diff;
+  });
+  // store.dispatch("market/get");
   if (store.getters.token) {
     store.dispatch("watchlist/getList");
   }

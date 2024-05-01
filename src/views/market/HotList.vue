@@ -1,67 +1,117 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>{{ store.state.market.title }}</template>
+      <template v-slot:headerCenter>{{ title }}</template>
     </page-header>
-
-
 
     <table>
       <tbody>
         <tr class="tr-list">
-          <th style="text-align: left;">热门行业</th>
-          <th style="text-align: right;" class="cutUp" @click="isUp = !isUp">涨跌幅 <img src="../../assets/img/dowm.png"
-              v-if="isUp"><img src="../../assets/img/up.png" v-else> </th>
-          <th style="text-align: right;">领涨股</th>
-
+          <th style="text-align: left">{{ title }}</th>
+          <th style="text-align: right" class="cutUp" @click="isUp = !isUp">
+            涨跌幅 <img src="../../assets/img/dowm.png" v-if="isUp" /><img
+              src="../../assets/img/up.png"
+              v-else
+            />
+          </th>
+          <th style="text-align: right">领涨股</th>
         </tr>
 
-        <div style="background-color: rgb(245, 245, 245);height: 2px;"></div>
-        <tr class="tr-list" v-for="item in  store.state.market.list" :key="item.code" @click="goRouter('/DetailList', item.name,item.code)">
+        <div style="background-color: rgb(245, 245, 245); height: 2px"></div>
+        <tr
+          class="tr-list"
+          v-for="item in listData"
+          :key="item.f140"
+          @click="goRouter('/DetailList', item.f128, item.f12)"
+        >
           <td class="tr-one">
-            <p>{{ item.name }}</p>
+            <p>{{ item.f14 }}</p>
           </td>
-          <td class="tr-two" style="text-align: right;">
-            <div class="tr-two-number" :class="'text-' + watchStringToColor(item.rank)">{{ updateStrIcon(item.rank) + '%' }}</div>
+          <td class="tr-two" style="text-align: right">
+            <div
+              class="tr-two-number"
+              :class="'text-' + watchStringToColor(item.f3)"
+            >
+              {{ updateStrIcon(item.f3) + "%" }}
+            </div>
           </td>
-          <td class="tr-three" style="text-align: right;">
-            <p>{{ item.first_name }}</p>
-            <span :class="'text-' + watchStringToColor(item.first_rank)">{{ updateStrIcon(item.first_rank) + '%' }}</span>
+          <td class="tr-three" style="text-align: right">
+            <p>{{ item.f128 }}</p>
+            <span :class="'text-' + watchStringToColor(item.f136)">{{
+              updateStrIcon(item.f136) + "%"
+            }}</span>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
-  
-<script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick ,onUnmounted} from "vue"
 
-import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const $route = useRoute()
-const title = ref()
-let page = ref(1)
-onMounted(() => {
-  title.value = $route.query.title
-  getList() 
-  window.addEventListener('scroll', handleScroll);
-})
-onUnmounted(() => {
-      window.removeEventListener('scroll', handleScroll);
-      store.dispatch('market/clearList')
+<script setup>
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+  onUnmounted,
+} from "vue";
+
+import PageHeader from "../../components/topWrap.vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const $route = useRoute();
+const title = ref();
+let page = ref(2);
+const listData = ref([]);
+
+let pageInfo = reactive({
+  cate: 2,
+  page: 1,
+  limit: 20,
 });
 
-const getList = () =>{
-  store.dispatch('market/getList',{'type':title.value,'page':page.value})
-}
+onMounted(() => {
+  title.value = $route.query.title;
+  pageInfo.cate = $route.query.code;
+  // getList();
+  getNewList();
+  window.addEventListener("scroll", handleScroll);
+});
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+  // store.dispatch("market/clearList");
+  listData.value = [];
+  page.value = 0;
+});
+
+const getNewList = () => {
+  store.dispatch("market/getBoardList", pageInfo).then((d) => {
+    listData.value = [...listData.value, ...d.diff];
+    page.value = Math.ceil(d.total / pageInfo.limit);
+  });
+};
+
+const getList = () => {
+  store.dispatch("market/getList", pageInfo);
+};
 const updatePage = () => {
-      // Your update logic here
-      page.value = page.value + 1;
-      getList()
+  // Your update logic here
+  let temp_page = pageInfo.page + 1;
+  if (temp_page > page.value) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "已经是最后一页",
+    });
+    return;
+  }
+  getNewList();
 };
 const handleScroll = () => {
   let scrollHeight = document.documentElement.scrollHeight;
@@ -71,34 +121,34 @@ const handleScroll = () => {
   if (scrollHeight - scrollTop <= clientHeight) {
     updatePage();
   }
-};    
+};
 const watchStringToColor = (price) => {
-    if (price < 0) {
-        return 'green';
-    } else if (price === 0 || price === '') {
-        return 'black';
-    } else if (price > 0) {
-        return 'red';
-    }
-}
+  if (price < 0) {
+    return "green";
+  } else if (price === 0 || price === "") {
+    return "black";
+  } else if (price > 0) {
+    return "red";
+  }
+};
 
 const updateStrIcon = (price) => {
   if (price > 0) {
-        return '+' + price;
-    }else{
-        return price;
-    }
-}
+    return "+" + price;
+  } else {
+    return price;
+  }
+};
 
-const goRouter = (path, item,code) => {
+const goRouter = (path, item, code) => {
   $router.push({
-    path, query: {
+    path,
+    query: {
       title: item,
-      code: code
-    }
-  })
-}
-
+      code: code,
+    },
+  });
+};
 </script>
 <style lang="scss" scoped>
 table {
@@ -131,7 +181,6 @@ table {
       color: #000;
       letter-spacing: 0.5px;
     }
-
   }
 
   .tr-two {
@@ -149,7 +198,6 @@ table {
     font-weight: 500;
 
     p {
-
       white-space: nowrap; //不换行
       overflow: hidden; //超出隐藏
       text-overflow: ellipsis; //超出文本省略号
@@ -182,4 +230,3 @@ table {
   }
 }
 </style>
-  

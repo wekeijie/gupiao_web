@@ -25,8 +25,15 @@
       <h2>股票名称/代码</h2>
       <div class="flexEnd">
         <p>
-          {{ store.state.trading.title
-          }}<span>({{ store.state.trading.code }})</span>
+          {{ store.state.market.stock_new_info.f58
+          }}<span
+            >({{
+              symbolCodeFormat(
+                store.state.market.stock_new_info.f57,
+                store.state.market.stock_new_info.f107
+              )
+            }})</span
+          >
         </p>
         <img
           src="../../assets/img/search.png"
@@ -41,10 +48,37 @@
       <p>
         最新
         <span
-          :class="'text-' + watchStringToColor(store.state.trading.info.f169)"
-          >{{ store.state.trading.info.f43 }}
-          {{ updateStrIcon(store.state.trading.info.f169) }}
-          {{ updateStrIcon(store.state.trading.info.f170) + "%" }}</span
+          :class="
+            'text-' +
+            watchStringToColor(
+              marketDataFormat(
+                store.state.market.stock_new_info.f169,
+                store.state.market.stock_new_info.f59
+              )
+            )
+          "
+          >{{
+            marketDataFormat(
+              store.state.market.stock_new_info.f43,
+              store.state.market.stock_new_info.f59
+            )
+          }}
+          {{
+            updateStrIcon(
+              marketDataFormat(
+                store.state.market.stock_new_info.f169,
+                store.state.market.stock_new_info.f59
+              )
+            )
+          }}
+          {{
+            updateStrIcon(
+              marketDataFormat(
+                store.state.market.stock_new_info.f170,
+                store.state.market.stock_new_info.f59
+              )
+            ) + "%"
+          }}</span
         >
       </p>
       <div>
@@ -60,24 +94,53 @@
           <div class="parallelogram"></div>
         </div>
         <div class="buy" v-if="buyTab == 0">
-          <div class="contracts-box flexCenter">
+          <!-- <div class="contracts-box flexCenter">
             <p>市价委托</p>
             <img src="../../assets/img/downPac.png" alt="" />
-          </div>
+          </div> -->
+          <v-select
+            label="类型"
+            :items="tradeType"
+            item-title="title"
+            item-value="key"
+            v-model="postTradeType"
+            variant="solo-filled"
+            hide-details
+            class="mt-2"
+          ></v-select>
           <div class="up-down-number flexBetween">
             <p>
               涨停<span class="roseColor">{{
-                store.state.trading.info.f51
+                marketDataFormat(
+                  store.state.market.stock_new_info.f51,
+                  store.state.market.stock_new_info.f59
+                )
               }}</span>
             </p>
             <p>
               跌停<span class="fallColor">{{
-                store.state.trading.info.f52
+                marketDataFormat(
+                  store.state.market.stock_new_info.f52,
+                  store.state.market.stock_new_info.f59
+                )
               }}</span>
             </p>
           </div>
 
           <div class="input-box" style="margin-top: 15px">
+            <v-text-field
+              type="string"
+              v-model="entr_price"
+              placeholder="请输入数值"
+              clearable
+              :disabled="false"
+              density="default"
+              variant="outlined"
+              single-line
+              hide-details
+              label="价格"
+              v-show="postTradeType == 'limit_price'"
+            ></v-text-field>
             <v-text-field
               type="number"
               v-model="numberValue"
@@ -177,30 +240,14 @@
           <v-carousel-item v-for="(slide, i) in 2" :key="i">
             <div class="new-box" v-if="i == 0">
               <div>
-                <div class="flexBetween records-list">
-                  <p>卖5</p>
-                  <p class="fallColor">{{ store.state.trading.info.f31 }}</p>
-                  <p>{{ store.state.trading.info.f32 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>卖4</p>
-                  <p class="fallColor">{{ store.state.trading.info.f33 }}</p>
-                  <p>{{ store.state.trading.info.f34 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>卖3</p>
-                  <p class="fallColor">{{ store.state.trading.info.f35 }}</p>
-                  <p>{{ store.state.trading.info.f36 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>卖2</p>
-                  <p class="fallColor">{{ store.state.trading.info.f37 }}</p>
-                  <p>{{ store.state.trading.info.f38 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>卖1</p>
-                  <p class="fallColor">{{ store.state.trading.info.f39 }}</p>
-                  <p>{{ store.state.trading.info.f40 }}</p>
+                <div
+                  class="flexBetween records-list"
+                  v-for="(item, key) in buySellFiveList.sell"
+                  :key="key"
+                >
+                  <p>卖{{ key + 1 }}</p>
+                  <p class="fallColor">{{ item.price }}</p>
+                  <p>{{ item.vol }}</p>
                 </div>
 
                 <div
@@ -210,47 +257,31 @@
                     margin: 5px 0;
                   "
                 ></div>
-                <div class="flexBetween records-list">
-                  <p>买1</p>
-                  <p class="pinkColor">{{ store.state.trading.info.f19 }}</p>
-                  <p>{{ store.state.trading.info.f20 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>买2</p>
-                  <p class="pinkColor">{{ store.state.trading.info.f17 }}</p>
-                  <p>{{ store.state.trading.info.f18 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>买3</p>
-                  <p class="pinkColor">{{ store.state.trading.info.f15 }}</p>
-                  <p>{{ store.state.trading.info.f16 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>买4</p>
-                  <p class="pinkColor">{{ store.state.trading.info.f13 }}</p>
-                  <p>{{ store.state.trading.info.f14 }}</p>
-                </div>
-                <div class="flexBetween records-list">
-                  <p>买5</p>
-                  <p class="pinkColor">{{ store.state.trading.info.f11 }}</p>
-                  <p>{{ store.state.trading.info.f12 }}</p>
+                <div
+                  class="flexBetween records-list"
+                  v-for="(item, key) in buySellFiveList.buy"
+                  :key="key"
+                >
+                  <p>买{{ key + 1 }}</p>
+                  <p class="pinkColor">{{ item.price }}</p>
+                  <p>{{ item.vol }}</p>
                 </div>
               </div>
             </div>
             <div class="new-box" v-if="i == 1">
-              <div class="flexBetween records-list">
+              <div class="flexBetween records-list pr-2">
                 <p>时间</p>
                 <p>价格</p>
                 <p>量</p>
               </div>
               <div
-                v-for="(item, index) in store.state.trading.dayDetails"
+                v-for="(item, index) in fenshi_list"
                 :key="index"
-                class="flexBetween records-list"
+                class="flexBetween records-list pr-2"
               >
-                <p>{{ timeToFormat(item.t) }}</p>
-                <p class="pinkColor">{{ priceToFormat(item.p) }}</p>
-                <p>{{ item.v }}</p>
+                <p>{{ timeToFormat(item.date) }}</p>
+                <p class="pinkColor">{{ item.price }}</p>
+                <p>{{ item.limit }}</p>
               </div>
             </div>
           </v-carousel-item>
@@ -331,9 +362,9 @@
               color="black"
               align-tabs="left"
             >
-              <v-tab @click="orderIndex = 0">待成交</v-tab>
-              <v-tab @click="orderIndex = 1">已成交</v-tab>
-              <v-tab @click="orderIndex = 2">已撤单</v-tab>
+              <v-tab @click="changeOrderList(0)">待成交</v-tab>
+              <v-tab @click="changeOrderList(1)">已成交</v-tab>
+              <v-tab @click="changeOrderList(2)">已撤单</v-tab>
             </v-tabs>
           </div>
 
@@ -349,7 +380,7 @@
               <div
                 style="background-color: rgb(245, 245, 245); height: 2px"
               ></div>
-              <!-- <tr
+              <tr
                 class="tr-list"
                 v-for="item in store.state.trading.end_list"
                 :key="item.code"
@@ -359,15 +390,15 @@
                   <span>{{ item.code }}</span>
                 </td>
                 <td class="tr-two" style="text-align: right">
-                  <div class="tr-two-number">{{ item.orice }}</div>
+                  <div class="tr-two-number">{{ item.price }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
-                  <span>{{ item.number }}/卖出</span>
+                  <span>{{ item.number }}/委托</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>{{ item.updated_at }}</p>
+                  <p>{{ item.date }}</p>
                 </td>
-              </tr> -->
+              </tr>
             </tbody>
             <tbody v-if="orderIndex == 1">
               <tr class="tr-list">
@@ -488,6 +519,7 @@ import {
   watch,
   nextTick,
 } from "vue";
+import { symbolCodeFormat, marketDataFormat } from "@/utils/helper";
 import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
 import MarqueeText from "vue-marquee-text-component";
@@ -503,6 +535,7 @@ const model = ref(0);
 const orderIndex = ref(0);
 const buyTab = ref(0);
 const sellId = ref(null);
+const entr_price = ref("");
 
 const isApply = ref(false);
 
@@ -514,11 +547,27 @@ const yu_order = reactive({
   order_id: "",
 });
 const heyue_info = {};
-const prefix = ref();
-const title = ref();
+const prefix = ref("0.000001");
+const title = ref("平安银行");
+const code = ref("000001");
+const buySellFiveList = reactive({
+  buy: [],
+  sell: [],
+});
+
+const postTradeType = ref("market_price");
+
+const tradeType = [
+  { title: "市价交易", key: "market_price" },
+  { title: "限价委托", key: "limit_price" },
+];
+
+const fenshi_list = ref([]);
 
 onMounted(() => {
-  const code = $route.query.code ?? null;
+  if ($route.query.code) {
+    code.value = $route.query.code;
+  }
   if ($route.query.prefix) {
     prefix.value = $route.query.prefix;
   } else {
@@ -529,22 +578,51 @@ onMounted(() => {
   } else {
     title.value = store.state.trading.title;
   }
+  let now_code =
+    store.state.market.stock_new_info.f107 +
+    "." +
+    store.state.market.stock_new_info.f57;
+  if (now_code != prefix.value) {
+    store.dispatch("market/getStockNewInfo", prefix.value);
+  }
+  if (store.state.market.stock_new_info.f107 < 2) {
+    store.dispatch("market/getBuySellFive", prefix.value).then((d) => {
+      buySellFiveList.buy = d.buy;
+      buySellFiveList.sell = d.sell;
+    });
+  }
 
-  store.dispatch("trading/getInfo", prefix.value);
-  store.dispatch("trading/getDayDetail", prefix.value);
+  // store.dispatch("trading/getInfo", prefix.value);
+  // store.dispatch("trading/getDayDetail", prefix.value);
   if (store.getters.token) {
     store.dispatch("contract/getMinList");
   } else {
     heyuename.value = "请登录选择合约";
   }
 
-  request.post("market/stock", { symbol: prefix.value }).then((d) => {
-    stock_date.value = d.date;
-    checkDateStatus();
-  });
+  getFenShiList();
+
+  // request.post("market/stock", { symbol: prefix.value }).then((d) => {
+  //   stock_date.value = d.date;
+  //   checkDateStatus();
+  // });
   getActiveList();
-  getEndList();
+  getEndList(0);
 });
+
+const changeOrderList = (index) => {
+  orderIndex.value = index;
+  let status = 0;
+  if (index == 0) {
+    status = 0;
+  } else if (index == 1) {
+    status = 3;
+  } else if (index == 2) {
+    status == 2;
+  }
+  getEndList(status);
+};
+
 const updateSellId = () => {
   console.log(sellId.value);
 };
@@ -552,8 +630,25 @@ const getActiveList = () => {
   store.dispatch("trading/getActiveList");
 };
 
-const getEndList = () => {
-  store.dispatch("trading/getEndList");
+const getFenShiList = async () => {
+  const rsp = await store.dispatch("market/getStockFenShi", prefix.value);
+  fenshi_list.value = fenshiDataFormat(rsp);
+};
+
+const fenshiDataFormat = (rsp) => {
+  const result = rsp.map((item) => {
+    const parts = item.split(",");
+    return {
+      date: parts[0],
+      price: parseFloat(parts[1]),
+      limit: parseInt(parts[2], 10),
+    };
+  });
+  return result;
+};
+
+const getEndList = (status) => {
+  store.dispatch("trading/getEndList", status);
 };
 
 const sellSub = () => {
@@ -576,10 +671,15 @@ const sellSub = () => {
 
 const changeNUmberValue = (f) => {
   if (f == "a") {
-    numberValue.value = numberValue.value + 1;
+    numberValue.value = numberValue.value + 100;
   }
   if (f == "c" && numberValue.value > 0) {
-    numberValue.value = numberValue.value - 1;
+    let temp_amount = numberValue.value - 100;
+    if (temp_amount > 0) {
+      numberValue.value = temp_amount;
+    } else {
+      numberValue.value = 0;
+    }
   }
 };
 
@@ -602,8 +702,9 @@ const submitOK = () => {
     symbol: prefix.value,
     number: numberValue.value,
     contract: yu_order.order_id,
-    type: "market_price",
+    type: postTradeType.value,
     title: title.value,
+    price: entr_price.value,
   };
   store.dispatch("trading/buy", postData).then(() => {
     store.dispatch("snackbar/success", {
@@ -673,7 +774,13 @@ const changeOrderNUmber = (number, index) => {
   if (yu_order.limit <= 0) {
     return false;
   }
-  numberValue.value = Math.floor(yu_order.limit / number);
+  let temp_amount = Math.floor(yu_order.limit / number);
+  if (temp_amount >= 100) {
+    numberValue.value = temp_amount;
+  } else {
+    numberValue.value = 100;
+  }
+
   componentIndx.value = index;
 };
 
@@ -697,7 +804,11 @@ const selectHeyue = (index) => {
     "倍";
   yu_order.amount = store.state.contract.minList[index].balance;
   yu_order.limit = parseFloat(
-    yu_order.amount / store.state.trading.info.f43
+    yu_order.amount /
+      marketDataFormat(
+        store.state.market.stock_new_info.f43,
+        store.state.market.stock_new_info.f59
+      )
   ).toFixed(2);
   yu_order.order_id = store.state.contract.minList[index].order_id;
 };

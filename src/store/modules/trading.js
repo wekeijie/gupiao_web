@@ -65,8 +65,8 @@ export default {
     sell(content, data) {
       return sellApi(data);
     },
-    async getEndList(content) {
-      const rsp = await endListApi();
+    async getEndList(content, status) {
+      const rsp = await endListApi(status);
       content.commit("setEndList", rsp);
     },
   },

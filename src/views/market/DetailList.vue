@@ -20,20 +20,20 @@
         <div style="background-color: rgb(245, 245, 245); height: 2px"></div>
         <tr
           class="tr-list"
-          v-for="item in store.state.market.list"
-          :key="item.code"
-          @click="goRouter('/ChanrtPage', item.name, item.code, item.prefix)"
+          v-for="item in listData"
+          :key="item.f12"
+          @click="goRouter('/ChanrtPage', item.f14, item.f12, item.f13)"
         >
           <td class="tr-one">
-            <p>{{ item.name }}</p>
-            <span>{{ item.code }}</span>
+            <p>{{ item.f14 }}</p>
+            <span>{{ symbolCodeFormat(item.f12, item.f13) }}</span>
           </td>
           <td class="tr-two" style="text-align: right">
-            <div class="tr-two-number">{{ item.price }}</div>
+            <div class="tr-two-number">{{ item.f2 }}</div>
           </td>
           <td class="tr-three" style="text-align: right">
-            <span :class="'text-' + watchStringToColor(item.rank)">{{
-              updateStrIcon(item.rank) + "%"
+            <span :class="'text-' + watchStringToColor(item.f3)">{{
+              updateStrIcon(item.f3) + "%"
             }}</span>
           </td>
         </tr>
@@ -56,7 +56,7 @@ import {
   nextTick,
   onUnmounted,
 } from "vue";
-
+import { symbolCodeFormat } from "@/utils/helper";
 import PageHeader from "../../components/topWrap.vue";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
@@ -64,18 +64,34 @@ const $router = useRouter();
 const $route = useRoute();
 const title = ref();
 const code = ref();
-const page = ref(1);
+const page = ref(2);
+
+const listData = ref([]);
+
+let pageInfo = reactive({
+  cate: "",
+  page: 1,
+  limit: 20,
+});
+
 onMounted(() => {
   title.value = $route.query.title;
-  code.value = $route.query.code;
-  getList();
+  pageInfo.cate = $route.query.code;
+  getNewList();
   window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
-  store.dispatch("market/clearList");
+  // store.dispatch("market/clearList");
 });
+
+const getNewList = () => {
+  store.dispatch("market/getBoardStockList", pageInfo).then((d) => {
+    listData.value = [...listData.value, ...d.diff];
+    page.value = Math.ceil(d.total / pageInfo.limit);
+  });
+};
 
 const getList = () => {
   store.dispatch("market/getListDetail", {
@@ -85,8 +101,15 @@ const getList = () => {
 };
 const updatePage = () => {
   // Your update logic here
-  page.value = page.value + 1;
-  getList();
+  let temp_page = pageInfo.page + 1;
+  if (temp_page > page.value) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "已经是最后一页",
+    });
+    return;
+  }
+  getNewList();
 };
 const handleScroll = () => {
   let scrollHeight = document.documentElement.scrollHeight;
