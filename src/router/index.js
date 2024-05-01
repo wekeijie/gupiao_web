@@ -188,6 +188,11 @@ const routes = [
     component: () => import("@/views/myHomePage/HelpCenter.vue"),
   },
   {
+    path: "/About",
+    name: "About",
+    component: () => import("@/views/myHomePage/About.vue"),
+  },
+  {
     path: "/MessageLIst",
     name: "messageLIst",
     component: () => import("@/views/myHomePage/MessageLIst.vue"),

@@ -1,17 +1,29 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>{{ title }}</template>
+      <template v-slot:headerCenter>关于我们</template>
     </page-header>
     <div style="background-color: rgb(245, 245, 245); height: 5px"></div>
 
     <div
       class="line-box flexBetween"
-      v-for="(item, index) in store.state.helps.list"
-      :key="index"
-      @click="goRoute('/RichText', item)"
+      @click="goRoute('/HelpCenter', '交易规则', 2)"
     >
-      <h2>{{ item.title }}</h2>
+      <h2>交易规则</h2>
+      <img src="../../assets/img/rightImg.png" alt="" />
+    </div>
+    <div
+      class="line-box flexBetween"
+      @click="goRoute('/HelpCenter', '帮助中心', 1)"
+    >
+      <h2>帮助中心</h2>
+      <img src="../../assets/img/rightImg.png" alt="" />
+    </div>
+    <div
+      class="line-box flexBetween"
+      @click="goRoute('/HelpCenter', '企业介绍', 3)"
+    >
+      <h2>企业介绍</h2>
       <img src="../../assets/img/rightImg.png" alt="" />
     </div>
   </div>
@@ -36,24 +48,16 @@ import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
 const $router = useRouter();
 const $route = useRoute();
-const title = ref("");
-const code = ref("");
 
 onMounted(() => {
-  if ($route.query.title) {
-    title.value = $route.query.title;
-  }
-  if ($route.query.id) {
-    code.value = $route.query.id;
-  }
-  store.dispatch("helps/getList", code.value);
+  //   store.dispatch("helps/getList");
 });
-const goRoute = (path, item) => {
+const goRoute = (path, title, id) => {
   $router.push({
     path,
     query: {
-      title: item.title,
-      id: item.id,
+      title: title,
+      id: id,
     },
   });
 };

@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
-export const listApi = () => {
-  return request.get("helps/list");
+export const listApi = (type) => {
+  return request.get("helps/list?type=" + type);
 };
 
 export const showApi = (id) => {

@@ -14,8 +14,8 @@ export default {
     },
   },
   actions: {
-    async getList(content) {
-      const rsp = await listApi();
+    async getList(content, type) {
+      const rsp = await listApi(type);
       content.commit("setList", rsp);
     },
     async getShow(content, id) {

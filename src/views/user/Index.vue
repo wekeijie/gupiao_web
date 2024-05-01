@@ -139,8 +139,8 @@
           <v-col
             class="text-body-1 pl-0 pt-4"
             cols="8"
-            @click="jump(router, '/HelpCenter')"
-            >交易规则</v-col
+            @click="jump(router, '/About')"
+            >关于我们</v-col
           >
           <v-col cols="2" @click="jump(router, '/HelpCenter')">
             <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
