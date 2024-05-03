@@ -33,11 +33,11 @@
       class="flexBetween history-box"
       v-for="item in store.state.market.search_list"
       :key="item.code"
-      @click="goCaRouter('/ChanrtPage', item.name, item.prefix)"
+      @click="goCaRouter('/ChanrtPage', item.Name, item.Code, item.MktNum)"
     >
       <div>
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.code }}</p>
+        <h3>{{ item.Name }}</h3>
+        <p>{{ symbolCodeFormat(item.Code, item.MktNum) }}</p>
       </div>
       <img src="../assets/img/selefNo.png" alt="" v-if="item > 3" />
       <img src="../assets/img/selef.png" alt="" v-else />
@@ -60,6 +60,7 @@ import {
 } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
+import { symbolCodeFormat } from "@/utils/helper";
 const $router = useRouter();
 const $route = useRoute();
 const searchCont = ref();

@@ -294,7 +294,7 @@ const submitok = () => {
   if (info.value === null || info.value === undefined) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "Por favor, selecione o contrato",
+      body: "请选择合约！",
     });
     return;
   }

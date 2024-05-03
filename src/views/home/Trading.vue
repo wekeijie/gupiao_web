@@ -655,7 +655,7 @@ const sellSub = () => {
   if (!sellId.value) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "Por favor, selecione a ordem",
+      body: "请选择订单！",
     });
     return;
   }
@@ -706,12 +706,19 @@ const submitOK = () => {
     title: title.value,
     price: entr_price.value,
   };
-  store.dispatch("trading/buy", postData).then(() => {
-    store.dispatch("snackbar/success", {
-      active: true,
-      body: "Success",
-    });
-    getActiveList();
+  store.dispatch("trading/buy", postData).then((d) => {
+    if (d.code != 0) {
+      store.dispatch("snackbar/warning", {
+        active: true,
+        body: d.message,
+      });
+    } else {
+      store.dispatch("snackbar/success", {
+        active: true,
+        body: "Success",
+      });
+      getActiveList();
+    }
   });
 };
 

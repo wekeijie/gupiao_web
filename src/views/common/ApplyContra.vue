@@ -214,7 +214,7 @@ const applySub = () => {
   if (amount.value > store.state.user.info.balance) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "Margem insuficiente, por favor, faça um depósito!",
+      body: "保证金不足，请存款！",
     });
     return;
   }
