@@ -14,7 +14,10 @@ export default {
       state.data = info;
     },
     setRecharge(state, rsp) {
-      state.recharge = rsp;
+      state.recharge = [...state.recharge, ...rsp];
+    },
+    clearRecharge(state) {
+      state.recharge = [];
     },
   },
   actions: {

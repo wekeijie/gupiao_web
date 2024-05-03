@@ -14,6 +14,7 @@
     "amfe-flexible": "^2.2.1",
     "axios": "^1.5.0",
     "hqchart": "^1.1.12314",
+    "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
     "qrcode.vue": "^3.4.1",
     "roboto-fontface": "*",

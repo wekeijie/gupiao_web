@@ -161,6 +161,7 @@ import {
 import NoData from "../../components/noData.vue";
 import PageHeader from "../../components/topWrap.vue";
 import { useRouter, useRoute } from "vue-router";
+import { throttle } from "lodash-es";
 import { store } from "@/store";
 const $router = useRouter();
 const $route = useRoute();
@@ -170,6 +171,7 @@ const title = ref();
 const dataList = ref([]);
 const page = ref(1);
 const is_none = ref(true);
+let isLoading = ref(false);
 
 onMounted(() => {
   title.value = $route.query.title || "记录列表";
@@ -183,6 +185,7 @@ onUnmounted(() => {
 
 const changeStatus = (status) => {
   model.value = status;
+  store.commit("topUp/clearRecharge");
   getList();
 };
 
@@ -192,16 +195,19 @@ const getList = () => {
     .then((d) => {
       if (d.length > 0) {
         is_none.value = false;
+        isLoading.value = false;
       }
     });
 };
 
 const updatePage = () => {
-  // Your update logic here
-  page.value = page.value + 1;
+  if (isLoading.value) return;
+  isLoading.value = true;
+  page.value += 1;
   getList();
 };
-const handleScroll = () => {
+
+const handleScroll = throttle(() => {
   let scrollHeight = document.documentElement.scrollHeight;
   let scrollTop = document.documentElement.scrollTop;
   let clientHeight = document.documentElement.clientHeight;
@@ -209,7 +215,7 @@ const handleScroll = () => {
   if (scrollHeight - scrollTop <= clientHeight) {
     updatePage();
   }
-};
+}, 200); // 200 毫秒内最多执行一次
 </script>
 <style lang="scss" scoped>
 .no-data-cont {
