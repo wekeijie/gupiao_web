@@ -217,6 +217,7 @@ import {
   computed,
   watch,
   nextTick,
+  onUnmounted,
 } from "vue";
 
 import PageHeader from "../../components/topWrap.vue";
@@ -322,7 +323,7 @@ DefaultData.GetMinuteOption = function (symbol) {
   let data = {
     Type: "分钟走势图", //历史分钟走势图
     Symbol: symbol,
-    IsAutoUpate: true, //是自动更新数据
+    IsAutoUpate: false, //是自动更新数据
     IsShowRightMenu: false, //右键菜单
     IsShowCorssCursorInfo: false, //是否显示十字光标的刻度信息
     DayCount: 1,
