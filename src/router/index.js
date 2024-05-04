@@ -101,6 +101,14 @@ const routes = [
     component: () => import("@/views/home/Trading.vue"),
   },
   {
+    path: "/Sell",
+    name: "sell",
+    component: () => import("@/views/home/Sell.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/agency",
     name: "agency",
     component: () => import("@/views/index/Agency.vue"),

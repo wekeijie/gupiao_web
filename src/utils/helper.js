@@ -47,6 +47,13 @@ export const symbolCodeFormat = (code, prefix) => {
   return code;
 };
 
+export const fuyingAmount = (buy_price, sell_price, number) => {
+  if (sell_price == 0) {
+    return 0;
+  }
+  return ((sell_price - buy_price) * number).toFixed(2);
+};
+
 export const extractTxtValue = (input) => {
   let returnojb = {}; // Define returnojb object
 

@@ -125,8 +125,23 @@ const submitJump = () => {
       amount: money.value,
     })
     .then((d) => {
-      window.open(d, "_blank");
+      if (d.type == 0) {
+        window.open(d.url, "_blank");
+        return;
+      }
+      if (d.type == 1) {
+        goRouter("/TopUp/unionpay", d.url);
+      }
     });
+};
+
+const goRouter = (path, order_id = "") => {
+  router.push({
+    path,
+    query: {
+      orderid: order_id,
+    },
+  });
 };
 
 const maintenance = () => {

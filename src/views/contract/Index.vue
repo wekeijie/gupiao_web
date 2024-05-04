@@ -365,7 +365,7 @@ const stopPact = () => {
   store.dispatch("contract/stop", { order_id: order.order_id }).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "success",
+      body: "操作成功",
     });
     getList();
   });
@@ -375,7 +375,7 @@ const withdrawal = () => {
   if (amount.value < 500) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "valor não pode ser inferior a 500",
+      body: "提现不能低于500",
     });
     return;
   }
@@ -386,7 +386,7 @@ const withdrawal = () => {
   store.dispatch("contract/withdrawal", data).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "success",
+      body: "操作成功",
     });
     getList();
   });
@@ -396,7 +396,7 @@ const appendAmount = () => {
   if (amount.value < 100) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "valor não pode ser inferior a 100",
+      body: "最低金额不能小于100",
     });
     return;
   }
@@ -407,7 +407,7 @@ const appendAmount = () => {
   store.dispatch("contract/append", data).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "success",
+      body: "操作成功",
     });
     getList();
   });
@@ -417,7 +417,7 @@ const expend = () => {
   if (amount.value < 100) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "valor não pode ser inferior a 100",
+      body: "最低金额不能小于100",
     });
     return;
   }
@@ -428,7 +428,7 @@ const expend = () => {
   store.dispatch("contract/expand", data).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "success",
+      body: "操作成功",
     });
     getList();
   });

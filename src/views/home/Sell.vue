@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header>
-      <template v-slot:headerCenter>交易</template>
+      <template v-slot:headerCenter>卖出</template>
       <template v-slot:headerRight>
         <img src="../../assets/img/refresh.png" alt="" class="refresh-data" />
       </template>
@@ -14,13 +14,13 @@
         >
       </marquee-text>
     </div>
-    <div class="row-tab-box flexBetween">
+    <!-- <div class="row-tab-box flexBetween">
       <h2>合约</h2>
       <div class="flexEnd" @click="isApply = true">
         <p>{{ heyuename }}</p>
         <img src="../../assets/img/rightImg.png" alt="" class="img-right" />
       </div>
-    </div>
+    </div> -->
     <div class="row-tab-box flexBetween">
       <h2>股票名称/代码</h2>
       <div class="flexEnd">
@@ -89,13 +89,13 @@
     <div class="flexBetween controls-box">
       <div style="" class="controls-left">
         <div class="flexBetween buy-sell-box">
-          <p class="buy-box">买入</p>
+          <p class="buy-box">卖出</p>
         </div>
-        <div class="buy" v-if="buyTab == 0">
+        <div class="buy" v-if="buyTab == 1">
           <!-- <div class="contracts-box flexCenter">
-            <p>市价委托</p>
-            <img src="../../assets/img/downPac.png" alt="" />
-          </div> -->
+              <p>市价委托</p>
+              <img src="../../assets/img/downPac.png" alt="" />
+            </div> -->
           <v-select
             label="类型"
             :items="tradeType"
@@ -201,30 +201,9 @@
               交易额<span class="roseColor">{{ yu_order.amount }}</span>
             </p>
             <p>
-              可买股数<span class="fallColor">{{ yu_order.limit }}</span>
+              可卖股数<span class="fallColor">{{ yu_order.limit }}</span>
             </p>
           </div>
-        </div>
-        <div class="sell py-10" v-if="buyTab == 1">
-          <v-select
-            label="请选择股票"
-            v-model="sellId"
-            :items="store.state.trading.active_list"
-            item-title="title"
-            item-value="id"
-            variant="underlined"
-            @update:modelValue="updateSellId"
-          >
-            <template v-slot:item="{ props, item }">
-              <v-list-item
-                v-bind="props"
-                :subtitle="item.raw.number + `/` + item.raw.unrealized_profit"
-              ></v-list-item>
-            </template>
-          </v-select>
-          <v-btn block="" class="mt-4" color="success" @click="sellSub"
-            >卖出</v-btn
-          >
         </div>
       </div>
       <div class="controls-right">
@@ -288,7 +267,7 @@
     </div>
 
     <div class="flexAroud">
-      <v-btn class="sure-btn" @click="submitOK" v-if="buyTab == 0">交易</v-btn>
+      <v-btn class="sure-btn" @click="sellSub">交易</v-btn>
 
       <div class="flexCenter cut-detail">
         <p :class="model == 0 ? 'roseColor' : ''" @click="model = 0">+档</p>
@@ -344,10 +323,12 @@
                   <div class="tr-two-number">{{ item.cost }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
-                  <span>{{ item.number }}</span>
+                  <span>{{ item.number_ret }}</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>{{ item.unrealized_profit }}</p>
+                  <p>
+                    {{ fuyingAmount(item.price, item.sell, item.number_ret) }}
+                  </p>
                 </td>
                 <th class="text-right">
                   <v-btn
@@ -533,7 +514,11 @@ import {
   watch,
   nextTick,
 } from "vue";
-import { symbolCodeFormat, marketDataFormat } from "@/utils/helper";
+import {
+  symbolCodeFormat,
+  marketDataFormat,
+  fuyingAmount,
+} from "@/utils/helper";
 import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
 import MarqueeText from "vue-marquee-text-component";
@@ -542,12 +527,12 @@ import { store } from "@/store";
 import request from "@/utils/request";
 const $router = useRouter();
 const $route = useRoute();
-const numberValue = ref(0);
+const numberValue = ref(100);
 const componentIndx = ref(1);
 const tabIndex = ref(0);
 const model = ref(0);
 const orderIndex = ref(0);
-const buyTab = ref(0);
+const buyTab = ref(1);
 const sellId = ref(null);
 const entr_price = ref("");
 
@@ -579,19 +564,16 @@ const tradeType = [
 const fenshi_list = ref([]);
 
 onMounted(() => {
-  if ($route.query.code) {
-    code.value = $route.query.code;
+  if ($route.query.order_id) {
+    store.dispatch("trading/getOrderInfo", $route.query.order_id).then((d) => {
+      if (d.code) {
+        yu_order.limit = d.number;
+        yu_order.order_id = d.id;
+        getStockInfo(d.code);
+      }
+    });
   }
-  if ($route.query.prefix) {
-    prefix.value = $route.query.prefix;
-  } else {
-    prefix.value = store.state.trading.prefix;
-  }
-  if ($route.query.title) {
-    title.value = $route.query.title;
-  } else {
-    title.value = store.state.trading.title;
-  }
+
   let now_code =
     store.state.market.stock_new_info.f107 +
     "." +
@@ -623,6 +605,10 @@ onMounted(() => {
   getActiveList();
   getTrustList(0);
 });
+
+const getStockInfo = (code) => {
+  store.dispatch("market/getStockNewInfo", code);
+};
 
 const changeOrderList = (index) => {
   orderIndex.value = index;
@@ -674,21 +660,44 @@ const cancelOrder = (id) => {
 };
 
 const sellSub = () => {
-  if (!sellId.value) {
+  if (yu_order.order_id == "") {
     store.dispatch("snackbar/warning", {
       active: true,
       body: "请选择订单！",
     });
     return;
   }
-  store.dispatch("trading/sell", { key: sellId.value }).then(() => {
-    store.dispatch("snackbar/success", {
+  if (postTradeType.value == "limit_price" && entr_price.value == "") {
+    store.dispatch("snackbar/warning", {
       active: true,
-      body: "Success",
+      body: "限价委托价格不能为空！",
     });
-    getActiveList();
-    getEndList();
-  });
+    return;
+  }
+
+  if (numberValue.value > yu_order.limit) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "交易数量超出拥有数量",
+    });
+    return;
+  }
+
+  store
+    .dispatch("trading/sell", {
+      order_id: yu_order.order_id,
+      number: numberValue.value,
+      type: postTradeType.value,
+      price: entr_price.value,
+    })
+    .then(() => {
+      store.dispatch("snackbar/success", {
+        active: true,
+        body: "Success",
+      });
+      getActiveList();
+      getEndList();
+    });
 };
 
 const changeNUmberValue = (f) => {
@@ -750,15 +759,6 @@ const submitOK = () => {
 const goRouter = (path) => {
   $router.push(path);
 };
-const goToSell = (path, item, code = "") => {
-  $router.push({
-    path,
-    query: {
-      title: item,
-      code: code,
-    },
-  });
-};
 
 const getTrustList = (status) => {
   store.dispatch("trading/getTrustList", status);
@@ -819,7 +819,7 @@ const changeOrderNUmber = (number, index) => {
   if (yu_order.limit <= 0) {
     return false;
   }
-  let temp_amount = Math.floor(yu_order.limit / number);
+  let temp_amount = yu_order.limit / number;
   if (temp_amount >= 100) {
     let temp = adjustToNextHundred(temp_amount);
     if (temp > yu_order.limit) {
@@ -1238,7 +1238,7 @@ table {
   .sell-box {
     color: #8f8f94;
     font-weight: 700;
-    width: 50%;
+    width: 100%;
     height: 35px;
     line-height: 35px;
     background-color: #f0f0f0;

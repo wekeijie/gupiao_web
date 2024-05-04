@@ -5,6 +5,10 @@ import {
   sellApi,
   activeListApi,
   endListApi,
+  trustListApi,
+  cancelOrderApi,
+  orderInfoApi,
+  successListApi,
 } from "@/api/tradingApi";
 export default {
   namespaced: true,
@@ -16,11 +20,22 @@ export default {
     dayDetails: [],
     active_list: [],
     end_list: [],
+    trust_list: [],
+    success_list: [],
   }),
   mutations: {
     updateTitleAndCode(state, info) {
       state.title = info.title;
       state.code = info.code;
+    },
+    setTrustList(state, rsp) {
+      state.trust_list = rsp;
+    },
+    setSuccessList(state, rsp) {
+      state.success_list = rsp;
+    },
+    clearTrustList(state) {
+      state.trust_list = [];
     },
     setInfo(state, rsp) {
       state.info = rsp;
@@ -68,6 +83,20 @@ export default {
     async getEndList(content, status) {
       const rsp = await endListApi(status);
       content.commit("setEndList", rsp);
+    },
+    async getTrustList(content, status) {
+      const rsp = await trustListApi(status);
+      content.commit("setTrustList", rsp);
+    },
+    cancelOrder(content, id) {
+      return cancelOrderApi(id);
+    },
+    getOrderInfo(content, id) {
+      return orderInfoApi(id);
+    },
+    async getSuccessList(content) {
+      const rsp = await successListApi();
+      content.commit("setSuccessList", rsp);
     },
   },
 };
