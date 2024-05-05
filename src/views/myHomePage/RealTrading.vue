@@ -104,17 +104,30 @@ const loginData = reactive({
 });
 
 const handleLogin = async () => {
-  const { valid } = await instance.ctx.$refs.form.validate();
-  console.log(valid, "valid");
-  if (valid) {
-    store.dispatch("user/changePayPassword", loginData).then(() => {
-      store.dispatch("snackbar/success", {
+  if (store.state.user.userInfo.is_pay_pwd) {
+    if (loginData.new_password.length < 6 || loginData.password.length < 6) {
+      store.dispatch("snackbar/error", {
         active: true,
-        body: "修改成功!",
+        body: "取款密码不能小于6位数字",
       });
-      store.dispatch("user/getInfo");
-    });
+      return;
+    }
+  } else {
+    if (loginData.password.length < 6) {
+      store.dispatch("snackbar/error", {
+        active: true,
+        body: "取款密码不能小于6位数字",
+      });
+      return;
+    }
   }
+  store.dispatch("user/changePayPassword", loginData).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "修改成功!",
+    });
+    store.dispatch("user/getInfo");
+  });
 };
 
 let instance = ref();
