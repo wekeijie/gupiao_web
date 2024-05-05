@@ -347,7 +347,9 @@
                   <span>{{ item.number }}</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>{{ item.unrealized_profit }}</p>
+                  <p>
+                    {{ fuyingAmount(item.price, item.sell, item.number_ret) }}
+                  </p>
                 </td>
                 <th class="text-right">
                   <v-btn
@@ -533,7 +535,11 @@ import {
   watch,
   nextTick,
 } from "vue";
-import { symbolCodeFormat, marketDataFormat } from "@/utils/helper";
+import {
+  symbolCodeFormat,
+  marketDataFormat,
+  fuyingAmount,
+} from "@/utils/helper";
 import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
 import MarqueeText from "vue-marquee-text-component";

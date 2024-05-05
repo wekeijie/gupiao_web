@@ -693,7 +693,7 @@ const sellSub = () => {
     .then(() => {
       store.dispatch("snackbar/success", {
         active: true,
-        body: "Success",
+        body: "卖出成功",
       });
       getActiveList();
       getEndList();

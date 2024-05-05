@@ -58,7 +58,7 @@
         <p>提盈金额</p>
       </div>
       <div class="amount-list">
-        <span>{{ store.state.contract.detail.unrealized }}</span>
+        <span>{{ underlined }}</span>
         <p>合约盈亏</p>
       </div>
     </div>
@@ -114,7 +114,7 @@
                   </td>
                   <td class="tr-three" style="text-align: right">
                     <div class="tr-two-number">
-                      {{ item.unrealized_profit }}
+                      {{ fuyingAmount(item.price, item.sell, item.number) }}
                     </div>
                   </td>
                   <td class="tr-three" style="text-align: right">
@@ -228,9 +228,9 @@
             <table>
               <tbody>
                 <tr class="tr-list">
-                  <th style="text-align: left">名称</th>
+                  <th style="text-align: left">名称/代码</th>
                   <th style="text-align: right">价格</th>
-                  <th style="text-align: right">数量</th>
+                  <th style="text-align: right">数量/类型</th>
                   <th style="text-align: right">状态</th>
                 </tr>
                 <tr
@@ -240,12 +240,26 @@
                 >
                   <td class="tr-one">
                     <h4>{{ item.title }}</h4>
+                    <p>{{ item.code }}</p>
                   </td>
                   <td class="tr-two">
-                    <div class="tr-two-number">{{ item.price }}</div>
+                    <div
+                      class="tr-two-number text-right"
+                      v-if="item.type == '买入'"
+                    >
+                      {{ item.buy_price }}
+                    </div>
+                    <div
+                      class="tr-two-number text-right"
+                      v-if="item.type == '卖出'"
+                    >
+                      {{ item.sell_price }}
+                    </div>
                   </td>
                   <td class="tr-three" style="text-align: right">
-                    <div class="tr-two-number">{{ item.number }}</div>
+                    <div class="tr-two-number">
+                      {{ item.number }}/{{ item.type }}
+                    </div>
                   </td>
                   <td class="tr-three" style="text-align: right">
                     <p v-if="item.status == 1">成交</p>
@@ -277,18 +291,34 @@ import {
 
 import PageHeader from "../components/topWrap.vue";
 import { useRouter, useRoute } from "vue-router";
+import { fuyingAmount } from "@/utils/helper";
 import { store } from "@/store";
 const $router = useRouter();
 const $route = useRoute();
 const model = ref(0);
 const mouneyIndex = ref(0);
 const order_id = ref(0);
+const underlined = ref(0);
 onMounted(() => {
   if ($route.query.code) {
     order_id.value = $route.query.code;
   }
   store.dispatch("contract/getDetail", order_id.value);
 });
+
+watch(
+  () => store.state.contract.staock_list,
+  (count, prev) => {
+    let amount = 0;
+    if (count.length > 0) {
+      count.forEach((item) => {
+        amount += fuyingAmount(item.price, item.sell, item.number);
+      });
+    }
+    underlined.value =
+      parseFloat(amount) + parseFloat(store.state.contract.detail.unrealized);
+  }
+);
 
 const changeTab = (index) => {
   if (index == 1) {

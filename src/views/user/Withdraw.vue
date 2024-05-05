@@ -42,6 +42,17 @@
       <span>当前余额{{ store.state.user.info.balance }}元</span
       ><span class="ml-2 text-blue-accent-2" @click="allAmount">全部提现</span>
     </div>
+    <v-text-field
+      label="提现密码"
+      variant="underlined"
+      class="mt-3"
+      hide-details
+      prepend-inner-icon="mdi-lock"
+      placeholder="请输入提现密码"
+      type="password"
+      required
+      v-model="pay_pwd"
+    ></v-text-field>
     <div class="w-75 mx-auto mt-15">
       <v-btn block="" color="blue-accent-4" @click="apply">提交</v-btn>
     </div>
@@ -50,8 +61,8 @@
     <v-list>
       <v-list-subheader class="w-100">
         <v-row class="ma-0 pa-0 w-100">
-          <v-col cols="6">请选择银行卡</v-col>
-          <v-col cols="6" class="text-right">
+          <v-col cols="6" class="py-2">请选择银行卡</v-col>
+          <v-col cols="6" class="text-right py-2">
             <v-btn
               density="comfortable"
               size="small"
@@ -88,6 +99,7 @@ const bankInfo = reactive({
 });
 const isApply = ref(false);
 const amount = ref();
+const pay_pwd = ref("");
 
 onMounted(() => {
   store.dispatch("bank/getList").then(() => {
@@ -135,10 +147,20 @@ const apply = () => {
     });
     return;
   }
+
+  if (pay_pwd.value.length < 6) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入提现密码",
+    });
+    return;
+  }
+
   store
     .dispatch("withdrawal/apply", {
       amount: amount.value,
       code_id: bankInfo.id,
+      pay_pwd: pay_pwd.value,
     })
     .then(() => {
       store.dispatch("snackbar/success", {

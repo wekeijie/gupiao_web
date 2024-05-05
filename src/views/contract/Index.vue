@@ -372,10 +372,10 @@ const stopPact = () => {
 };
 
 const withdrawal = () => {
-  if (amount.value < 500) {
+  if (amount.value < 100) {
     store.dispatch("snackbar/warning", {
       active: true,
-      body: "提现不能低于500",
+      body: "提现不能低于100",
     });
     return;
   }
