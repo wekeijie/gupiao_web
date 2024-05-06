@@ -187,39 +187,58 @@ const sendSms = () => {
 };
 
 const handleLogin = async () => {
-  const { valid } = await instance.ctx.$refs.form.validate();
-
-  if (valid) {
-    if (loginData.password != loginData.passwordAgo) {
-      store.dispatch("snackbar/warning", {
-        active: true,
-        body: "两次密码不一致",
-      });
-      return;
-    }
-    if (loginData.code.length == 4) {
-      store.dispatch("snackbar/warning", {
-        active: true,
-        body: "请输入正确的验证码",
-      });
-      return;
-    }
-    store
-      .dispatch("user/register", {
-        user_name: loginData.username,
-        mobile: loginData.phone,
-        password: loginData.password,
-        verify_code: loginData.code,
-        referrer: loginData.recom,
-      })
-      .then((d) => {
-        store.dispatch("snackbar/success", {
-          active: true,
-          body: "注册成功！",
-        });
-        goRouter("Login");
-      });
+  if (loginData.password.length < 6) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "密码长度不能小于6位",
+    });
+    return;
   }
+
+  if (loginData.password != loginData.passwordAgo) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "两次密码不一致",
+    });
+    return;
+  }
+
+  if (loginData.code.length == 4) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入正确的验证码",
+    });
+    return;
+  }
+  if (loginData.username.length < 3) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "账号长度不能小于3位",
+    });
+    return;
+  }
+  if (loginData.phone.length < 11) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入正确的手机号码",
+    });
+    return;
+  }
+  store
+    .dispatch("user/register", {
+      user_name: loginData.username,
+      mobile: loginData.phone,
+      password: loginData.password,
+      verify_code: loginData.code,
+      referrer: loginData.recom,
+    })
+    .then((d) => {
+      store.dispatch("snackbar/success", {
+        active: true,
+        body: "注册成功！",
+      });
+      goRouter("Login");
+    });
 };
 
 let instance = ref();
