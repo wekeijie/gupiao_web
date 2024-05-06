@@ -10,7 +10,12 @@
         </p>
       </template>
       <template v-slot:headerRight>
-        <img class="refresh" src="../../assets/img/refresh.png" alt="" />
+        <img
+          class="refresh"
+          src="../../assets/img/refresh.png"
+          alt=""
+          @click="resetDataKline"
+        />
       </template>
     </page-header>
     <div
@@ -271,7 +276,7 @@ DefaultData.GetKlineOption = function (symbol) {
       { Index: "MACD", Modify: false, Change: false, IsDrawTitleBG: true },
     ], //窗口指标
     Symbol: symbol,
-    IsAutoUpate: true, //是自动更新数据
+    IsAutoUpate: false, //是自动更新数据
 
     IsShowRightMenu: false, //右键菜单
 
@@ -380,6 +385,8 @@ const prefix_symbol = ref();
 const stock_date = ref();
 const prefix = ref(0);
 
+var chart;
+
 onMounted(() => {
   title.value = $route.query.title;
   Symbol.value = $route.query.code;
@@ -402,6 +409,16 @@ onMounted(() => {
       collect.value = true;
     }
   }
+
+  chart.ChartDestroy();
+});
+
+const resetDataKline = () => {
+  ChangeChartTab(Name.value, TabTextIndex.value);
+};
+
+onUnmounted(() => {
+  chart.ChartDestroy();
 });
 
 const getNewStockInfo = () => {
@@ -429,7 +446,7 @@ const CreateMinuteChart = () =>
   {
     if (Minute.value.JSChart) return;
     Minute.value.Option.Symbol = Symbol.value;
-    let chart = HQChart.Chart.JSChart.Init(minuteRef.value);
+    chart = HQChart.Chart.JSChart.Init(minuteRef.value);
     Minute.value.Option.NetworkFilter = (data, callback) => {
       MinuteNetworkFilter(data, callback);
     };
@@ -442,7 +459,7 @@ const CreateKLineChart = () =>
   {
     if (Kline.value.JSChart) return;
     Kline.value.Option.Symbol = Symbol.value;
-    let chart = HQChart.Chart.JSChart.Init(klineRef.value);
+    chart = HQChart.Chart.JSChart.Init(klineRef.value);
     Kline.value.Option.NetworkFilter = (data, callback) => {
       NetworkFilter(data, callback);
     };

@@ -1,9 +1,8 @@
 <template>
   <div class="login-box">
-
     <h1>注册</h1>
     <div class="log-top">
-      <img src="/src/assets/img/myCenter.png">
+      <img src="/src/assets/img/myCenter.png" />
     </div>
     <div class="login-cont">
       <v-form ref="form">
@@ -37,30 +36,28 @@
               :counter="4"
               label="验证码"
               type="Number"
-              :rules="passwordRules"
             >
             </v-text-field>
           </v-col>
           <v-col cols="4" class="px-1">
             <v-btn
-            class="text-none"
-            color="success"
-            rounded
-            block
-            variant="outlined"
-            @click="sendSms"
-            :disabled="isSendLock"
-          >
-            发送
-          </v-btn> 
+              class="text-none"
+              color="success"
+              rounded
+              block
+              variant="outlined"
+              @click="sendSms"
+              :disabled="isSendLock"
+            >
+              发送
+            </v-btn>
           </v-col>
         </v-row>
-        
+
         <v-text-field
           variant="underlined"
           v-model="loginData.password"
           required
-          :counter="12"
           label="密码"
           type="password"
           :rules="passwordRules"
@@ -70,7 +67,6 @@
           variant="underlined"
           v-model="loginData.passwordAgo"
           required
-          :counter="12"
           label="确认密码"
           type="password"
           :rules="passwordRules"
@@ -86,15 +82,12 @@
         </v-text-field>
         <div class="flexEnd inlin-customer">
           <p>
-            提示收不到验证码时请联系 <span @click="goRouter('/ForgertPhone')">在线客服</span>
+            提示收不到验证码时请联系
+            <span @click="goRouter('/ForgertPhone')">在线客服</span>
           </p>
         </div>
-
       </v-form>
-      <v-alert
-        text="发送成功"
-        v-if="isSend>55"
-      ></v-alert>
+      <v-alert text="发送成功" v-if="isSend > 55"></v-alert>
 
       <v-btn
         color="#fb5c39"
@@ -122,77 +115,121 @@
     </div>
   </div>
 </template>
-<script  setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick, getCurrentInstance } from "vue"
-import { passwordRules, phoneRoules, codeRoules, usernameRules } from "@/utils/vaildRule.js";
-import { useRouter, useRoute } from "vue-router"
-import {store} from '@/store'
-const $router = useRouter()
-const passwordType = ref('password')
+<script setup>
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+  getCurrentInstance,
+} from "vue";
+import {
+  passwordRules,
+  phoneRoules,
+  codeRoules,
+  usernameRules,
+} from "@/utils/vaildRule.js";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/store";
+const $router = useRouter();
+const passwordType = ref("password");
 const loginData = reactive({
-  username: '',
-  phone: '',
-  code: '',
-  password: '',
-  passwordAgo: '',
-  recom: ''
-})
-const clock = ref(null)
-const isSendLock = ref(false)
+  username: "",
+  phone: "",
+  code: "",
+  password: "",
+  passwordAgo: "",
+  recom: "",
+});
+const clock = ref(null);
+const isSendLock = ref(false);
 
 const lockBtn = () => {
-  isSendLock.value = true
-  let totalTime = 60
+  isSendLock.value = true;
+  let totalTime = 60;
   clock.value = window.setInterval(() => {
     if (totalTime == 0) {
-      clearLock()
+      clearLock();
     } else {
-      totalTime--
+      totalTime--;
     }
-  }, 1000)
-}
+  }, 1000);
+};
 
 const clearLock = () => {
-  clearInterval(clock.value)
-  isSendLock.value = false
-}
+  clearInterval(clock.value);
+  isSendLock.value = false;
+};
 
-const sendSms = () =>{
-  if(loginData.phone.length < 6 || loginData.phone.length > 11){
-    store.dispatch('snackbar/warning',{'active':true,'body':'请输入正确的手机号码'})
-    return
+const sendSms = () => {
+  if (loginData.phone.length < 6 || loginData.phone.length > 11) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入正确的手机号码",
+    });
+    return;
   }
-  lockBtn()
-  store.dispatch('user/sendSms',loginData.phone).then(rsp => {
-    store.dispatch('snackbar/success',{'active':true,'body':'发送成功'})
-  }).catch(() => {
-    clearLock()
-  })
-}
+  lockBtn();
+  store
+    .dispatch("user/sendSms", loginData.phone)
+    .then((rsp) => {
+      store.dispatch("snackbar/success", { active: true, body: "发送成功" });
+    })
+    .catch(() => {
+      clearLock();
+    });
+};
 
 const handleLogin = async () => {
   const { valid } = await instance.ctx.$refs.form.validate();
 
   if (valid) {
-    if(loginData.password != loginData.passwordAgo){
-      store.dispatch('snackbar/warning',{'active':true,'body':'两次密码不一致'})
-      return 
+    if (loginData.password != loginData.passwordAgo) {
+      store.dispatch("snackbar/warning", {
+        active: true,
+        body: "两次密码不一致",
+      });
+      return;
     }
-    store.dispatch('user/register',{'user_name':loginData.username,'mobile':loginData.phone,'password':loginData.password,'verify_code':loginData.code,'referrer':loginData.recom}).then(d => {
-      store.dispatch('snackbar/success',{'active':true,'body':'注册成功！'})
-      goRouter('Login') 
-    })
+    if (loginData.code.length == 4) {
+      store.dispatch("snackbar/warning", {
+        active: true,
+        body: "请输入正确的验证码",
+      });
+      return;
+    }
+    store
+      .dispatch("user/register", {
+        user_name: loginData.username,
+        mobile: loginData.phone,
+        password: loginData.password,
+        verify_code: loginData.code,
+        referrer: loginData.recom,
+      })
+      .then((d) => {
+        store.dispatch("snackbar/success", {
+          active: true,
+          body: "注册成功！",
+        });
+        goRouter("Login");
+      });
   }
 };
 
 let instance = ref();
-const isSend = ref(0)
+const isSend = ref(0);
 onMounted(() => {
   instance = getCurrentInstance();
 });
 
 const goRouter = (path) => {
-  $router.push(path)
+  $router.push(path);
 };
 </script>
 <style lang="scss" scoped>

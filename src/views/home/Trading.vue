@@ -3,7 +3,12 @@
     <page-header>
       <template v-slot:headerCenter>交易</template>
       <template v-slot:headerRight>
-        <img src="../../assets/img/refresh.png" alt="" class="refresh-data" />
+        <img
+          src="../../assets/img/refresh.png"
+          alt=""
+          class="refresh-data"
+          @click="resetUpdateStock"
+        />
       </template>
     </page-header>
     <div class="hores-race-lamp flexStart">
@@ -82,7 +87,19 @@
         >
       </p>
       <div>
-        <img src="../../assets/img/pixelsImg.png" alt="" class="img-right" />
+        <img
+          src="../../assets/img/pixelsImg.png"
+          alt=""
+          @click="
+            gotrade(
+              '/ChanrtPage',
+              store.state.market.stock_new_info.f58,
+              store.state.market.stock_new_info.f57,
+              store.state.market.stock_new_info.f107
+            )
+          "
+          class="img-right"
+        />
         <img src="../../assets/img/lineImg.png" alt="" class="img-right" />
       </div>
     </div>
@@ -598,19 +615,7 @@ onMounted(() => {
   } else {
     title.value = store.state.trading.title;
   }
-  let now_code =
-    store.state.market.stock_new_info.f107 +
-    "." +
-    store.state.market.stock_new_info.f57;
-  if (now_code != prefix.value) {
-    store.dispatch("market/getStockNewInfo", prefix.value);
-  }
-  if (store.state.market.stock_new_info.f107 < 2) {
-    store.dispatch("market/getBuySellFive", prefix.value).then((d) => {
-      buySellFiveList.buy = d.buy;
-      buySellFiveList.sell = d.sell;
-    });
-  }
+  resetUpdateStock();
 
   // store.dispatch("trading/getInfo", prefix.value);
   // store.dispatch("trading/getDayDetail", prefix.value);
@@ -629,6 +634,22 @@ onMounted(() => {
   getActiveList();
   getTrustList(0);
 });
+
+const resetUpdateStock = () => {
+  let now_code =
+    store.state.market.stock_new_info.f107 +
+    "." +
+    store.state.market.stock_new_info.f57;
+  if (now_code != prefix.value) {
+    store.dispatch("market/getStockNewInfo", prefix.value);
+  }
+  if (store.state.market.stock_new_info.f107 < 2) {
+    store.dispatch("market/getBuySellFive", prefix.value).then((d) => {
+      buySellFiveList.buy = d.buy;
+      buySellFiveList.sell = d.sell;
+    });
+  }
+};
 
 const changeOrderList = (index) => {
   orderIndex.value = index;
@@ -894,6 +915,16 @@ const updateStrIcon = (price) => {
   } else {
     return price;
   }
+};
+const gotrade = (path, name, code, prefix) => {
+  $router.push({
+    path,
+    query: {
+      code: code,
+      title: name,
+      prefix: prefix,
+    },
+  });
 };
 </script>
 <style lang="scss" scoped>

@@ -82,7 +82,19 @@
         >
       </p>
       <div>
-        <img src="../../assets/img/pixelsImg.png" alt="" class="img-right" />
+        <img
+          src="../../assets/img/pixelsImg.png"
+          alt=""
+          @click="
+            gotrade(
+              '/ChanrtPage',
+              store.state.market.stock_new_info.f58,
+              store.state.market.stock_new_info.f57,
+              store.state.market.stock_new_info.f107
+            )
+          "
+          class="img-right"
+        />
         <img src="../../assets/img/lineImg.png" alt="" class="img-right" />
       </div>
     </div>
@@ -713,7 +725,16 @@ const changeNUmberValue = (f) => {
     }
   }
 };
-
+const gotrade = (path, name, code, prefix) => {
+  $router.push({
+    path,
+    query: {
+      code: code,
+      title: name,
+      prefix: prefix,
+    },
+  });
+};
 const submitOK = () => {
   if (!store.getters.token) {
     store.dispatch("snackbar/warning", {

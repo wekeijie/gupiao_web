@@ -189,7 +189,7 @@ const submitHandle = () => {
   store.dispatch("contract/create", data).then(() => {
     store.dispatch("snackbar/success", {
       active: true,
-      body: "Success",
+      body: "申请成功！",
     });
     dialog.value = false;
     router.push("/contract");
@@ -224,8 +224,6 @@ const applySub = () => {
   applyInfo.loss_waring = applyInfo.expand + amount.value * 0.5;
   applyInfo.loss_fail = applyInfo.expand + amount.value * 0.2;
   applyInfo.rate = applyInfo.expand * (limit_data.value.rate / 100);
-  console.log(123);
-  console.log(applyInfo);
   dialog.value = true;
 };
 </script>
