@@ -60,9 +60,9 @@
   <v-bottom-sheet v-model="isApply">
     <v-list>
       <v-list-subheader class="w-100">
-        <v-row class="ma-0 pa-0 w-100">
-          <v-col cols="6" class="py-2">请选择银行卡</v-col>
-          <v-col cols="6" class="text-right py-2">
+        <v-row class="ma-0 pa-0 pb-2 w-100">
+          <v-col cols="6" class="">请选择银行卡</v-col>
+          <v-col cols="6" class="text-right">
             <v-btn
               density="comfortable"
               size="small"
