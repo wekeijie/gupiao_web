@@ -203,7 +203,7 @@ const handleLogin = async () => {
     return;
   }
 
-  if (loginData.code.length == 4) {
+  if (loginData.code.length != 4) {
     store.dispatch("snackbar/warning", {
       active: true,
       body: "请输入正确的验证码",
