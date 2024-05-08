@@ -209,9 +209,9 @@
           </div>
 
           <div class="up-down-number flexBetween">
-            <p>
-              交易额<span class="roseColor">{{ yu_order.amount }}</span>
-            </p>
+            <!-- <p>
+              交易额<span class="roseColor">{{ trade_price }}</span>
+            </p> -->
             <p>
               可卖股数<span class="fallColor">{{ yu_order.limit }}</span>
             </p>
@@ -346,7 +346,7 @@
                   <v-btn
                     variant="outlined"
                     color="red"
-                    :to="'/Sell?order_id=' + item.id"
+                    @click="goToSell('/Sell', item.id)"
                     size="x-small"
                   >
                     卖出
@@ -396,7 +396,7 @@
                   <div class="tr-two-number">{{ item.buy_price }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
-                  <span>{{ item.number }}/委托</span>
+                  <span>{{ item.number }}/{{ item.type_string }}</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
                   <p>{{ item.date }}</p>
@@ -566,6 +566,8 @@ const buySellFiveList = reactive({
   sell: [],
 });
 
+const trade_price = ref(0);
+
 const postTradeType = ref("market_price");
 
 const tradeType = [
@@ -577,19 +579,31 @@ const fenshi_list = ref([]);
 
 onMounted(() => {
   if ($route.query.order_id) {
-    store.dispatch("trading/getOrderInfo", $route.query.order_id).then((d) => {
-      if (d.code) {
-        yu_order.limit = d.number;
-        yu_order.order_id = d.id;
-        getStockInfo(d.code);
-      }
-    });
+    resetData($route.query.order_id);
+  }
+  // store.dispatch("trading/getInfo", prefix.value);
+  // store.dispatch("trading/getDayDetail", prefix.value);
+  // if (store.getters.token) {
+  //   store.dispatch("contract/getMinList");
+  // } else {
+  //   heyuename.value = "请登录选择合约";
+  // }
+  // request.post("market/stock", { symbol: prefix.value }).then((d) => {
+  //   stock_date.value = d.date;
+  //   checkDateStatus();
+  // });
+});
+
+const resetData = (order_id) => {
+  if (order_id) {
+    getNewList(order_id);
   }
 
   let now_code =
     store.state.market.stock_new_info.f107 +
     "." +
     store.state.market.stock_new_info.f57;
+
   if (now_code != prefix.value) {
     store.dispatch("market/getStockNewInfo", prefix.value);
   }
@@ -599,27 +613,23 @@ onMounted(() => {
       buySellFiveList.sell = d.sell;
     });
   }
-
-  // store.dispatch("trading/getInfo", prefix.value);
-  // store.dispatch("trading/getDayDetail", prefix.value);
-  if (store.getters.token) {
-    store.dispatch("contract/getMinList");
-  } else {
-    heyuename.value = "请登录选择合约";
-  }
-
   getFenShiList();
-
-  // request.post("market/stock", { symbol: prefix.value }).then((d) => {
-  //   stock_date.value = d.date;
-  //   checkDateStatus();
-  // });
   getActiveList();
   getTrustList(0);
-});
+};
+
+const getNewList = (order_id) => {
+  store.dispatch("trading/getOrderInfo", order_id).then((d) => {
+    if (d.code) {
+      yu_order.limit = d.number;
+      yu_order.order_id = d.id;
+      getStockInfo(d.code);
+    }
+  });
+};
 
 const getStockInfo = (code) => {
-  store.dispatch("market/getStockNewInfo", code);
+  return store.dispatch("market/getStockNewInfo", code);
 };
 
 const changeOrderList = (index) => {
@@ -670,7 +680,16 @@ const cancelOrder = (id) => {
     getTrustList(0);
   });
 };
+const goToSell = (path, order_id) => {
+  $router.push({
+    path,
+    query: {
+      order_id: order_id,
+    },
+  });
 
+  resetData(order_id);
+};
 const sellSub = () => {
   if (yu_order.order_id == "") {
     store.dispatch("snackbar/warning", {
@@ -707,6 +726,7 @@ const sellSub = () => {
         active: true,
         body: "卖出成功",
       });
+      getNewList(yu_order.order_id);
       getActiveList();
       getEndList();
     });

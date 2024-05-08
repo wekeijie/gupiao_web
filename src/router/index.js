@@ -254,9 +254,6 @@ const routes = [
     path: "/online-service",
     name: "onlineService",
     component: () => import("@/views/user/OnlineService.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/Withdraw/list",

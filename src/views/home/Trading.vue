@@ -769,6 +769,9 @@ const submitOK = () => {
       active: true,
       body: "购买成功",
     });
+    store.dispatch("contract/getMinList").then(() => {
+      selectHeyue(tabIndex.value);
+    });
     getActiveList();
     getTrustList(0);
   });

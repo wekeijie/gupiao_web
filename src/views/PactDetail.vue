@@ -41,7 +41,7 @@
         <p>证券市值</p>
       </div>
       <div class="amount-list">
-        <span>{{ store.state.contract.detail.contract_total }}</span>
+        <span>{{ store.state.contract.detail.total_amount + underlined }}</span>
         <p>合约市值</p>
       </div>
 
@@ -109,7 +109,7 @@
                   </td>
                   <td class="tr-two">
                     <div class="tr-two-number">
-                      {{ item.price }}
+                      {{ item.sell }}
                     </div>
                   </td>
                   <td class="tr-three" style="text-align: right">

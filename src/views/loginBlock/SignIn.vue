@@ -83,7 +83,7 @@
         <div class="flexEnd inlin-customer">
           <p>
             提示收不到验证码时请联系
-            <span @click="goRouter('/ForgertPhone')">在线客服</span>
+            <span @click="goRouter('/online-service')">在线客服</span>
           </p>
         </div>
       </v-form>
@@ -138,6 +138,7 @@ import {
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
 const $router = useRouter();
+const $route = useRoute();
 const passwordType = ref("password");
 const loginData = reactive({
   username: "",
@@ -244,6 +245,9 @@ const handleLogin = async () => {
 let instance = ref();
 const isSend = ref(0);
 onMounted(() => {
+  if ($route.query.code) {
+    loginData.recom = $route.query.code;
+  }
   instance = getCurrentInstance();
 });
 
