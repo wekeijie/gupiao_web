@@ -315,6 +315,7 @@ watch(
         amount += fuyingAmount(item.price, item.sell, item.number);
       });
     }
+    console.log(amount, store.state.contract.detail.unrealized);
     underlined.value =
       parseFloat(amount) + parseFloat(store.state.contract.detail.unrealized);
   }

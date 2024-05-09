@@ -58,13 +58,14 @@ const sum = () => {
     store.state.copyTradeList.tradeList &&
     Array.isArray(store.state.copyTradeList.tradeList)
   ) {
-    return store.state.copyTradeList.tradeList.reduce(function (
+    let amount = store.state.copyTradeList.tradeList.reduce(function (
       accumulator,
       currentValue
     ) {
       return accumulator + parseFloat(currentValue.unrealized_profit);
     },
     0);
+    return amount.toFixed(2);
   } else {
     return 0; // 或者返回适当的默认值
   }
