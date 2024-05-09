@@ -312,7 +312,8 @@ watch(
     let amount = 0;
     if (count.length > 0) {
       count.forEach((item) => {
-        amount = fuyingAmount(item.price, item.sell, item.number) + amount;
+        let temp = fuyingAmount(item.price, item.sell, item.number);
+        amount += parseFloat(temp);
       });
     }
     console.log("amount", amount);
