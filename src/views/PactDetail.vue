@@ -316,11 +316,10 @@ watch(
         amount += parseFloat(temp);
       });
     }
-    console.log("amount", amount);
-    console.log("store", store.state.contract.detail.unrealized);
-    underlined.value =
+
+    let temp =
       parseFloat(amount) + parseFloat(store.state.contract.detail.unrealized);
-    console.log("underlined", underlined.value);
+    underlined.value = temp.toFixed(2);
   }
 );
 
