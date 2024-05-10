@@ -88,6 +88,7 @@ export default {
     async getDetail(content, order_id) {
       const rsp = await detailApi(order_id);
       content.commit("setDetailStock", rsp);
+      return rsp;
     },
     async getAmountList(content, order_id) {
       const rsp = await amountListApi(order_id);

@@ -3,7 +3,7 @@
     <page-header>
       <template v-slot:headerCenter>{{ topTitle }}</template>
     </page-header>
-    <div class="rich-cont-box w-100 overflow-x-hidden">
+    <div class="rich-cont-box w-100 overflow-x-hidden pt-12">
       <!-- <div v-if="richType == 1">
         <h2 class="rich-title">{{ topTitle }}</h2>
         <p class="rich-time">{{ store.state.news.context.created_at }}</p>

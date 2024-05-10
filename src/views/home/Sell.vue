@@ -3,7 +3,12 @@
     <page-header>
       <template v-slot:headerCenter>卖出</template>
       <template v-slot:headerRight>
-        <img src="../../assets/img/refresh.png" alt="" class="refresh-data" />
+        <img
+          src="../../assets/img/refresh.png"
+          alt=""
+          @click="reloadPage"
+          class="refresh-data"
+        />
       </template>
     </page-header>
     <div class="hores-race-lamp flexStart">
@@ -234,7 +239,7 @@
                   v-for="(item, key) in buySellFiveList.sell"
                   :key="key"
                 >
-                  <p>卖{{ key + 1 }}</p>
+                  <p>卖{{ buySellFiveList.sell.length - key }}</p>
                   <p class="fallColor">{{ item.price }}</p>
                   <p>{{ item.vol }}</p>
                 </div>
@@ -607,12 +612,7 @@ const resetData = (order_id) => {
   if (now_code != prefix.value) {
     store.dispatch("market/getStockNewInfo", prefix.value);
   }
-  if (store.state.market.stock_new_info.f107 < 2) {
-    store.dispatch("market/getBuySellFive", prefix.value).then((d) => {
-      buySellFiveList.buy = d.buy;
-      buySellFiveList.sell = d.sell;
-    });
-  }
+
   getFenShiList();
   getActiveList();
   getTrustList(0);
@@ -623,7 +623,14 @@ const getNewList = (order_id) => {
     if (d.code) {
       yu_order.limit = d.number;
       yu_order.order_id = d.id;
+      prefix.value = d.code;
       getStockInfo(d.code);
+      if (store.state.market.stock_new_info.f107 < 2) {
+        store.dispatch("market/getBuySellFive", prefix.value).then((d) => {
+          buySellFiveList.buy = d.buy;
+          buySellFiveList.sell = d.sell;
+        });
+      }
     }
   });
 };
@@ -754,6 +761,9 @@ const gotrade = (path, name, code, prefix) => {
       prefix: prefix,
     },
   });
+};
+const reloadPage = () => {
+  window.location.reload();
 };
 const submitOK = () => {
   if (!store.getters.token) {

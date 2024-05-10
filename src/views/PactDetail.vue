@@ -37,7 +37,7 @@
         <p>冻结资金</p>
       </div>
       <div class="amount-list">
-        <span>{{ store.state.contract.detail.stock_total }}</span>
+        <span>{{ stock_amount_total }}</span>
         <p>证券市值</p>
       </div>
       <div class="amount-list">
@@ -301,11 +301,20 @@ const model = ref(0);
 const mouneyIndex = ref(0);
 const order_id = ref(0);
 const underlined = ref(0);
+
+const stock_amount_total = ref(0);
+
 onMounted(() => {
   if ($route.query.code) {
     order_id.value = $route.query.code;
   }
-  store.dispatch("contract/getDetail", order_id.value);
+  store.dispatch("contract/getDetail", order_id.value).then((d) => {
+    let temp = d.stock.reduce((sum, item) => {
+      return (sum += parseFloat(item.sell) * item.number);
+    }, 0);
+
+    stock_amount_total.value = parseFloat(temp.toFixed(2));
+  });
 });
 
 watch(
