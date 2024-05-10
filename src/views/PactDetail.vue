@@ -41,7 +41,9 @@
         <p>证券市值</p>
       </div>
       <div class="amount-list">
-        <span>{{ store.state.contract.detail.total_amount + underlined }}</span>
+        <span>{{
+          parseFloat(store.state.contract.detail.total_amount) + underlined
+        }}</span>
         <p>合约市值</p>
       </div>
 
