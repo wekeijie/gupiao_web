@@ -451,7 +451,7 @@
                   <span>{{ item.symbol_code }}</span>
                 </td>
                 <td class="tr-two" style="text-align: right">
-                  <div class="tr-two-number">{{ item.amount }}</div>
+                  <div class="tr-two-number">{{ item.amount_f }}</div>
                 </td>
                 <td class="tr-three" style="text-align: right">
                   <span>{{ item.number }}/{{ item.type_string }}</span>
