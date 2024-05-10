@@ -8,7 +8,31 @@
         <v-col cols="6" class="px-0">
           <div class="text-h6 text-white">
             {{ store.state.user.info.user_name }}
-            <img src="@/assets/static/user_01_03.png" width="70" />
+            <img
+              src="@/assets/img/vip/7.png"
+              v-if="store.state.user.info.level_id == 7"
+              width="70"
+            />
+            <img
+              src="@/assets/img/vip/6.png"
+              v-else-if="store.state.user.info.level_id == 6"
+              width="70"
+            />
+            <img
+              src="@/assets/img/vip/5.png"
+              v-else-if="store.state.user.info.level_id == 5"
+              width="70"
+            />
+            <img
+              src="@/assets/img/vip/4.png"
+              v-else-if="store.state.user.info.level_id == 4"
+              width="70"
+            />
+            <img
+              src="@/assets/img/vip/3.png"
+              v-else-if="store.state.user.info.level_id == 3"
+              width="70"
+            /><img src="@/assets/img/vip/2.png" v-else width="70" />
           </div>
           <div class="text-subtitle-2 copy-text-color">
             推荐码 <span>{{ store.state.user.info.code }}</span>

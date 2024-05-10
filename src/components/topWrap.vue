@@ -1,26 +1,39 @@
 <template>
   <div>
     <div class="page-Header flexBetween">
-      <img class="page-back" src="../assets/img/back.png" @click="$router.go(-1)">
+      <img
+        class="page-back mr-3"
+        src="../assets/img/back.png"
+        @click="$router.go(-1)"
+      />
       <div class="page-title">
         <slot name="headerCenter"></slot>
       </div>
       <div class="top-right-box">
         <slot name="headerRight"></slot>
       </div>
-
     </div>
     <div class="placeholder-box"></div>
-
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
 
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
+import { useRouter, useRoute } from "vue-router";
+const $router = useRouter();
+const $route = useRoute();
 </script>
 <style lang="scss" scoped>
 .placeholder-box {

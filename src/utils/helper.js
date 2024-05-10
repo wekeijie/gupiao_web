@@ -13,7 +13,7 @@ export const httpErrorFormat = (errors) => {
 };
 
 export const marketDataFormat = (input, fixed = 2) => {
-  return (input / Math.pow(10, fixed)).toFixed(fixed);
+  return parseFloat((input / Math.pow(10, fixed)).toFixed(fixed));
 };
 
 export const chartDataFormat = (

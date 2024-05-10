@@ -7,7 +7,7 @@
           src="../../assets/img/refresh.png"
           alt=""
           class="refresh-data"
-          @click="resetUpdateStock"
+          @click="reloadPage"
         />
       </template>
     </page-header>
@@ -215,7 +215,7 @@
 
           <div class="up-down-number flexBetween">
             <p>
-              交易额<span class="roseColor">{{ yu_order.amount }}</span>
+              交易额<span class="roseColor">{{ tradeAmount }}</span>
             </p>
             <p>
               可买股数<span class="fallColor">{{ yu_order.limit }}</span>
@@ -600,6 +600,16 @@ const tradeType = [
 ];
 
 const fenshi_list = ref([]);
+const tradeAmount = ref(0);
+watch(numberValue, (val, old) => {
+  let temp =
+    marketDataFormat(
+      store.state.market.stock_new_info.f43,
+      store.state.market.stock_new_info.f59
+    ) * val;
+
+  tradeAmount.value = temp.toFixed(2);
+});
 
 onMounted(() => {
   if ($route.query.code) {
@@ -672,6 +682,7 @@ const getActiveList = () => {
 const getFenShiList = async () => {
   const rsp = await store.dispatch("market/getStockFenShi", prefix.value);
   fenshi_list.value = fenshiDataFormat(rsp);
+  fenshi_list.value.reverse();
 };
 
 const fenshiDataFormat = (rsp) => {
@@ -928,6 +939,9 @@ const gotrade = (path, name, code, prefix) => {
       prefix: prefix,
     },
   });
+};
+const reloadPage = () => {
+  window.location.reload();
 };
 </script>
 <style lang="scss" scoped>

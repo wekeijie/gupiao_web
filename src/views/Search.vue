@@ -25,7 +25,7 @@
           </form>
         </v-col>
       </div>
-      <h3 @click="$router.go(-1)">取消</h3>
+      <h3 @click="handleSubmit">搜索</h3>
     </div>
 
     <div class="search-title">股票</div>

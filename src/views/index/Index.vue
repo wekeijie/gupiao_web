@@ -2,7 +2,7 @@
   <div class="bg-color pb-8">
     <div class="index-top w-100">
       <div class="px-3 pt-4">
-        <searchComponent></searchComponent>
+        <v-img src="@/assets/img/logo.png" height="40" width="100"></v-img>
         <v-carousel
           :show-arrows="false"
           hide-delimiters
@@ -26,15 +26,10 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="jump(router, '/Market')"
+            @click="jump(router, '/online-service')"
           >
-            <img
-              src="@/assets/static/index_nav_1.png"
-              width="40"
-              height="40"
-              class=""
-            />
-            <div class="text-body-2 nav-text-color">自选</div>
+            <img src="@/assets/img/kefu.png" width="40" height="40" class="" />
+            <div class="text-body-2 nav-text-color">在线客服</div>
           </v-col>
           <v-col
             cols="3"
@@ -49,18 +44,9 @@
             />
             <div class="text-body-2 nav-text-color">交易</div>
           </v-col>
-          <v-col
-            cols="3"
-            class="pa-0 w-100 text-center"
-            @click="jump(router, '/Agency')"
-          >
-            <img
-              src="@/assets/static/index_nav_3.png"
-              width="40"
-              height="40"
-              class=""
-            />
-            <div class="text-body-2 nav-text-color">代理中心</div>
+          <v-col cols="3" class="pa-0 w-100 text-center" @click="downloadFile">
+            <img src="@/assets/img/app.png" width="40" height="40" class="" />
+            <div class="text-body-2 nav-text-color">APP下载</div>
           </v-col>
           <v-col
             cols="3"
@@ -169,6 +155,14 @@ onMounted(() => {
     store.commit("bannerAndRank/updateAlertActive", true);
   }
 });
+const downloadFile = () => {
+  const link = document.createElement("a");
+  link.href = "/central_gold.apk";
+  link.setAttribute("download", "central_gold.apk");
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
 
 const updateAlertActive = () => {
   store.commit("bannerAndRank/updateAlertActive", false);

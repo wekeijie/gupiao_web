@@ -3,14 +3,15 @@
     <page-header>
       <template v-slot:headerCenter>{{ topTitle }}</template>
     </page-header>
-    <div class="rich-cont-box">
-      <div v-if="richType == 1">
+    <div class="rich-cont-box w-100 overflow-x-hidden">
+      <!-- <div v-if="richType == 1">
         <h2 class="rich-title">{{ topTitle }}</h2>
         <p class="rich-time">{{ store.state.news.context.created_at }}</p>
-      </div>
+      </div> -->
       <div
         v-html="store.state.news.context.content"
         style="padding: 20px 11px"
+        class="w-100 content-body"
       ></div>
     </div>
   </div>
@@ -50,6 +51,12 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
+img {
+  width: 100% !important;
+}
+.rich-cont-box img {
+  width: 100% !important;
+}
 .rich-cont-box {
   // padding: 0px 0;
   .rich-title {
