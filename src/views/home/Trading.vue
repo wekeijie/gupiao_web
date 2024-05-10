@@ -260,7 +260,7 @@
                   v-for="(item, key) in buySellFiveList.sell"
                   :key="key"
                 >
-                  <p>卖{{ key + 1 }}</p>
+                  <p>卖{{ buySellFiveList.sell - key }}</p>
                   <p class="fallColor">{{ item.price }}</p>
                   <p>{{ item.vol }}</p>
                 </div>
