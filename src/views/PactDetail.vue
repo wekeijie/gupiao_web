@@ -319,7 +319,7 @@ watch(
 
     let temp =
       parseFloat(amount) + parseFloat(store.state.contract.detail.unrealized);
-    underlined.value = temp.toFixed(2);
+    underlined.value = parseFloat(temp.toFixed(2));
   }
 );
 
