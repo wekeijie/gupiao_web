@@ -660,6 +660,7 @@ const getActiveList = () => {
 const getFenShiList = async () => {
   const rsp = await store.dispatch("market/getStockFenShi", prefix.value);
   fenshi_list.value = fenshiDataFormat(rsp);
+  fenshi_list.value.reverse();
 };
 
 const fenshiDataFormat = (rsp) => {
