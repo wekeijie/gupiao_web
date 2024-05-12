@@ -9,9 +9,10 @@
       <img
         :src="store.state.copyTrade.one.avatar"
         width="70"
+        height="70"
         class="rounded-circle"
       />
-      <div class="mt-2">
+      <div class="mt-1">
         明星投资者:<span class="ml-1">{{
           store.state.copyTrade.one.name
         }}</span>
@@ -149,7 +150,7 @@ const selectList = (key) => {
 .top-bg {
   background: url("@/assets/static/check_icon_1_03.png") no-repeat center;
   background-size: cover;
-  height: 250px;
+  height: 280px;
 }
 input.amount::placeholder {
   color: #8e8e8e;
