@@ -25,7 +25,7 @@
       </div>
       <div class="amount-list">
         <span>{{ store.state.contract.detail.stop_loss }}</span>
-        <p>出发止损</p>
+        <p>触发止损</p>
       </div>
 
       <div class="amount-list">
