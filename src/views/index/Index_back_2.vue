@@ -82,25 +82,46 @@
         </v-row>
       </v-sheet>
       <v-sheet class="mt-4 index-card-bg py-4 rounded-lg">
-        <v-card-title>新闻资讯</v-card-title>
-        <v-list lines="one" density="compact" nav>
-          <v-list-item
-            v-for="item in store.state.news.list"
+        <v-card-title>昨日收益榜</v-card-title>
+        <v-row class="ma-3 pa-0">
+          <v-col
+            cols="12"
+            class="pa-2 bg-white rounded-lg border-line text-body-2 mb-2"
+            v-for="item in store.state.bannerAndRank.rank"
             :key="item.id"
-            :to="'/RichText?id=' + item.id + '&title=' + item.title"
           >
             <v-row class="ma-0 pa-0">
-              <v-col cols="1" class="px-0 py-1"
-                ><v-icon color="#333">mdi-format-list-checkbox</v-icon></v-col
+              <v-col cols="6" class="pa-0 py-1 font-weight-bold">{{
+                item.username
+              }}</v-col>
+              <v-col cols="6" class="pa-0 text-right py-1"
+                ><v-chip
+                  class="text-caption"
+                  size="x-small"
+                  color="orange"
+                  label
+                >
+                  {{ item.level }}
+                </v-chip></v-col
+              >
+              <v-col cols="12" class="pa-0 py-1 text-caption text-grey">{{
+                item.contract
+              }}</v-col>
+              <v-col
+                cols="6"
+                class="pa-0 py-1 font-weight-bold text-body-1 text-red"
+                >{{ item.amount + "万" }}</v-col
               >
               <v-col
-                cols="11"
-                class="text-truncate overflow-hidden px-0 py-1 text-body-1"
-                >{{ item.title }}</v-col
+                cols="6"
+                class="pa-0 py-1 text-caption text-right text-grey"
+                >盈利率<span class="text-red">{{
+                  item.rank + "%"
+                }}</span></v-col
               >
             </v-row>
-          </v-list-item>
-        </v-list>
+          </v-col>
+        </v-row>
       </v-sheet>
     </div>
   </div>
@@ -133,8 +154,6 @@ onMounted(() => {
   ) {
     store.commit("bannerAndRank/updateAlertActive", true);
   }
-
-  store.dispatch("news/list", { page: 1, limit: 10 });
 });
 const downloadFile = () => {
   const link = document.createElement("a");
@@ -164,15 +183,4 @@ const updateAlertActive = () => {
   background-repeat: no-repeat;
   background-size: contain;
 }
-/* .d-inline-block {
-  display: inline-block !important;
-} */
-.news-list .d-inline-block {
-  display: inline-flex !important;
-  align-items: center !important;
-}
-/* .news-list div {
-  display: flex;
-  align-items: center;
-} */
 </style>

@@ -80,4 +80,7 @@ img {
     border-bottom: 5px solid rgb(245, 245, 245);
   }
 }
+.w-100.content-body img {
+  width: 100% !important;
+}
 </style>

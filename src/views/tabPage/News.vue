@@ -67,6 +67,7 @@ import { store } from "@/store";
 const router = useRouter();
 const tab = ref(0);
 let page = ref(1);
+const limit = ref(50);
 
 onMounted(() => {
   getList();
@@ -81,7 +82,7 @@ const flashStyle = (key) => {
 };
 
 const getList = () => {
-  store.dispatch("news/list", page.value);
+  store.dispatch("news/list", { page: page.value, limit: limit.value });
 };
 
 const updateItems = () => {

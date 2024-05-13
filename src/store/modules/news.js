@@ -74,7 +74,7 @@ export default {
   },
   actions: {
     async list(context, info) {
-      const rsp = await newsListApi(info);
+      const rsp = await newsListApi(info.page, info.limit);
       context.commit("setList", rsp);
     },
     async show(context, id) {

@@ -81,6 +81,19 @@
                         item.contract_rate + "%"
                       }}</v-col>
                     </v-row>
+                    <v-col
+                      cols="12"
+                      class="px-0"
+                      @click="
+                        jump(router, '/PactDetail', { code: item.order_id })
+                      "
+                    >
+                      <v-row
+                        class="ma-0 pa-0 text-body-2 date-bg text-white rounded"
+                      >
+                        <v-col cols="12" class="px-0 pl-2">详情</v-col>
+                      </v-row>
+                    </v-col>
                   </v-col>
                 </v-row>
               </div>
@@ -90,23 +103,13 @@
               >
                 <div
                   class="flex-1-0 w-20 text-center"
-                  @click="showModel('终止', item, 0)"
+                  @click="jump(router, '/Trading')"
                 >
                   <img
-                    src="@/assets/static/contract_icon_1_03.png"
+                    src="@/assets/static/contract_icon_1_09.png"
                     width="25"
                   />
-                  <div class="">终止</div>
-                </div>
-                <div
-                  class="flex-1-0 w-20 text-center"
-                  @click="showModel('扩大', item, 1)"
-                >
-                  <img
-                    src="@/assets/static/contract_icon_1_05.png"
-                    width="25"
-                  />
-                  <div class="">扩大</div>
+                  <div class="">交易</div>
                 </div>
                 <div
                   class="flex-1-0 w-20 text-center"
@@ -120,13 +123,13 @@
                 </div>
                 <div
                   class="flex-1-0 w-20 text-center"
-                  @click="jump(router, '/PactDetail', { code: item.order_id })"
+                  @click="showModel('扩大', item, 1)"
                 >
                   <img
-                    src="@/assets/static/contract_icon_1_09.png"
+                    src="@/assets/static/contract_icon_1_05.png"
                     width="25"
                   />
-                  <div class="">详情</div>
+                  <div class="">扩大</div>
                 </div>
                 <div
                   class="flex-1-0 w-20 text-center"
@@ -137,6 +140,16 @@
                     width="25"
                   />
                   <div class="">提盈</div>
+                </div>
+                <div
+                  class="flex-1-0 w-20 text-center"
+                  @click="showModel('结算', item, 0)"
+                >
+                  <img
+                    src="@/assets/static/contract_icon_1_03.png"
+                    width="25"
+                  />
+                  <div class="">结算</div>
                 </div>
               </div>
             </div>
@@ -199,18 +212,41 @@
                       }}</v-col>
                     </v-row>
                   </v-col>
+                  <v-col
+                    cols="12"
+                    class="px-0 pt-0"
+                    @click="
+                      jump(router, '/PactDetail', { code: item.order_id })
+                    "
+                  >
+                    <v-row
+                      class="ma-0 pa-0 text-body-2 date-bg text-white rounded"
+                    >
+                      <v-col cols="12" class="px-0 pl-2">详情</v-col>
+                    </v-row>
+                  </v-col>
                 </v-row>
               </div>
               <v-divider class="mt-2"></v-divider>
               <div
                 class="d-flex flex-wrap w-100 text-body-2 pt-3 bottom-nav-color"
               >
-                <div class="flex-1-0 w-20 text-center">
+                <div
+                  class="flex-1-0 w-20 text-center"
+                  @click="jump(router, '/Trading')"
+                >
                   <img
-                    src="@/assets/static/contract_icon_1_03.png"
+                    src="@/assets/static/contract_icon_1_09.png"
                     width="25"
                   />
-                  <div class="">终止</div>
+                  <div class="">交易</div>
+                </div>
+                <div class="flex-1-0 w-20 text-center">
+                  <img
+                    src="@/assets/static/contract_icon_1_07.png"
+                    width="25"
+                  />
+                  <div class="">追加</div>
                 </div>
                 <div class="flex-1-0 w-20 text-center">
                   <img
@@ -221,27 +257,17 @@
                 </div>
                 <div class="flex-1-0 w-20 text-center">
                   <img
-                    src="@/assets/static/contract_icon_1_07.png"
-                    width="25"
-                  />
-                  <div class="">追加</div>
-                </div>
-                <div
-                  class="flex-1-0 w-20 text-center"
-                  @click="jump(router, '/PactDetail', { code: item.order_id })"
-                >
-                  <img
-                    src="@/assets/static/contract_icon_1_09.png"
-                    width="25"
-                  />
-                  <div class="">详情</div>
-                </div>
-                <div class="flex-1-0 w-20 text-center">
-                  <img
                     src="@/assets/static/contract_icon_1_11.png"
                     width="25"
                   />
                   <div class="">提盈</div>
+                </div>
+                <div class="flex-1-0 w-20 text-center">
+                  <img
+                    src="@/assets/static/contract_icon_1_03.png"
+                    width="25"
+                  />
+                  <div class="">结算</div>
                 </div>
               </div>
             </div>
