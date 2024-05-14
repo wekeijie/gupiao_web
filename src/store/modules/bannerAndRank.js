@@ -2,17 +2,13 @@ import { bannerAndRankApi } from "@/api/bannerAndRankApi";
 export default {
   namespaced: true,
   state: () => ({
-    banner: {},
-    rank: {},
-    alert: {},
+    list: [],
     has_alert: false,
     view_alert: false,
   }),
   mutations: {
     setBannerAndRank(state, info) {
-      state.banner = info.banner;
-      state.rank = info.rank;
-      state.alert = info.alert;
+      state.list = info;
     },
     updateAlertActive(state, value) {
       state.has_alert = value;
@@ -23,6 +19,7 @@ export default {
     async get(context) {
       const rsp = await bannerAndRankApi();
       context.commit("setBannerAndRank", rsp);
+      return rsp;
     },
   },
 };

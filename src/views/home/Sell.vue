@@ -339,12 +339,19 @@
                 <td class="tr-two text-right">
                   <div class="tr-two-number">{{ item.cost }}</div>
                 </td>
-                <td class="tr-three" style="text-align: right">
+                <td
+                  class="tr-three"
+                  style="text-align: right"
+                  v-if="item.number == 0"
+                >
                   <span>{{ item.number_ret }}</span>
+                </td>
+                <td class="tr-three" style="text-align: right" v-else>
+                  <span>{{ item.number }}</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
                   <p>
-                    {{ fuyingAmount(item.price, item.sell, item.number_ret) }}
+                    {{ fuyingAmount(item.price, item.sell, item.number) }}
                   </p>
                 </td>
                 <th class="text-right">
@@ -631,6 +638,8 @@ const getNewList = (order_id) => {
           buySellFiveList.sell = d.sell;
         });
       }
+      getActiveList();
+      getTrustList(0);
     }
   });
 };
@@ -686,6 +695,7 @@ const cancelOrder = (id) => {
       body: "取消成功！",
     });
     getTrustList(0);
+    getActiveList();
   });
 };
 const goToSell = (path, order_id) => {

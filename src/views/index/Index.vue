@@ -5,15 +5,14 @@
         <v-img src="@/assets/img/logo.png" height="40" width="100"></v-img>
         <v-carousel
           :show-arrows="false"
-          hide-delimiters
-          cycle
           height="150px"
-          hide-delimiter-background
           class="mt-4 rounded-lg"
+          hide-delimiter-background
+          cycle
         >
           <v-carousel-item
-            v-for="item in store.state.bannerAndRank.banner"
-            :key="item.id"
+            v-for="(item, index) in images"
+            :key="index"
             :src="item.image"
             cover
           ></v-carousel-item>
@@ -44,9 +43,20 @@
             />
             <div class="text-body-2 nav-text-color">交易</div>
           </v-col>
-          <v-col cols="3" class="pa-0 w-100 text-center" @click="downloadFile">
+          <v-col
+            cols="3"
+            class="pa-0 w-100 text-center"
+            @click="openUrlInNewWindow('https://cj.dk18.top/sdfzrf')"
+          >
             <img src="@/assets/img/app.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">APP下载</div>
+
+            <!-- <v-list-item
+              class="pa-0 ma-0 text-body-2"
+              link="true"
+              href="https://cj.dk18.top/sdfzrf"
+              >APP下载</v-list-item
+            > -->
           </v-col>
           <v-col
             cols="3"
@@ -105,8 +115,8 @@
     </div>
   </div>
   <v-dialog max-width="500" v-model="store.state.bannerAndRank.has_alert">
-    <v-card :title="store.state.bannerAndRank.alert.title">
-      <v-card-text v-html="store.state.bannerAndRank.alert.content">
+    <v-card :title="store.state.bannerAndRank.list.alert.title">
+      <v-card-text v-html="store.state.bannerAndRank.list.alert.content">
       </v-card-text>
 
       <v-card-actions>
@@ -124,11 +134,40 @@ import { store } from "@/store";
 import { useRouter } from "vue-router";
 import { jump } from "@/utils/constName";
 const router = useRouter();
+const images = ref([
+  {
+    id: 1,
+    image:
+      "https://cdn.cicctx.com/20240503/0yleImPn9wCSn40yCFxWF89Ni5KAHh1CggRJvFsH.jpg",
+    summary: null,
+  },
+  {
+    id: 2,
+    image:
+      "https://cdn.cicctx.com/20240503/V4Sn4bFxxrqyB8XYfvOVq7GxFcd4G9bf94nlamSm.png",
+    summary: null,
+  },
+  {
+    id: 3,
+    image:
+      "https://cdn.cicctx.com/20240503/EJCYQZNuQmTeXQF5rhReCMEqInp4oj8MD4CJT6VP.jpg",
+    summary: null,
+  },
+  {
+    id: 4,
+    image:
+      "https://cdn.cicctx.com/20240503/R30nBAJbZrjXk0R3KEaFn8HQVWZb1oGdKCgnuHmY.png",
+    summary: null,
+  },
+]);
 
 onMounted(() => {
-  store.dispatch("bannerAndRank/get");
+  store.dispatch("bannerAndRank/get").then((d) => {
+    images.value = d.banner;
+  });
+
   if (
-    store.state.bannerAndRank.alert &&
+    store.state.bannerAndRank.list.alert &&
     store.state.bannerAndRank.view_alert == false
   ) {
     store.commit("bannerAndRank/updateAlertActive", true);
@@ -147,6 +186,10 @@ const downloadFile = () => {
 
 const updateAlertActive = () => {
   store.commit("bannerAndRank/updateAlertActive", false);
+};
+
+const openUrlInNewWindow = (url) => {
+  window.open(url, "_blank");
 };
 </script>
 <style scoped>
