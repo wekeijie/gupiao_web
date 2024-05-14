@@ -201,7 +201,7 @@
               <tbody>
                 <tr class="tr-list">
                   <th style="text-align: left">名称</th>
-                  <th style="text-align: right">价格</th>
+                  <th style="text-align: right">价格/类型</th>
                   <th style="text-align: right">数量</th>
                   <th style="text-align: right">成交时间</th>
                 </tr>
@@ -214,7 +214,14 @@
                     <h4>{{ item.title }}</h4>
                   </td>
                   <td class="tr-two">
-                    <div class="tr-two-number">{{ item.price }}</div>
+                    <div class="tr-two-number" v-if="item.type == 'BUY'">
+                      {{ item.buy_price }}
+                    </div>
+                    <div class="tr-two-number" v-else>
+                      {{ item.sell_price }}
+                    </div>
+
+                    <span class="tr-two-number">{{ item.type_string }}</span>
                   </td>
                   <td class="tr-three" style="text-align: right">
                     <div class="tr-two-number">{{ item.number }}</div>
