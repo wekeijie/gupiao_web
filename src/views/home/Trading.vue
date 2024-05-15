@@ -371,7 +371,7 @@
                 </td>
                 <td class="tr-four" style="text-align: right">
                   <p>
-                    {{ fuyingAmount(item.price, item.sell, item.number_ret) }}
+                    {{ fuyingAmount(item.price, item.sell, item.number) }}
                   </p>
                 </td>
                 <th class="text-right">
