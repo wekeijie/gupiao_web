@@ -53,6 +53,7 @@
       <p>
         最新
         <span
+          v-if="store.state.market.stock_new_info.f169 != '-'"
           :class="
             'text-' +
             watchStringToColor(
@@ -84,6 +85,11 @@
               )
             ) + "%"
           }}</span
+        >
+        <span v-else>
+          {{ store.state.market.stock_new_info.f43 }}
+          {{ store.state.market.stock_new_info.f169 }}
+          {{ store.state.market.stock_new_info.f170 }}</span
         >
       </p>
       <div>
