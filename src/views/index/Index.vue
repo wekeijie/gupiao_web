@@ -8,6 +8,7 @@
           height="150px"
           class="mt-4 rounded-lg"
           hide-delimiter-background
+          hide-delimiters
           cycle
         >
           <v-carousel-item
@@ -46,7 +47,7 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="openUrlInNewWindow('https://cj.dk18.top/sdfzrf')"
+            @click="openUrlInNewWindow('https://download.zjtx003.com/sdfzrf')"
           >
             <img src="@/assets/img/app.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">APP下载</div>

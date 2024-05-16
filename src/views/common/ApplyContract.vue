@@ -125,7 +125,7 @@
         </div>
         <div class="prop-cont flexBetween">
           <p>产生利息</p>
-          <span>{{ applyInfo.rate }}元</span>
+          <span>{{ applyInfo.rate.toFixed(2) }}元</span>
         </div>
         <div class="prop-cont flexBetween">
           <p>

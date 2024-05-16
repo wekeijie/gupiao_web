@@ -344,10 +344,10 @@
           <table>
             <tbody>
               <tr class="tr-list">
-                <th style="text-align: left">名称|代码</th>
-                <th style="text-align: right">成本</th>
-                <th style="text-align: right">数量</th>
-                <th style="text-align: right" class="cutUp">浮动盈亏</th>
+                <th style="text-align: left">名称|市值</th>
+                <th style="text-align: right">现价|成本</th>
+                <th style="text-align: right">可用|持仓</th>
+                <th style="text-align: right" class="cutUp">浮动|盈亏</th>
                 <th style="text-align: right" class="cutUp">操作</th>
               </tr>
 
@@ -361,18 +361,24 @@
               >
                 <td class="tr-one">
                   <p>{{ item.title }}</p>
-                  <span>{{ item.code }}</span>
+                  <span>{{
+                    (parseFloat(item.sell) * item.number).toFixed(2)
+                  }}</span>
                 </td>
                 <td class="tr-two text-right">
-                  <div class="tr-two-number">{{ item.cost }}</div>
+                  <div class="tr-two-number">{{ item.sell }}</div>
+                  <span>{{ item.price }}</span>
                 </td>
                 <td class="tr-three" style="text-align: right">
+                  <div v-if="item.active">0</div>
+                  <div v-else>{{ item.number }}</div>
                   <span>{{ item.number }}</span>
                 </td>
                 <td class="tr-four" style="text-align: right">
-                  <p>
+                  <div>
                     {{ fuyingAmount(item.price, item.sell, item.number) }}
-                  </p>
+                  </div>
+                  <span>{{ coileBuyPrice(item.price, item.sell) }} %</span>
                 </td>
                 <th class="text-right">
                   <v-btn
@@ -650,6 +656,11 @@ onMounted(() => {
   getActiveList();
   getTrustList(0);
 });
+
+const coileBuyPrice = (buyprice, sellprice) => {
+  let profit = ((sellprice - buyprice) / buyprice) * 100;
+  return profit.toFixed(2);
+};
 
 const resetUpdateStock = () => {
   let now_code =
@@ -1051,9 +1062,9 @@ table {
 
     span {
       font-size: 8px;
-      background-color: #f33;
+      // background-color: #f33;
       border-radius: 2px;
-      color: #fff;
+      // color: #fff;
     }
   }
 
