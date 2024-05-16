@@ -108,7 +108,9 @@
             limit_data.rate + "%"
           }}</v-col>
           <v-col cols="6" class="py-1">产生利息</v-col>
-          <v-col cols="6" class="py-1 text-right">{{ applyInfo.rate }}元</v-col>
+          <v-col cols="6" class="py-1 text-right"
+            >{{ applyInfo.rate.toFixed(2) }}元</v-col
+          >
           <v-col cols="6" class="py-1">资金使用时间</v-col>
           <v-col cols="6" class="py-1 text-right"
             >{{ typeIndex.day }}天后自动续期</v-col
