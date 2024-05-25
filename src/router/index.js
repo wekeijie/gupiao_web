@@ -20,6 +20,11 @@ const routes = [
         },
       },
       {
+        path: "/app",
+        name: "app",
+        component: () => import("@/views/app/index.vue"),
+      },
+      {
         path: "/user",
         name: "user",
         component: () => import("@/views/user/Index.vue"),
