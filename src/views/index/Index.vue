@@ -47,7 +47,7 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="openUrlInNewWindow('https://download.zjtx003.com/sdfzrf')"
+            @click="jump(router, '/app')"
           >
             <img src="@/assets/img/app.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">APP下载</div>

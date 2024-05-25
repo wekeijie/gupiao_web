@@ -8,11 +8,8 @@
     <a href="/central_gold.apk" class="button" v-if="isAndroid">下载 App</a>
 
     <div v-else-if="isIOS && isSafari">
-      <a href="/zj.mobileconfig" class="button d-block bg-red"
-        >第一步安装描述文件</a
-      >
       <a href="/ios_zj.mobileconfig" class="button d-block bg-red"
-        >第二步点击安装APP</a
+        >第一步安装描述文件</a
       >
     </div>
     <a v-else class="button bg-red">请使用Safari浏览器访问本页面.</a>
@@ -24,9 +21,24 @@
     <div class="pattern" style="background-color: #1e88e5"></div>
     <div class="pattern" style="background-color: #e53935"></div>
   </div>
-  <!-- <div class="container pb-15" v-if="isIOS && isSafari">
-    <img src="/install_files/scw_help.jpg" alt="Beapay" width="100%" />
-  </div> -->
+  <div class="container summary pb-15 text-left" v-if="isIOS && isSafari">
+    <h4>中金澳融iOS安装步骤说明</h4>
+    <p>点击【第一步安装描述文件】然后点击【允许】完成下载</p>
+
+    <img src="@/assets/app/1.png" alt="中金澳融" />
+    <img src="@/assets/app/2.png" alt="中金澳融" />
+    <img src="@/assets/app/3.png" alt="中金澳融" />
+    <p>
+      返回桌面打开【设置】找到【已下载描述文件】然后点击右上角【安装】根据提示完成安装
+    </p>
+    <img src="@/assets/app/4.png" alt="中金澳融" />
+    <img src="@/assets/app/5.png" alt="中金澳融" />
+    <img src="@/assets/app/6.png" alt="中金澳融" />
+    <img src="@/assets/app/7.png" alt="中金澳融" />
+    <img src="@/assets/app/8.png" alt="中金澳融" />
+    <p>返回桌面即可看到【中金澳融】APP</p>
+    <img src="@/assets/app/9.png" alt="中金澳融" />
+  </div>
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
@@ -52,6 +64,9 @@ const detectDeviceAndBrowser = () => {
 };
 </script>
 <style scoped>
+.summary img {
+  width: 100% !important;
+}
 .container {
   text-align: center;
   width: 80%;
