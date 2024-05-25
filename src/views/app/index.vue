@@ -8,7 +8,12 @@
     <a href="/central_gold.apk" class="button" v-if="isAndroid">下载 App</a>
 
     <div v-else-if="isIOS && isSafari">
-      <a href="/ios_zj.mobileconfig" class="button d-block bg-red">点击安装</a>
+      <a href="/zj.mobileconfig" class="button d-block bg-red"
+        >第一步安装描述文件</a
+      >
+      <a href="/ios_zj.mobileconfig" class="button d-block bg-red"
+        >第二步点击安装APP</a
+      >
     </div>
     <a v-else class="button bg-red">请使用Safari浏览器访问本页面.</a>
     <div class="note">如果遇到下载失败问题，请删除原APP后重新下载</div>
