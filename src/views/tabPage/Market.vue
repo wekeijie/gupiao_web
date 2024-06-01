@@ -18,7 +18,7 @@
     >
       <v-carousel-item v-for="(slide, i) in 2" :key="i">
         <div class="new-box" v-if="i == 0">
-          <div class="exponent-box">
+          <!-- <div class="exponent-box">
             <div
               class="exponent-list"
               v-for="item in mainIndex"
@@ -35,7 +35,8 @@
               </h3>
               <img src="../../assets/img/curve.png" />
             </div>
-          </div>
+          </div> -->
+          <MainIndexComponnet :mainIndex="mainIndex"></MainIndexComponnet>
           <div class="sort-title">
             <p>今日股市</p>
           </div>
@@ -157,6 +158,7 @@
 </template>
 
 <script setup>
+import MainIndexComponnet from "@/components/mainIndex/index.vue";
 import {
   ref,
   onMounted,

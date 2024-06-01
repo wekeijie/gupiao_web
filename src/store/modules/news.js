@@ -68,8 +68,8 @@ export default {
       state.context = info;
     },
     setFlash(state, info) {
-      state.flash_day = info.date;
-      state.flash_item = info.items;
+      // state.flash_day = info.date;
+      state.flash_item = info;
     },
   },
   actions: {

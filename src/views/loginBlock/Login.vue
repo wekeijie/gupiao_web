@@ -82,7 +82,6 @@ const username = ref("");
 const password = ref("");
 const handleLogin = async () => {
   // const { valid } = await instance.ctx.$refs.form.validate();
-  console.log(username.value, password.value);
   if (username.value.length < 3 || password.value.length < 6) {
     store.dispatch("snackbar/warning", {
       active: true,
