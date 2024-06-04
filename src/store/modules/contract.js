@@ -12,6 +12,7 @@ import {
   amountListApi,
   allListApi,
   orderListApi,
+  orderDetail,
 } from "@/api/contractApi";
 export default {
   namespaced: true,
@@ -101,6 +102,10 @@ export default {
     async getOrderList(content, order_id) {
       const rsp = await orderListApi(order_id);
       content.commit("setOrderList", rsp);
+    },
+    async getOrderDetail(content, order_id) {
+      const rsp = await orderDetail(order_id);
+      return rsp;
     },
   },
 };

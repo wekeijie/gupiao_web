@@ -26,7 +26,9 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="jump(router, '/online-service')"
+            @click="
+              openUrlInNewWindow(store.state.bannerAndRank.list.service.url)
+            "
           >
             <img src="@/assets/img/kefu.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">在线客服</div>
@@ -200,7 +202,9 @@ const updateAlertActive = () => {
 };
 
 const openUrlInNewWindow = (url) => {
-  window.open(url, "_blank");
+  if (url) {
+    window.open(url, "_blank");
+  }
 };
 </script>
 <style scoped>

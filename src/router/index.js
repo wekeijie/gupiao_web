@@ -69,6 +69,14 @@ const routes = [
     },
   },
   {
+    path: "/market/detail",
+    name: "marketDetail",
+    component: () => import("@/views/contract/detail.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/Search",
     name: "Search",
     component: () => import("@/views/Search.vue"),
