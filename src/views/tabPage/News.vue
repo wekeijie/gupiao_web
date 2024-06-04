@@ -40,16 +40,18 @@
         <div class="bg-white">
           <v-timeline side="end" align="start">
             <v-timeline-item
-              v-for="(item, key) in store.state.news.flash_item"
+              v-for="(item, key) in store.state.news.flash_item.list"
               :key="item.time"
               :dot-color="flashStyle(key)"
               size="small"
             >
               <div class="d-flex">
-                <strong class="me-4">{{ item.time }}</strong>
+                <strong class="me-4">{{
+                  item.create_time.split(" ")[1]
+                }}</strong>
                 <div class="pr-2">
                   <!-- <strong>New Icon</strong> -->
-                  <div class="text-caption">{{ item.content }}</div>
+                  <div class="text-caption">{{ item.rich_text }}</div>
                 </div>
               </div>
             </v-timeline-item>

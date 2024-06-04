@@ -50,3 +50,7 @@ export const allListApi = (order_id) => {
 export const orderListApi = (order_id) => {
   return request.get("contract/order-list?order_id=" + order_id);
 };
+
+export const orderDetail = (order_id) => {
+  return request.get("contract/order-detail?order_id=" + order_id);
+};

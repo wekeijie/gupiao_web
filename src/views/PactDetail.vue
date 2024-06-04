@@ -209,6 +209,7 @@
                   class="tr-list"
                   v-for="item in store.state.contract.allList"
                   :key="item.code"
+                  @click="goChanrt(item.id)"
                 >
                   <td class="tr-one">
                     <h4>{{ item.title }}</h4>
@@ -340,7 +341,9 @@ watch(
     underlined.value = parseFloat(temp.toFixed(2));
   }
 );
-
+const goChanrt = (id) => {
+  $router.push({ path: "/market/detail", query: { order_id: id } });
+};
 const changeTab = (index) => {
   if (index == 1) {
     store.dispatch("contract/getAmountList", order_id.value);

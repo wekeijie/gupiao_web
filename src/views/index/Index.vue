@@ -26,7 +26,9 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="jump(router, '/online-service')"
+            @click="
+              openUrlInNewWindow(store.state.bannerAndRank.list.service.url)
+            "
           >
             <img src="@/assets/img/kefu.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">在线客服</div>
@@ -74,7 +76,7 @@
           </v-col>
         </v-row>
       </v-sheet>
-      <v-sheet class="mt-4 index-card-bg py-4 rounded-lg px-3">
+      <!-- <v-sheet class="mt-4 index-card-bg py-4 rounded-lg px-3">
         <v-img
           src="@/assets/static/index_active_1.png"
           @click="jump(router, '/ApplyContract')"
@@ -91,6 +93,9 @@
             <v-img src="@/assets/static/index_active_3.png"></v-img>
           </v-col>
         </v-row>
+      </v-sheet> -->
+      <v-sheet class="mt-4 py-2 rounded-lg">
+        <MainIndexComponent :mainIndex="mainIndex" />
       </v-sheet>
       <v-sheet class="mt-4 index-card-bg py-4 rounded-lg">
         <v-card-title>新闻资讯</v-card-title>
@@ -130,6 +135,7 @@
 </template>
 <script setup>
 import searchComponent from "@/components/search/Index.vue";
+import MainIndexComponent from "@/components/mainIndex/Index.vue";
 import { onMounted, ref, watch } from "vue";
 import { store } from "@/store";
 import { useRouter } from "vue-router";
@@ -162,9 +168,15 @@ const images = ref([
   },
 ]);
 
+const mainIndex = ref([]);
+
 onMounted(() => {
   store.dispatch("bannerAndRank/get").then((d) => {
     images.value = d.banner;
+  });
+
+  store.dispatch("market/getMainIndex").then((d) => {
+    mainIndex.value = d.diff;
   });
 
   if (
@@ -190,7 +202,9 @@ const updateAlertActive = () => {
 };
 
 const openUrlInNewWindow = (url) => {
-  window.open(url, "_blank");
+  if (url) {
+    window.open(url, "_blank");
+  }
 };
 </script>
 <style scoped>
