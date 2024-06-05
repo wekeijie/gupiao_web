@@ -41,10 +41,17 @@
   </div>
 </template>
 <script setup>
+import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 onMounted(() => {
   detectDeviceAndBrowser();
+  if (route.query.ref) {
+    Cookies.set("referrer", route.query.ref, { expires: 7 });
+  }
 });
 
 const isIOS = ref(false);
