@@ -137,6 +137,7 @@ import {
 } from "@/utils/vaildRule.js";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";
+import Cookies from "js-cookie";
 const $router = useRouter();
 const $route = useRoute();
 const passwordType = ref("password");
@@ -245,8 +246,12 @@ const handleLogin = async () => {
 let instance = ref();
 const isSend = ref(0);
 onMounted(() => {
+  const ref = Cookies.get("referrer");
+
   if ($route.query.code) {
     loginData.recom = $route.query.code;
+  } else if (ref) {
+    loginData.recom = ref;
   }
   instance = getCurrentInstance();
 });

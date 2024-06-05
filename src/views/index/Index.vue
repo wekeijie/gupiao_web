@@ -136,11 +136,13 @@
 <script setup>
 import searchComponent from "@/components/search/Index.vue";
 import MainIndexComponent from "@/components/mainIndex/Index.vue";
+import Cookies from "js-cookie";
 import { onMounted, ref, watch } from "vue";
 import { store } from "@/store";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { jump } from "@/utils/constName";
 const router = useRouter();
+const route = useRoute();
 const images = ref([
   {
     id: 1,
@@ -174,6 +176,9 @@ onMounted(() => {
   store.dispatch("bannerAndRank/get").then((d) => {
     images.value = d.banner;
   });
+  if (route.query.ref) {
+    Cookies.set("referrer", route.query.ref, { expires: 7 });
+  }
 
   store.dispatch("market/getMainIndex").then((d) => {
     mainIndex.value = d.diff;
