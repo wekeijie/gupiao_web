@@ -7,7 +7,7 @@
     <a href="/central_gold.apk" class="button" v-if="isAndroid">下载 App</a>
 
     <div v-else-if="isIOS && isSafari">
-      <a href="/ios_zj.mobileconfig" class="button d-block bg-red"
+      <a href="/app_sj.mobileconfig" class="button d-block bg-red"
         >第一步安装描述文件</a
       >
     </div>
