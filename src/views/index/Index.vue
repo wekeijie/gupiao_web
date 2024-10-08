@@ -2,7 +2,7 @@
   <div class="bg-color pb-8">
     <div class="index-top w-100">
       <div class="px-3 pt-4">
-        <v-img src="@/assets/img/logo.png" height="40" width="100"></v-img>
+        <v-img src="@/assets/img/logonew.png" height="50" width="100"></v-img>
         <v-carousel
           :show-arrows="false"
           height="150px"

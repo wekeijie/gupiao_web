@@ -2,7 +2,7 @@
   <div class="login-box">
     <h1>注册</h1>
     <div class="log-top">
-      <img src="@/assets/static/png-logo.png" class="rounded-lg" />
+      <img src="@/assets/img/logonew.png" class="rounded-lg" />
     </div>
     <div class="login-cont">
       <v-form ref="form">
