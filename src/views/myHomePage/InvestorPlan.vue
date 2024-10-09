@@ -2,9 +2,9 @@
   <page-header>
     <template v-slot:headerCenter>明星投资者计划</template>
   </page-header>
-  <img src="@/assets/static/trade_bg_01_03.png" class="w-100" />
-  <img src="@/assets/static/trade_bg_01_04.png" class="w-100" />
-  <img src="@/assets/static/trade_bg_01_05.png" class="w-100" />
+  <img src="@/assets/static/investopp_02.png" class="w-100" />
+  <img src="@/assets/static/investopp_03.png" class="w-100" />
+  <img src="@/assets/static/investopp_05.png" class="w-100" />
   <v-btn
     block=""
     color="white"

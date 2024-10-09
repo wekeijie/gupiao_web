@@ -2,11 +2,16 @@
   <div class="bg-color pb-8">
     <div class="index-top w-100">
       <div class="px-3 pt-4">
-        <v-img src="@/assets/img/logonew.png" height="50" width="100"></v-img>
+        <v-img
+          src="@/assets/img/logonew.png"
+          height="50"
+          width="100"
+          class="z-999"
+        ></v-img>
         <v-carousel
           :show-arrows="false"
           height="150px"
-          class="mt-4 rounded-lg"
+          class="mt-n14 rounded-lg"
           hide-delimiter-background
           hide-delimiters
           cycle
@@ -21,7 +26,7 @@
       </div>
     </div>
     <div class="px-3">
-      <v-sheet class="py-3 mt-10 rounded-lg">
+      <v-sheet class="py-3 rounded-lg">
         <v-row class="ma-0 pa-0">
           <v-col
             cols="3"
@@ -238,4 +243,7 @@ const openUrlInNewWindow = (url) => {
   display: flex;
   align-items: center;
 } */
+.z-999 {
+  z-index: 999;
+}
 </style>
