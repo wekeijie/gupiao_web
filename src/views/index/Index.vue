@@ -2,16 +2,11 @@
   <div class="bg-color pb-8">
     <div class="index-top w-100">
       <div class="px-3 pt-4">
-        <v-img
-          src="@/assets/img/logonew.png"
-          height="50"
-          width="100"
-          class="z-999"
-        ></v-img>
+        <img src="@/assets/static/jbyp.png" width="130" />
         <v-carousel
           :show-arrows="false"
           height="150px"
-          class="mt-n14 rounded-lg"
+          class="rounded-lg mt-2"
           hide-delimiter-background
           hide-delimiters
           cycle
@@ -25,7 +20,7 @@
         </v-carousel>
       </div>
     </div>
-    <div class="px-3">
+    <div class="px-3 mt-8">
       <v-sheet class="py-3 rounded-lg">
         <v-row class="ma-0 pa-0">
           <v-col

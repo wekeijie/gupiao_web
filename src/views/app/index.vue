@@ -24,19 +24,18 @@
     <h4>中金澳融iOS安装步骤说明</h4>
     <p>点击【第一步安装描述文件】然后点击【允许】完成下载</p>
 
-    <img src="@/assets/app/1.png" alt="聚宝优配" />
-    <img src="@/assets/app/2.png" alt="聚宝优配" />
-    <img src="@/assets/app/3.png" alt="聚宝优配" />
+    <img src="@/assets/app/1_1.png" alt="聚宝优配" />
+    <img src="@/assets/app/1_2.png" alt="聚宝优配" />
+
     <p>
       返回桌面打开【设置】找到【已下载描述文件】然后点击右上角【安装】根据提示完成安装
     </p>
     <img src="@/assets/app/4.png" alt="聚宝优配" />
-    <img src="@/assets/app/5.png" alt="聚宝优配" />
+    <img src="@/assets/app/1_5.png" alt="聚宝优配" />
     <img src="@/assets/app/6.png" alt="聚宝优配" />
     <img src="@/assets/app/7.png" alt="聚宝优配" />
-    <img src="@/assets/app/8.png" alt="聚宝优配" />
     <p>返回桌面即可看到【聚宝优配】APP</p>
-    <img src="@/assets/app/9.png" alt="聚宝优配" />
+    <img src="@/assets/app/1_9.png" alt="聚宝优配" />
   </div>
 </template>
 <script setup>
