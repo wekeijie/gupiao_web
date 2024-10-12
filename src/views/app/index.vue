@@ -21,7 +21,7 @@
     <div class="pattern" style="background-color: #e53935"></div>
   </div>
   <div class="container summary pb-15 text-left" v-if="isIOS && isSafari">
-    <h4>中金澳融iOS安装步骤说明</h4>
+    <h4>聚宝优配iOS安装步骤说明</h4>
     <p>点击【第一步安装描述文件】然后点击【允许】完成下载</p>
 
     <img src="@/assets/app/1_1.png" alt="聚宝优配" />
