@@ -75,7 +75,6 @@
         <v-text-field
           variant="underlined"
           v-model="loginData.recom"
-          required
           :counter="12"
           label="推荐人"
         >
