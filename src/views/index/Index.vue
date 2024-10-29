@@ -74,50 +74,95 @@
             />
             <div class="text-body-2 nav-text-color">充值返现</div>
           </v-col>
-        </v-row>
-      </v-sheet>
-      <!-- <v-sheet class="mt-4 index-card-bg py-4 rounded-lg px-3">
-        <v-img
-          src="@/assets/static/index_active_1.png"
-          @click="jump(router, '/ApplyContract')"
-        ></v-img>
-        <v-row class="ma-0 pa-0 mt-3">
-          <v-col cols="6" class="pa-0 pr-1" @click="jump(router, '/InCoupon')">
-            <v-img src="@/assets/static/index_active_2.png"></v-img>
+          <v-col
+            cols="3"
+            class="pa-0 w-100 text-center mt-4"
+            @click="jump(router, '/contract')"
+          >
+            <img
+              src="@/assets/static/zhongjin_03.png"
+              width="40"
+              height="40"
+              class=""
+            />
+            <div class="text-body-2 nav-text-color">我的持仓</div>
           </v-col>
           <v-col
-            cols="6"
-            class="pa-0 pl-1"
-            @click="jump(router, '/ActiveList')"
+            cols="3"
+            class="pa-0 w-100 text-center mt-4"
+            @click="jump(router, '/HelpCenter?title=交易规则&id=2')"
           >
-            <v-img src="@/assets/static/index_active_3.png"></v-img>
+            <img
+              src="@/assets/static/zhongjin_08.png"
+              width="40"
+              height="40"
+              class=""
+            />
+            <div class="text-body-2 nav-text-color">交易规则</div>
+          </v-col>
+          <v-col
+            cols="3"
+            class="pa-0 w-100 text-center mt-4"
+            @click="jump(router, '/Agency')"
+          >
+            <img
+              src="@/assets/static/zhongjin_05.png"
+              width="40"
+              height="40"
+              class=""
+            />
+            <div class="text-body-2 nav-text-color">推广赚钱</div>
+          </v-col>
+          <v-col
+            cols="3"
+            class="pa-0 w-100 text-center mt-4"
+            @click="jump(router, '/Market?tab=1')"
+          >
+            <img
+              src="@/assets/static/zhongjin_11.png"
+              width="40"
+              height="40"
+              class=""
+            />
+            <div class="text-body-2 nav-text-color">自选</div>
           </v-col>
         </v-row>
-      </v-sheet> -->
-      <v-sheet class="mt-4 py-2 rounded-lg">
-        <MainIndexComponent :mainIndex="mainIndex" />
       </v-sheet>
-      <v-sheet class="mt-4 index-card-bg py-4 rounded-lg">
-        <v-card-title>新闻资讯</v-card-title>
-        <v-list lines="one" density="compact" nav>
-          <v-list-item
-            v-for="item in store.state.news.list"
-            :key="item.id"
-            :to="'/RichText?id=' + item.id + '&title=' + item.title"
-          >
-            <v-row class="ma-0 pa-0">
-              <v-col cols="1" class="px-0 py-1"
-                ><v-icon color="#333">mdi-format-list-checkbox</v-icon></v-col
-              >
-              <v-col
-                cols="11"
-                class="text-truncate overflow-hidden px-0 py-1 text-body-1"
-                >{{ item.title }}</v-col
-              >
-            </v-row>
-          </v-list-item>
-        </v-list>
+      <v-img src="@/assets/static/zhongjin_home_18.png" class="mt-5">
+        <v-row class="ma-0 pa-0 text-center text-white mt-3">
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_day }}天
+            </div>
+            <div class="text-caption">平台运营</div>
+          </v-col>
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_trade }}亿
+            </div>
+            <div class="text-caption">累计交易</div>
+          </v-col>
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_user_rae }}千万
+            </div>
+            <div class="text-caption">用户提盈</div>
+          </v-col>
+        </v-row>
+      </v-img>
+      <v-sheet class="mt-3 px-3 py-4 rounded-lg">
+        <div class="text-h6">开始交易</div>
+        <img
+          src="@/assets/static/home_1_2.png"
+          style="width: 100%"
+          class="mt-5"
+        />
       </v-sheet>
+      <img
+        src="@/assets/static/zhongjin_home_34.png"
+        style="width: 90%"
+        class="mt-5"
+      />
     </div>
   </div>
   <v-dialog max-width="500" v-model="store.state.bannerAndRank.has_alert">
@@ -135,7 +180,6 @@
 </template>
 <script setup>
 import searchComponent from "@/components/search/Index.vue";
-import MainIndexComponent from "@/components/mainIndex/Index.vue";
 import Cookies from "js-cookie";
 import { onMounted, ref, watch } from "vue";
 import { store } from "@/store";
@@ -175,6 +219,9 @@ const mainIndex = ref([]);
 onMounted(() => {
   store.dispatch("bannerAndRank/get").then((d) => {
     images.value = d.banner;
+    if ((store.state.bannerAndRank.list?.alert ?? "") !== "") {
+      store.commit("bannerAndRank/updateAlertActive", true);
+    }
   });
   if (route.query.ref) {
     Cookies.set("referrer", route.query.ref, { expires: 7 });
@@ -183,13 +230,6 @@ onMounted(() => {
   store.dispatch("market/getMainIndex").then((d) => {
     mainIndex.value = d.diff;
   });
-
-  if (
-    store.state.bannerAndRank.list.alert &&
-    store.state.bannerAndRank.view_alert == false
-  ) {
-    store.commit("bannerAndRank/updateAlertActive", true);
-  }
 
   store.dispatch("news/list", { page: 1, limit: 10 });
 });

@@ -20,6 +20,7 @@ import copyTrade from "./modules/copyTrade";
 import copyTradeList from "./modules/copyTradeList";
 import loadding from "./modules/loadding";
 import checkIn from "./modules/checkIn";
+import message from "./modules/message";
 
 export const store = createStore({
   state: {},
@@ -47,5 +48,6 @@ export const store = createStore({
     copyTradeList,
     loadding,
     checkIn,
+    message,
   },
 });

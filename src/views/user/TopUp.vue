@@ -50,7 +50,7 @@
       </v-sheet>
 
       <v-sheet class="white rounded-lg py-4 mt-5 px-3">
-        <div class="text-body-1">请选择充值渠道</div>
+        <div class="text-body-1 text-red-accent-3">请选择充值渠道</div>
         <v-list density="compact" @click:select="selectChannel">
           <v-list-item
             v-for="(item, i) in channel"
@@ -147,7 +147,7 @@ const goRouter = (path, order_id = "") => {
 const maintenance = () => {
   store.dispatch("snackbar/warning", {
     active: true,
-    body: "通道维护中，请稍后尝试或联系在线客服！",
+    body: "请选择充值渠道或联系在线客服！",
   });
 };
 </script>

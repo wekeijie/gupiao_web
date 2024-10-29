@@ -1,15 +1,9 @@
 <template>
   <div class="search-cont">
     <div class="flexBetween search-top">
+      <v-icon class="mr-2" @click="$router.back()">mdi-backburger</v-icon>
       <div class="flexStart search-box">
         <img src="../assets/img/search.png" alt="" />
-        <!-- <input
-          type="text"
-          placeholder="搜索"
-          style="outline: none;"
-          v-model="searchCont"
-          @change="searchValue"
-        > -->
         <v-col cols="12" sm="2">
           <form @submit.prevent="handleSubmit">
             <v-text-field
@@ -21,6 +15,7 @@
               hide-details="auto"
               label="搜索"
               solo
+              @update:modelValue="handleSubmit"
             ></v-text-field>
           </form>
         </v-col>
@@ -82,11 +77,11 @@ const searchValue = (value) => {
 };
 
 const handleSubmit = () => {
-  if (searchCont.value.length < 2) {
-    store.dispatch("snackbar/warning", {
-      active: true,
-      body: "请输入名称或者编码",
-    });
+  if (searchCont.value.length <= 0) {
+    // store.dispatch("snackbar/warning", {
+    //   active: true,
+    //   body: "请输入名称或者编码",
+    // });
     return;
   }
   store.dispatch("market/search", searchCont.value);

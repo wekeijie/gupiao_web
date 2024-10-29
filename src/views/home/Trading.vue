@@ -20,14 +20,14 @@
       </marquee-text>
     </div>
     <div class="row-tab-box flexBetween">
-      <h2>合约</h2>
+      <h2 class="active-text-color">合约</h2>
       <div class="flexEnd" @click="isApply = true">
         <p>{{ heyuename }}</p>
         <img src="../../assets/img/rightImg.png" alt="" class="img-right" />
       </div>
     </div>
     <div class="row-tab-box flexBetween">
-      <h2>股票名称/代码</h2>
+      <h2 class="active-text-color">股票名称/代码</h2>
       <div class="flexEnd">
         <p>
           {{ store.state.market.stock_new_info.f58
@@ -513,7 +513,11 @@
     <v-bottom-sheet v-model="isApply">
       <v-list class="pb-5">
         <div class="flexBetween sheet-top">
-          <div class="sheet-sure">请选择您的合约<span>[新开合约]</span></div>
+          <div class="sheet-sure">
+            请选择您的合约<span @click="$router.push('/contract')"
+              >[新开合约]</span
+            >
+          </div>
           <img
             src="../../assets/img/close.png"
             alt=""
@@ -1404,5 +1408,8 @@ table {
     width: 19px;
     margin-left: 15px;
   }
+}
+.active-text-color {
+  color: #fb5c39 !important;
 }
 </style>

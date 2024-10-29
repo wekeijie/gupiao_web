@@ -192,6 +192,9 @@ let pageInfo = reactive({
 });
 
 onMounted(() => {
+  if ($route.query.tab) {
+    model.value = parseInt($route.query.tab);
+  }
   store.dispatch("market/getMainIndex").then((d) => {
     mainIndex.value = d.diff;
     mainTotal.fell = d.diff.reduce((acc, item) => acc + item.f105, 0);

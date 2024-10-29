@@ -34,7 +34,7 @@ const routes = [
       },
       {
         path: "/news",
-        name: "message",
+        name: "newsNotice",
         component: () => import("@/views/tabPage/News.vue"),
       },
       {
@@ -281,6 +281,22 @@ const routes = [
     path: "/SetInfor",
     name: "setInfor",
     component: () => import("@/views/myHomePage/SetInfor.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/messages",
+    name: "message",
+    component: () => import("@/views/message/Index.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/message/detail",
+    name: "messageDetail",
+    component: () => import("@/views/message/Detail.vue"),
     meta: {
       requiresAuth: true,
     },

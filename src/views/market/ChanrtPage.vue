@@ -195,11 +195,24 @@
         <img src="../../assets/img/selefNo.png" alt="" v-else />
         <p>自选</p>
       </div>
-      <div
+      <!-- <div
         class="trading-btn"
         @click="goTrading('/Trading', title, Symbol, prefix_symbol)"
       >
         交易
+      </div> -->
+      <div>
+        <v-btn rounded="0" class="rounded-s-pill px-10" size="large" to="/"
+          >首页</v-btn
+        >
+        <v-btn
+          color="#fb5c39"
+          class="text-white rounded-e-pill px-10"
+          rounded="0"
+          size="large"
+          @click="goTrading('/Trading', title, Symbol, prefix_symbol)"
+          >交易</v-btn
+        >
       </div>
     </div>
   </div>
@@ -240,6 +253,7 @@ const $route = useRoute();
 function DefaultData() {}
 const select = ref({ Name: "15分钟", Value: 5 });
 const collect = ref(true);
+const toggleValue = ref("trade");
 
 const TabTextIndex = ref(0);
 const Name = ref("分时");

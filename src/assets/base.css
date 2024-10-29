@@ -53,3 +53,10 @@
 .border-bottom-line-grey {
   border-bottom: 1px solid #f6f6f8;
 }
+.min-height {
+  min-height: 100vh;
+}
+body {
+  font-family: Baskerville, "Times New Roman", "Liberation Serif", STFangsong,
+    FangSong, FangSong_GB2312, "CWTEX\-F", serif;
+}
