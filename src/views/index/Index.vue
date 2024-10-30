@@ -156,6 +156,7 @@
           src="@/assets/static/home_1_2.png"
           style="width: 100%"
           class="mt-5"
+          @click="jump(router, '/contract')"
         />
       </v-sheet>
       <img
