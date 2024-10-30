@@ -222,7 +222,7 @@
                     <v-row
                       class="ma-0 pa-0 text-body-2 date-bg text-white rounded"
                     >
-                      <v-col cols="12" class="px-0 pl-2">详情</v-col>
+                      <v-col cols="12" class="px-0 pl-2">持仓明细</v-col>
                     </v-row>
                   </v-col>
                 </v-row>
