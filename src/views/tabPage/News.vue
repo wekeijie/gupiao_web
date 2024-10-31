@@ -7,36 +7,13 @@
       v-model="tab"
       @update:modelValue="updateItems"
     >
-      <v-tab value="0">新闻</v-tab>
-      <v-tab value="1">快讯</v-tab>
+      <v-tab value="0">快讯</v-tab>
+      <v-tab value="1">新闻</v-tab>
     </v-tabs>
   </div>
   <div class="bg-color ui-min-height pt-3">
     <v-window v-model="tab">
       <v-window-item value="0">
-        <div class="bg-white text-body-1">
-          <div
-            class="px-4 py-4 border-bottom-line-grey"
-            v-for="item in store.state.news.list"
-            :key="item.id"
-            @click="
-              jump(router, '/RichText', {
-                title: item.title,
-                id: item.id,
-              })
-            "
-          >
-            <div class="article-title-color">
-              {{ item.title }}
-            </div>
-            <div class="text-right text-body-2 date-color mt-2">
-              {{ item.created_at }}
-            </div>
-          </div>
-        </div>
-      </v-window-item>
-
-      <v-window-item value="1">
         <div class="bg-white">
           <v-timeline side="end" align="start">
             <v-timeline-item
@@ -58,6 +35,29 @@
           </v-timeline>
         </div>
       </v-window-item>
+
+      <v-window-item value="1">
+        <div class="bg-white text-body-1">
+          <div
+            class="px-4 py-4 border-bottom-line-grey"
+            v-for="item in store.state.news.list"
+            :key="item.id"
+            @click="
+              jump(router, '/RichText', {
+                title: item.title,
+                id: item.id,
+              })
+            "
+          >
+            <div class="article-title-color">
+              {{ item.title }}
+            </div>
+            <div class="text-right text-body-2 date-color mt-2">
+              {{ item.created_at }}
+            </div>
+          </div>
+        </div>
+      </v-window-item>
     </v-window>
   </div>
 </template>
@@ -72,7 +72,7 @@ let page = ref(1);
 const limit = ref(50);
 
 onMounted(() => {
-  getList();
+  updateItems();
 });
 
 const flashStyle = (key) => {
@@ -89,12 +89,12 @@ const getList = () => {
 
 const updateItems = () => {
   if (tab.value === 0) {
-    if (store.state.news.list.length <= 0) {
-      getList();
-    }
-  } else {
     if (store.state.news.flash_item.length <= 0) {
       getFlash();
+    }
+  } else {
+    if (store.state.news.list.length <= 0) {
+      getList();
     }
   }
 };
