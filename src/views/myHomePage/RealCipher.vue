@@ -103,16 +103,25 @@ const loginData = reactive({
 });
 
 const handleLogin = async () => {
-  const { valid } = await instance.ctx.$refs.form.validate();
-  console.log(valid, "valid");
-  if (valid) {
-    store.dispatch("user/changePassword", loginData).then(() => {
-      store.dispatch("snackbar/success", {
-        active: true,
-        body: "修改成功!",
-      });
+  if (
+    loginData.password.length < 6 ||
+    loginData.password.length > 12 ||
+    loginData.new_password.length < 6 ||
+    loginData.new_password.length > 12
+  ) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "密码不能小于6为或者大于12位",
     });
+    return;
   }
+
+  store.dispatch("user/changePassword", loginData).then(() => {
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "修改成功!",
+    });
+  });
 };
 
 let instance = ref();
