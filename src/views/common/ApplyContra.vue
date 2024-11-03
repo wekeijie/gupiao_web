@@ -220,7 +220,7 @@ const applySub = () => {
     });
     return;
   }
-  console.log(limit_data);
+
   applyInfo.expand = amount.value * limit_data.value.limit;
   applyInfo.total = applyInfo.expand + amount.value;
   applyInfo.loss_waring = applyInfo.expand + amount.value * 0.5;

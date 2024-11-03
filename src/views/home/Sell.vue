@@ -1174,7 +1174,7 @@ table {
 
 .new-box {
   height: 280px;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 
 .controls-right {

@@ -97,13 +97,14 @@
               <tbody>
                 <tr class="tr-list">
                   <th style="text-align: left">名称</th>
-                  <th style="text-align: right">现价</th>
+                  <th style="text-align: right">现价/成本</th>
                   <th style="text-align: right">盈亏</th>
                   <th style="text-align: right">持仓</th>
+                  <th style="text-align: right">市值</th>
                 </tr>
                 <tr
                   class="tr-list"
-                  v-for="item in store.state.contract.staock_list"
+                  v-for="item in stock_ref_list"
                   :key="item.code"
                 >
                   <td class="tr-one">
@@ -111,16 +112,21 @@
                   </td>
                   <td class="tr-two">
                     <div class="tr-two-number">
-                      {{ item.sell }}
+                      {{ item.sell }}/{{ caielAvg(item.cost) }}
                     </div>
                   </td>
-                  <td class="tr-three" style="text-align: right">
-                    <div class="tr-two-number">
-                      {{ fuyingAmount(item.price, item.sell, item.number) }}
-                    </div>
+                  <td
+                    class="tr-three"
+                    style="text-align: right"
+                    :class="[item.amount > 0 ? 'text-red' : 'text-green']"
+                  >
+                    <div class="tr-two-number">{{ item.amount }}</div>
                   </td>
                   <td class="tr-three" style="text-align: right">
                     {{ item.number }}
+                  </td>
+                  <td class="tr-three" style="text-align: right">
+                    {{ item.capit }}
                   </td>
                 </tr>
               </tbody>
@@ -311,6 +317,7 @@ const order_id = ref(0);
 const underlined = ref(0);
 
 const stock_amount_total = ref(0);
+const stock_ref_list = ref([]);
 
 onMounted(() => {
   if ($route.query.code) {
@@ -320,10 +327,38 @@ onMounted(() => {
     let temp = d.stock.reduce((sum, item) => {
       return (sum += parseFloat(item.sell) * item.number);
     }, 0);
-
     stock_amount_total.value = parseFloat(temp.toFixed(2));
+    stock_ref_list.value = mergeObjectsByCode(d.stock);
   });
 });
+
+const caielAvg = (costs) => {
+  const cost =
+    costs.reduce((sum, item) => sum + parseFloat(item), 0) / costs.length;
+  return cost.toFixed(2);
+};
+
+const mergeObjectsByCode = (stocks) => {
+  const mergedMap = stocks.reduce((acc, item) => {
+    let amount = parseFloat(fuyingAmount(item.price, item.sell, item.number));
+    let capit = parseFloat(item.sell) * item.number;
+    if (!acc[item.code]) {
+      acc[item.code] = {
+        ...item,
+        amount: amount,
+        cost: [item.price],
+        capit: capit,
+      };
+    } else {
+      acc[item.code].amount += amount;
+      acc[item.code].number += item.number;
+      acc[item.code].capit += capit;
+      acc[item.code].cost.push(item.price);
+    }
+    return acc;
+  }, {});
+  return Object.values(mergedMap);
+};
 
 watch(
   () => store.state.contract.staock_list,
@@ -427,7 +462,7 @@ const changeTab = (index) => {
 .coupon-box {
   min-height: 300px;
   // background-color: #f6f6f6;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 
 .new-box {
