@@ -1173,7 +1173,7 @@ table {
 }
 
 .new-box {
-  height: 280px;
+  // height: 280px;
   // overflow-y: scroll;
 }
 
