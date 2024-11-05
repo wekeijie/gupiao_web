@@ -62,6 +62,18 @@
           </v-list-item>
         </v-list>
       </v-sheet>
+      <v-sheet
+        class="py-3 mt-2 rounded-lg px-3"
+        v-if="channeType == 'manually_type'"
+      >
+        <div class="text-body-1">用户信息</div>
+        <v-text-field
+          label="请输入付款人姓名"
+          variant="underlined"
+          v-model="name"
+          class="mt-3"
+        ></v-text-field>
+      </v-sheet>
     </div>
   </div>
   <v-btn
@@ -91,6 +103,8 @@ let info = reactive({
   amount: 0,
 });
 const channel = ref([]);
+const channeType = ref();
+const name = ref("");
 
 onMounted(() => {
   store.dispatch("topUp/getList").then(() => {
@@ -104,6 +118,7 @@ onMounted(() => {
 
 const selectChannel = (id, value, path) => {
   info = id.id;
+  channeType.value = info.type;
 };
 
 const submitJump = () => {
@@ -118,9 +133,18 @@ const submitJump = () => {
     maintenance();
     return;
   }
+
+  if (channeType.value == "manually_type" && name.value == "") {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "请输入付款人姓名",
+    });
+    return;
+  }
+
   store
     .dispatch("topUp/subPut", {
-      name: "",
+      name: name.value,
       slug: info.slug,
       amount: money.value,
     })

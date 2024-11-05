@@ -62,6 +62,7 @@ export default {
     async getLimit(content, type) {
       const rsp = await limitApi(type);
       content.commit("setLimitList", rsp);
+      return rsp;
     },
     create(content, info) {
       return createApi(info);

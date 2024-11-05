@@ -1,21 +1,26 @@
 <template>
   <div class="bg-color pb-8">
-    <v-img src="@/assets/static/index_tp_bg.png" class="w-100" cover="">
-      <img src="@/assets/static/new_logo.png" width="170" class="ml-3 mt-4" />
-      <div class="ml-3 mt-6 font-weight-bold text-h5">
-        用户提盈<span class="ml-1 text-red">{{
-          store.state.bannerAndRank.three.total_user_rae
-        }}</span
-        >千万
+    <div class="index-top w-100">
+      <div class="px-3 pt-4">
+        <img src="@/assets/static/jbyp.png" width="130" />
+        <v-carousel
+          :show-arrows="false"
+          height="150px"
+          class="rounded-lg mt-2"
+          hide-delimiter-background
+          hide-delimiters
+          cycle
+        >
+          <v-carousel-item
+            v-for="(item, index) in images"
+            :key="index"
+            :src="item.image"
+            cover
+          ></v-carousel-item>
+        </v-carousel>
       </div>
-      <div class="ml-3 mt-8 text-body-1">
-        累计交易{{ store.state.bannerAndRank.three.total_trade }}亿
-      </div>
-      <div class="ml-3 mt-2 text-body-1">
-        平台运营{{ store.state.bannerAndRank.three.total_day }}天
-      </div>
-    </v-img>
-    <div class="px-3 mt-n122 position-relative">
+    </div>
+    <div class="px-3 mt-8">
       <v-sheet class="py-3 rounded-lg">
         <v-row class="ma-0 pa-0">
           <v-col
@@ -123,52 +128,28 @@
           </v-col>
         </v-row>
       </v-sheet>
-      <v-carousel
-        :show-arrows="false"
-        height="100px"
-        class="rounded-lg mt-2"
-        hide-delimiter-background
-        cycle
-      >
-        <v-carousel-item
-          v-for="(item, index) in images"
-          :key="index"
-          :src="item.image"
-          cover
-        ></v-carousel-item>
-      </v-carousel>
-
-      <v-sheet class="py-4 rounded-lg mt-3 px-2">
-        <div class="d-flex justify-space-between text-center">
-          <div
-            v-for="item in mainIndex"
-            :key="item.f12"
-            class="w-32 px-2 rounded-lg py-3"
-            :class="item.f3 > 0 ? 'ground-red' : 'ground-green'"
-          >
-            <div class="text-body-2 font-weight-bold">{{ item.f14 }}</div>
-            <div
-              class="text-body-1 font-weight-bold mt-2"
-              :class="item.f3 > 0 ? 'text-red' : 'text-green'"
-            >
-              {{ marketDataFormat(item.f2, item.f152) }}
+      <v-img src="@/assets/static/zhongjin_home_18.png" class="mt-5">
+        <v-row class="ma-0 pa-0 text-center text-white mt-3">
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_day }}天
             </div>
-            <div
-              class="d-flex text-caption mt-3"
-              :class="item.f3 > 0 ? 'text-red' : 'text-green'"
-            >
-              <div class="w-50 text-left">
-                <span v-if="item.f4 > 0">+</span
-                >{{ marketDataFormat(item.f4, item.f152) }}
-              </div>
-              <div class="w-50 text-right">
-                <span v-if="item.f3 > 0">+</span>
-                {{ marketDataFormat(item.f3, item.f152) }}%
-              </div>
+            <div class="text-caption">平台运营</div>
+          </v-col>
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_trade }}亿
             </div>
-          </div>
-        </div>
-      </v-sheet>
+            <div class="text-caption">累计交易</div>
+          </v-col>
+          <v-col class="pa-0" cols="4">
+            <div class="text-h6">
+              {{ store.state.bannerAndRank.three.total_user_rae }}千万
+            </div>
+            <div class="text-caption">用户提盈</div>
+          </v-col>
+        </v-row>
+      </v-img>
       <v-sheet class="mt-3 px-3 py-4 rounded-lg">
         <div class="text-h6">开始交易</div>
         <img
@@ -177,36 +158,6 @@
           class="mt-5"
           @click="jump(router, '/contract')"
         />
-      </v-sheet>
-      <v-sheet class="py-4 px-3 rounded-lg mt-3">
-        <div class="d-flex mb-4">
-          <div class="w-50 text-body-1 font-weight-bold">热门资讯</div>
-          <div
-            class="w-50 text-caption text-right text-grey-darken-1"
-            @click="router.push('news')"
-          >
-            更多>
-          </div>
-        </div>
-        <div
-          class="d-flex mb-3"
-          v-for="(item, key) in store.state.news.list"
-          :key="item.id"
-          @click="
-            jump(router, '/RichText', {
-              title: item.title,
-              id: item.id,
-            })
-          "
-        >
-          <div class="w-75 text-body-2 text-truncate">
-            <v-chip class="chip-color mr-2" label v-if="key < 3"> 要闻 </v-chip
-            >{{ item.title }}
-          </div>
-          <div class="w-25 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
-          </div>
-        </div>
       </v-sheet>
       <img
         src="@/assets/static/zhongjin_home_34.png"
@@ -229,7 +180,7 @@
   </v-dialog>
 </template>
 <script setup>
-import { marketDataFormat } from "@/utils/helper";
+import searchComponent from "@/components/search/Index.vue";
 import Cookies from "js-cookie";
 import { onMounted, ref, watch } from "vue";
 import { store } from "@/store";
@@ -330,21 +281,5 @@ const openUrlInNewWindow = (url) => {
 } */
 .z-999 {
   z-index: 999;
-}
-.mt-n122 {
-  margin-top: -122px;
-}
-.w-32 {
-  width: 32% !important;
-}
-.ground-green {
-  background: linear-gradient(to bottom, #dafad3, #ffffff);
-}
-.ground-red {
-  background: linear-gradient(to bottom, #fad3d3, #ffffff);
-}
-.chip-color {
-  background-color: fad3d3;
-  color: #f42f2f;
 }
 </style>
