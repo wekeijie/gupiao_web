@@ -572,6 +572,8 @@ import {
   symbolCodeFormat,
   marketDataFormat,
   fuyingAmount,
+  setContractID,
+  getContractID,
 } from "@/utils/helper";
 import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
@@ -603,6 +605,7 @@ const heyue_info = {};
 const prefix = ref("0.000001");
 const title = ref("平安银行");
 const code = ref("000001");
+const contractOrderId = ref("");
 const buySellFiveList = reactive({
   buy: [],
   sell: [],
@@ -631,6 +634,9 @@ onMounted(() => {
   if ($route.query.code) {
     code.value = $route.query.code;
   }
+  if ($route.query.contractOrderId) {
+    contractOrderId.value = $route.query.contractOrderId;
+  }
   if ($route.query.prefix) {
     prefix.value = $route.query.prefix;
   } else {
@@ -646,13 +652,14 @@ onMounted(() => {
   // store.dispatch("trading/getInfo", prefix.value);
   // store.dispatch("trading/getDayDetail", prefix.value);
   if (store.getters.token) {
-    store.dispatch("contract/getMinList");
+    updateNewControactList();
   } else {
     heyuename.value = "请登录选择合约";
   }
 
   getFenShiList();
-
+  const findIndexByOrderId = (d, orderId) =>
+    d.findIndex((item) => item.order_id === orderId);
   // request.post("market/stock", { symbol: prefix.value }).then((d) => {
   //   stock_date.value = d.date;
   //   checkDateStatus();
@@ -660,6 +667,22 @@ onMounted(() => {
   getActiveList();
   getTrustList(0);
 });
+
+const updateNewControactList = () => {
+  store.dispatch("contract/getMinList").then((d) => {
+    if (contractOrderId.value) {
+      const findIndex = findIndexByOrderId(d, contractOrderId.value);
+      if (findIndex !== -1) {
+        selectHeyue(findIndex);
+      }
+    } else {
+      let contractCoolieOrderId = getContractID();
+      if (contractCoolieOrderId) {
+        selectHeyue(contractCoolieOrderId);
+      }
+    }
+  });
+};
 
 const coileBuyPrice = (buyprice, sellprice) => {
   let profit = ((sellprice - buyprice) / buyprice) * 100;
@@ -729,6 +752,7 @@ const cancelOrder = (id) => {
       body: "取消成功！",
     });
     getTrustList(0);
+    updateNewControactList();
   });
 };
 
@@ -920,6 +944,7 @@ const heyuename = ref("请选择合约");
 const typeIndex = ref(0);
 const selectHeyue = (index) => {
   typeIndex.value = index;
+  setContractID(index);
   heyuename.value =
     store.state.contract.minList[index].contract_type_title +
     store.state.contract.minList[index].contract_limit_limit +

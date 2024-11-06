@@ -74,6 +74,7 @@ export default {
     async getMinList(content) {
       const rsp = await minListApi();
       content.commit("setMinList", rsp);
+      return rsp;
     },
     expand(content, data) {
       return expandApi(data);

@@ -1,3 +1,4 @@
+import { setItem, getItem } from "./storage";
 export const httpErrorFormat = (errors) => {
   let message = "";
   if (Object.keys(errors).length === 0) {
@@ -120,4 +121,12 @@ export const extractTxtValue = (input) => {
       break;
   }
   return returnojb.txt;
+};
+
+export const setContractID = (orderIndex) => {
+  setItem("contractID", orderIndex);
+};
+
+export const getContractID = () => {
+  return getItem("contractID");
 };

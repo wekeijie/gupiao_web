@@ -601,11 +601,9 @@ onMounted(() => {
   }
   // store.dispatch("trading/getInfo", prefix.value);
   // store.dispatch("trading/getDayDetail", prefix.value);
-  // if (store.getters.token) {
-  //   store.dispatch("contract/getMinList");
-  // } else {
-  //   heyuename.value = "请登录选择合约";
-  // }
+  if (store.getters.token) {
+    store.dispatch("contract/getMinList");
+  }
   // request.post("market/stock", { symbol: prefix.value }).then((d) => {
   //   stock_date.value = d.date;
   //   checkDateStatus();

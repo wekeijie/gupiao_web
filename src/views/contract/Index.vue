@@ -103,7 +103,9 @@
               >
                 <div
                   class="flex-1-0 w-20 text-center"
-                  @click="jump(router, '/Trading')"
+                  @click="
+                    jump(router, '/Trading?contractOrderId=' + item.order_id)
+                  "
                 >
                   <img
                     src="@/assets/static/contract_icon_1_09.png"
@@ -233,7 +235,9 @@
               >
                 <div
                   class="flex-1-0 w-20 text-center"
-                  @click="jump(router, '/Trading')"
+                  @click="
+                    jump(router, '/Trading?contractOrderId=' + item.order_id)
+                  "
                 >
                   <img
                     src="@/assets/static/contract_icon_1_09.png"
