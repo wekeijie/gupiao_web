@@ -658,8 +658,7 @@ onMounted(() => {
   }
 
   getFenShiList();
-  const findIndexByOrderId = (d, orderId) =>
-    d.findIndex((item) => item.order_id === orderId);
+
   // request.post("market/stock", { symbol: prefix.value }).then((d) => {
   //   stock_date.value = d.date;
   //   checkDateStatus();
@@ -667,6 +666,8 @@ onMounted(() => {
   getActiveList();
   getTrustList(0);
 });
+const findIndexByOrderId = (d, orderId) =>
+  d.findIndex((item) => item.order_id === orderId);
 
 const updateNewControactList = () => {
   store.dispatch("contract/getMinList").then((d) => {
