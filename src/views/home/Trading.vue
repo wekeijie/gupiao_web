@@ -653,6 +653,7 @@ onMounted(() => {
   // store.dispatch("trading/getDayDetail", prefix.value);
   if (store.getters.token) {
     updateNewControactList();
+    console.log("updateNewControactList");
   } else {
     heyuename.value = "请登录选择合约";
   }
@@ -678,7 +679,8 @@ const updateNewControactList = () => {
       }
     } else {
       let contractCoolieOrderId = getContractID();
-      if (contractCoolieOrderId) {
+      console.log("contractCoolieOrderId", contractCoolieOrderId);
+      if (contractCoolieOrderId >= 0) {
         selectHeyue(contractCoolieOrderId);
       }
     }
