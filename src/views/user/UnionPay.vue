@@ -5,12 +5,12 @@
   <div class="bg-color ui-min-height px-5 pt-10">
     <v-sheet class="white rounded-lg py-4 px-3">
       <v-row class="ma-0 pa-0">
-        <v-col cols="4">银行名称：</v-col>
-        <v-col cols="8" class="text-red">{{ info.bank_name }}</v-col>
-        <v-col cols="4">银行账号：</v-col>
-        <v-col cols="8" class="text-red">{{ info.bank_code }}</v-col>
-        <v-col cols="4">开户名称：</v-col>
-        <v-col cols="8" class="text-red">{{ info.name }}</v-col>
+        <v-col cols="2" class="px-0 pl-2 font-weight-bold">姓名：</v-col>
+        <v-col cols="9" class="text-red pl-0">{{ info.bank_name }}</v-col>
+        <v-col cols="2" class="px-0 pl-2 font-weight-bold">账号：</v-col>
+        <v-col cols="9" class="text-red pl-0">{{ info.bank_code }}</v-col>
+        <v-col cols="2" class="px-0 pl-2 font-weight-bold">说明：</v-col>
+        <v-col cols="9" class="text-red pl-0">{{ info.name }}</v-col>
       </v-row>
     </v-sheet>
     <v-sheet class="white rounded-lg py-4 px-3 mt-3 text-red text-body-2">

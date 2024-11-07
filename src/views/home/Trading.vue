@@ -679,7 +679,6 @@ const updateNewControactList = () => {
       }
     } else {
       let contractCoolieOrderId = getContractID();
-      console.log("contractCoolieOrderId", contractCoolieOrderId);
       if (contractCoolieOrderId >= 0) {
         selectHeyue(contractCoolieOrderId);
       }
