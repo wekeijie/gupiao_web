@@ -32,9 +32,9 @@
 
         <div class="text-body-1 mt-3">充值说明</div>
       </div>
-      <div class="px-2 mt-2" v-html="code.explain"></div>
+      <div class="px-2 mt-2 explain-html" v-html="code.explain"></div>
     </v-sheet>
-    <div class="text-body-1 mt-3 text-grey-darken-1">填写付款信息</div>
+    <div class="text-body-1 mt-5 text-grey-darken-1">填写付款信息</div>
     <v-row class="ma-0 pa-0 bg-white rounded-lg pb-3 mt-3">
       <v-col cols="3" class="px-0 pt-5 pl-3">转账金额</v-col>
       <v-col cols="9" class="pa-0 pr-3">
@@ -44,6 +44,7 @@
           class="mt-3"
           hide-details
           density="compact"
+          placeholder="请输入最低转账金额100"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -123,3 +124,8 @@ const copy = async () => {
   }
 };
 </script>
+<style>
+.explain-html ul {
+  list-style: none;
+}
+</style>

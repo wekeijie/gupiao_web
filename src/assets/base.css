@@ -56,10 +56,10 @@
 .min-height {
   min-height: 100vh;
 }
-body {
+/* body {
   font-family: Baskerville, "Times New Roman", "Liberation Serif", STFangsong,
     FangSong, FangSong_GB2312, "CWTEX\-F", serif;
-}
+} */
 .d-indent-flex {
   display: inline-flex;
 }
