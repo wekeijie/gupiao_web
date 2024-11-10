@@ -16,7 +16,7 @@
       <v-col cols="10">
         <div class="text-body-1">{{ item.title }}</div>
         <div class="text-caption text-grey-darken-1">
-          {{ item.ext?.summary }}
+          {{ item.desc }}
         </div>
       </v-col>
     </v-row>
