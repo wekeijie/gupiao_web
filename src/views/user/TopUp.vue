@@ -1,89 +1,26 @@
 <template>
   <page-header>
-    <template v-slot:headerCenter>充值</template
-    ><template v-slot:headerRight>
-      <p @click="jump(router, '/Recordslist', { title: '充值审核记录' })">
-        账单
-      </p>
-    </template>
+    <template v-slot:headerCenter>充值</template>
   </page-header>
-  <div class="bg-color ui-min-height">
-    <div class="topup-bg">
-      <div class="px-3 pt-10">
-        <v-row class="ma-0 pa-0 border-bottom-line">
-          <v-col class="px-0" cols="1">
-            <v-icon color="white">mdi-currency-cny</v-icon>
-          </v-col>
-          <v-col cols="11">
-            <input
-              type="number"
-              class="amount"
-              placeholder="请输入充值金额"
-              v-model="money"
-            />
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-    <div class="px-3 mt-n16">
-      <v-sheet class="white rounded-lg py-4 px-3">
-        <div class="text-body-1">请选择充值金额</div>
-        <v-row class="ma-0 pa-0 mt-4">
-          <v-col
-            cols="3"
-            class="mr-7 px-0 text-center rounded mb-3 border-line"
-            v-for="(item, key) in [100, 500, 1000, 3000, 5000, 10000]"
-            :key="key"
-            @click="money = item"
-            :class="{
-              'money-bg-active': money === item,
-              'money-bg': money != item,
-            }"
-          >
-            ¥{{ item }}元
-          </v-col>
-          <v-col cols="6" class="pa-0 text-body-1 mt-2">应付金额</v-col>
-          <v-col cols="6" class="pa-0 text-right text-body-1 text-red pr-6 mt-2"
-            >¥{{ money }}元</v-col
-          >
-        </v-row>
-      </v-sheet>
-
-      <v-sheet class="white rounded-lg py-4 mt-5 px-3">
-        <div class="text-body-1 text-red-accent-3">请选择充值渠道</div>
-        <v-list density="compact" @click:select="selectChannel">
-          <v-list-item
-            v-for="(item, i) in channel"
-            :key="i"
-            :value="item"
-            color="primary"
-          >
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-sheet>
-      <v-sheet
-        class="py-3 mt-2 rounded-lg px-3"
-        v-if="channeType == 'manually_type'"
-      >
-        <div class="text-body-1">用户信息</div>
-        <v-text-field
-          label="请输入付款人姓名"
-          variant="underlined"
-          v-model="name"
-          class="mt-3"
-        ></v-text-field>
-      </v-sheet>
-    </div>
+  <div class="bg-color ui-min-height px-3 pt-4">
+    <div class="text-body-1 mb-3 text-grey-darken-1">选择充值方式</div>
+    <v-row
+      class="ma-0 bg-white rounded-lg mb-2"
+      v-for="item in channel"
+      :key="item.slug"
+      @click="goPayView(item.slug, item.id)"
+    >
+      <v-col cols="2">
+        <img :src="item.icon" class="w-100 rounded-pill" />
+      </v-col>
+      <v-col cols="10">
+        <div class="text-body-1">{{ item.title }}</div>
+        <div class="text-caption text-grey-darken-1">
+          {{ item.ext?.summary }}
+        </div>
+      </v-col>
+    </v-row>
   </div>
-  <v-btn
-    block=""
-    color="#445CED"
-    class="text-white rounded-0 py-6 text-body-1 fixed"
-    style="bottom: 0px"
-    @click="submitJump"
-    >充值</v-btn
-  >
 </template>
 <script setup>
 import PageHeader from "../../components/topWrap.vue";
@@ -173,6 +110,15 @@ const maintenance = () => {
     active: true,
     body: "请选择充值渠道或联系在线客服！",
   });
+};
+
+const goPayView = (type, id) => {
+  if (type == "alipay" || type == "weixin") {
+    router.push("/TopUp/weixin?code=" + id);
+  }
+  if (type == "unionpay") {
+    router.push("/TopUp/UnionPay?code=" + id);
+  }
 };
 </script>
 <style scoped>

@@ -4,6 +4,10 @@ export const listApi = () => {
   return request.get("recharge-type/list");
 };
 
+export const rechargeTypeInfoApi = (code) => {
+  return request.get("recharge-type/info?code=" + code);
+};
+
 export const putApi = (data) => {
   return request.post("recharge/put", data);
 };

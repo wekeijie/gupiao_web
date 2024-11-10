@@ -7,29 +7,14 @@
       请先成功付款后再“填写付款信息”确认提交
     </div>
     <v-sheet class="px-2 py-5 rounded-lg">
-      <div class="">
+      <div class="text-center">
         <img v-if="code.qrcode" :src="code.qrcode" width="120" />
         <div class="text-caption text-grey-darken-1" v-if="code.qrcode">
           截屏保存二维码到本地相册
         </div>
         <v-row class="ma-0 pa-0">
-          <v-col cols="3" class="text-right">开户人</v-col>
-          <v-col cols="9" class="d-indent-flex">
-            <div class="text-body-2">{{ code.public_key }}</div>
-            <v-icon
-              color="blue-accent-2"
-              size="x-small"
-              class="ml-1"
-              @click="copyUser"
-              >mdi-content-copy</v-icon
-            >
-          </v-col>
-          <v-col cols="3" class="text-right pl-0">银行名称</v-col>
-          <v-col cols="9" class="d-indent-flex">
-            <div class="text-body-2">{{ code.private_key }}</div>
-          </v-col>
-          <v-col cols="3" class="text-right pl-0">银行账户</v-col>
-          <v-col cols="9" class="d-indent-flex">
+          <v-col cols="2" class="text-right">账号</v-col>
+          <v-col cols="10" class="d-indent-flex">
             <div class="text-body-2">{{ code.app_id }}</div>
             <v-icon
               color="blue-accent-2"
@@ -38,6 +23,10 @@
               @click="copy"
               >mdi-content-copy</v-icon
             >
+          </v-col>
+          <v-col cols="2" class="text-right" v-if="code.public_key">姓名</v-col>
+          <v-col cols="10" class="d-indent-flex" v-if="code.public_key">
+            <div class="text-body-2">{{ code.public_key }}</div>
           </v-col>
         </v-row>
 
@@ -55,18 +44,6 @@
           class="mt-3"
           hide-details
           density="compact"
-          placeholder="请输入转账金额"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="3" class="px-0 pt-5 pl-3">付款人</v-col>
-      <v-col cols="9" class="pa-0 pr-3">
-        <v-text-field
-          variant="underlined"
-          v-model="name"
-          class="mt-3"
-          hide-details
-          density="compact"
-          placeholder="请输入付款人姓名"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -134,21 +111,6 @@ const submitJump = () => {
 const copy = async () => {
   try {
     await toClipboard(code.value.app_id);
-    store.dispatch("snackbar/success", {
-      active: true,
-      body: "复制成功！",
-    });
-  } catch (e) {
-    store.dispatch("snackbar/warning", {
-      active: true,
-      body: "操作错误！",
-    });
-  }
-};
-
-const copyUser = async () => {
-  try {
-    await toClipboard(code.value.public_key);
     store.dispatch("snackbar/success", {
       active: true,
       body: "复制成功！",

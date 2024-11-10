@@ -240,6 +240,14 @@ const routes = [
     },
   },
   {
+    path: "/TopUp/weixin",
+    name: "topUp.weixin",
+    component: () => import("@/views/user/Weixin.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/TopUp/unionpay",
     name: "unionpay",
     component: () => import("@/views/user/UnionPay.vue"),
