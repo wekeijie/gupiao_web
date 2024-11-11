@@ -34,16 +34,11 @@
         <v-tabs-window-item value="1">
           <v-sheet class="py-2 px-2 rounded-lg">
             <v-row class="ma-0 pa-0">
-              <v-col class="pa-0" cols="8">
-                <v-text-field
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  placeholder="股票代码/简拼"
-                  class="symbol-code"
-                ></v-text-field>
+              <v-col class="pa-0" cols="7">
+                <SelectSymbol />
+                <div>ueasdasdjhg</div>
               </v-col>
-              <v-col cols="4" class="pa-0"> 123 </v-col>
+              <v-col cols="5" class="pa-0"> 123 </v-col>
             </v-row>
           </v-sheet>
         </v-tabs-window-item>
@@ -55,9 +50,27 @@
 <script setup>
 import PageHeader from "../../components/topWrap.vue";
 import SelectContract from "@/components/contract/Index.vue";
+import SelectSymbol from "@/components/tradeSearch/Index.vue";
 import { ref } from "vue";
+import { store } from "@/store";
 
 const tab = ref();
+const code = ref();
+
+const items = [
+  {
+    title: "Item #1",
+    value: 1,
+  },
+  {
+    title: "Item #2",
+    value: 2,
+  },
+  {
+    title: "Item #3",
+    value: 3,
+  },
+];
 </script>
 <style>
 .refresh-data {
@@ -69,11 +82,5 @@ const tab = ref();
 }
 .select-active-color {
   color: #445ced !important;
-}
-.symbol-code input {
-  text-align: center;
-}
-.symbol-code input::placeholder {
-  text-align: center; /* 让 placeholder 居中 */
 }
 </style>
