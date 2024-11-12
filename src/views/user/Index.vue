@@ -72,7 +72,7 @@
           <v-icon
             size="large"
             class="mr-2 mt-n4"
-            @click="jump(router, '/online-service')"
+            @click="openUrlInNewWindow('/chatlink.html')"
             >mdi-face-agent</v-icon
           >
           <v-icon size="large" @click="jump(router, '/setting')" class="mt-n4"
@@ -237,6 +237,11 @@ const copy = async () => {
       active: true,
       body: "操作错误！",
     });
+  }
+};
+const openUrlInNewWindow = (url) => {
+  if (url) {
+    window.open(url, "_blank");
   }
 };
 </script>
