@@ -21,9 +21,7 @@
           <v-col
             cols="3"
             class="pa-0 w-100 text-center"
-            @click="
-              openUrlInNewWindow(store.state.bannerAndRank.list.service.url)
-            "
+            @click="openUrlInNewWindow('/chatlink.html')"
           >
             <img src="@/assets/img/kefu.png" width="40" height="40" class="" />
             <div class="text-body-2 nav-text-color">在线客服</div>
