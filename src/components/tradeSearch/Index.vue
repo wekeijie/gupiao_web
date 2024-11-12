@@ -13,6 +13,7 @@
     max-width="300"
     v-show="isCardVisible"
     ref="cardRef"
+    style="z-index: 999"
   >
     <v-list lines="two">
       <v-list-item
@@ -47,8 +48,8 @@ const updateCode = (value) => {
 
 // 点击其他区域时隐藏 v-card
 const hideCard = (event) => {
-  const cardElement = cardRef.value;
-  // 如果点击的区域不在 v-card 内部，则隐藏它
+  const cardElement = cardRef.value?.$el || cardRef.value;
+  // 确保 cardElement 存在并且是 DOM 元素
   if (cardElement && !cardElement.contains(event.target)) {
     isCardVisible.value = false;
   }

@@ -70,6 +70,7 @@ export default {
     async getList(content, type) {
       const rsp = await listApi(type);
       content.commit("setList", rsp);
+      return rsp;
     },
     async getMinList(content) {
       const rsp = await minListApi();
