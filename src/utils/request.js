@@ -7,9 +7,15 @@ const service = axios.create({
   timeout: 10000,
 });
 
+const excludedUrls = ["market/buy-sell-five"];
+
 service.interceptors.request.use(
   (config) => {
-    store.dispatch("loadding/show");
+    const shouldLoad = !excludedUrls.some((url) => config.url.startsWith(url));
+
+    if (shouldLoad) {
+      store.dispatch("loadding/show");
+    }
     if (store.getters.token) {
       config.headers.Authorization = `Bearer ${store.getters.token}`;
     }

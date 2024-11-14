@@ -21,15 +21,24 @@
         :key="file.Code"
         :subtitle="file.Code"
         :title="file.Name"
+        @click="updateSymbolCode(file.QuoteID)"
       ></v-list-item>
     </v-list>
   </v-card>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import {
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  defineEmits,
+  defineProps,
+  watch,
+} from "vue";
 import { store } from "@/store";
 
 const code = ref("");
+
 const cardRef = ref(null);
 const isCardVisible = ref(false);
 
@@ -44,6 +53,27 @@ const updateCode = (value) => {
   }
   store.dispatch("market/search", value);
   isCardVisible.value = true;
+};
+
+watch(
+  () => props.symbolCode,
+  (newVal, oldVal) => {
+    code.value = newVal;
+    console.log("symbolCode 发生变化：", oldVal, "=>", newVal);
+    // 在这里执行你的逻辑，例如根据新值做进一步处理
+  }
+);
+
+const props = defineProps({
+  symbolCode: {
+    type: String,
+  },
+});
+
+const emit = defineEmits(["updateSymbolCode"]);
+const updateSymbolCode = (quoteID) => {
+  isCardVisible.value = false;
+  emit("updateSymbolCode", quoteID);
 };
 
 // 点击其他区域时隐藏 v-card

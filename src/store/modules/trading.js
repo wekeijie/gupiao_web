@@ -84,8 +84,8 @@ export default {
       const rsp = await endListApi(status);
       content.commit("setEndList", rsp);
     },
-    async getTrustList(content, status) {
-      const rsp = await trustListApi(status);
+    async getTrustList(content, item) {
+      const rsp = await trustListApi(item.status, item.contract_id);
       content.commit("setTrustList", rsp);
     },
     cancelOrder(content, id) {
@@ -94,8 +94,8 @@ export default {
     getOrderInfo(content, id) {
       return orderInfoApi(id);
     },
-    async getSuccessList(content) {
-      const rsp = await successListApi();
+    async getSuccessList(content, data) {
+      const rsp = await successListApi(data.contract_id, data.type);
       content.commit("setSuccessList", rsp);
     },
   },
