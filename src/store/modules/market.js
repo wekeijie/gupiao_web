@@ -118,6 +118,7 @@ export default {
     async getStockNewInfo(content, symbol) {
       const rsp = await stockInfoNewApi(symbol);
       content.commit("setNewStockInfo", rsp);
+      return rsp;
     },
     getStockKlineNew(content, data) {
       return stockKlineNewApi(data.symbol, data.klt);

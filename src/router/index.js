@@ -77,6 +77,30 @@ const routes = [
     },
   },
   {
+    path: "/history_trade",
+    name: "history_trade",
+    component: () => import("@/views/home/HistoryTrade.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/history_trust",
+    name: "history_trust",
+    component: () => import("@/views/home/HistoryTrunt.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/amount_list",
+    name: "amount_list",
+    component: () => import("@/views/home/AmountList.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/Search",
     name: "Search",
     component: () => import("@/views/Search.vue"),
