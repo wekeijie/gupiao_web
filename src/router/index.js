@@ -58,6 +58,11 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/Trading",
+        name: "trading",
+        component: () => import("@/views/home/Trading.vue"),
+      },
     ],
   },
   {
@@ -132,11 +137,7 @@ const routes = [
     name: "changePassword",
     component: () => import("@/views/loginBlock/ChangePassword.vue"),
   },
-  {
-    path: "/Trading",
-    name: "trading",
-    component: () => import("@/views/home/Trading.vue"),
-  },
+
   {
     path: "/Sell",
     name: "sell",

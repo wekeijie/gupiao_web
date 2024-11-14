@@ -126,6 +126,7 @@
               <FiveTable
                 :buy_five="chart_data.buy_five"
                 :sell_five="chart_data.sell_five"
+                @update:fivePrive="changeLimitPrive"
               />
             </div>
           </v-col>
