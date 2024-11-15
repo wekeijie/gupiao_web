@@ -126,7 +126,7 @@
                     {{ item.number }}
                   </td>
                   <td class="tr-three" style="text-align: right">
-                    {{ item.capit }}
+                    {{ item.capit.toFixed(2) }}
                   </td>
                 </tr>
               </tbody>

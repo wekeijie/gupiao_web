@@ -36,6 +36,10 @@ const contracts = ref([]);
 onMounted(async () => {
   const d = await store.dispatch("contract/getList", 0);
   contracts.value = d;
+  if (props.contract_id == "" && d.length > 0) {
+    order_id.value == d[0].order_id;
+    updateContractId(d[0].order_id);
+  }
 });
 
 const props = defineProps({

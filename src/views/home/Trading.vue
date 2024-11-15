@@ -328,7 +328,7 @@ onMounted(() => {
   }
   const cache_contract_id = getContractID();
 
-  if (cache_contract_id.length > 0) {
+  if (cache_contract_id && cache_contract_id.length > 0) {
     contract_id.value = cache_contract_id;
   }
 
@@ -402,7 +402,6 @@ const chart_data = ref({
 });
 
 const changeSymbolCode = (code_id) => {
-  console.log("changeSymbolCode", code_id);
   code.value = code_id;
 };
 
@@ -652,6 +651,9 @@ function isMarketOpen() {
 
   return isWeekday && (isMorningSession || isAfternoonSession);
 }
+const reloadPage = () => {
+  window.location.reload();
+};
 </script>
 <style>
 .refresh-data {
