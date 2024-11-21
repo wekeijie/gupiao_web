@@ -323,13 +323,13 @@ const sell_data = ref({
 });
 
 onMounted(() => {
-  if (route.query.contract_order_id) {
-    contract_id.value = route.query.contract_order_id;
-  }
   const cache_contract_id = getContractID();
 
   if (cache_contract_id && cache_contract_id.length > 0) {
     contract_id.value = cache_contract_id;
+  }
+  if (route.query.contractOrderId) {
+    contract_id.value = route.query.contractOrderId;
   }
 
   if (route.query.prefix) {

@@ -349,6 +349,7 @@ import { ref, onMounted, reactive } from "vue";
 import { store } from "@/store";
 import { useRouter } from "vue-router";
 import { jump } from "@/utils/constName";
+import { rmContractID } from "@/utils/helper";
 
 const router = useRouter();
 
@@ -404,6 +405,7 @@ const stopPact = () => {
       body: "操作成功",
     });
     getList();
+    rmContractID(order.order_id);
   });
 };
 

@@ -8,7 +8,7 @@
         class="ma-0 pa-0 py-2 font-weight-bold text-body-2 text-center text-grey-darken-2"
       >
         <v-col cols="3" class="pa-0"> 名称/代码 </v-col>
-        <v-col cols="3" class="pa-0"> 金额 </v-col>
+        <v-col cols="3" class="pa-0"> 金额/盈亏 </v-col>
         <v-col cols="3" class="pa-0"> 数量/类型 </v-col>
         <v-col cols="3" class="pa-0"> 时间 </v-col>
       </v-row>
@@ -24,7 +24,7 @@
           <div>{{ item.symbol_code }}</div>
         </v-col>
         <v-col cols="3" class="pa-0">
-          {{ item.amount_f }}
+          {{ item.amount_f }}<br />{{ item.proif }}
         </v-col>
         <v-col cols="3" class="pa-0">
           <span>{{ item.number }}/{{ item.type_string }}</span>

@@ -1,4 +1,4 @@
-import { setItem, getItem } from "./storage";
+import { setItem, getItem, removeItem } from "./storage";
 export const httpErrorFormat = (errors) => {
   let message = "";
   if (Object.keys(errors).length === 0) {
@@ -129,4 +129,11 @@ export const setContractID = (orderIndex) => {
 
 export const getContractID = () => {
   return getItem("contractID");
+};
+
+export const rmContractID = (id) => {
+  const order_id = getContractID();
+  if (order_id == id) {
+    removeItem("contractID");
+  }
 };
