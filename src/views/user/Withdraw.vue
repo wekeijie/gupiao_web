@@ -84,7 +84,7 @@
 </template>
 <script setup>
 import PageHeader from "../../components/topWrap.vue";
-import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+// import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import { ref, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { jump } from "@/utils/constName";

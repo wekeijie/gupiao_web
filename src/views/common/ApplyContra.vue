@@ -151,7 +151,7 @@
 </template>
 <script setup>
 import PageHeader from "../../components/topWrap.vue";
-import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+// import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import { ref, onMounted, reactive } from "vue";
 import { store } from "@/store";
 import { useRouter } from "vue-router";

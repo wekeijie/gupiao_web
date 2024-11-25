@@ -187,6 +187,19 @@
           </v-col>
           <v-divider color="#3E5AF7"></v-divider>
           <v-col cols="2" class="text-center">
+            <img src="@/assets/static/user_01_42.png" width="26" />
+          </v-col>
+          <v-col
+            class="text-body-1 pl-0 pt-3"
+            cols="8"
+            @click="jump(router, '/user/interest-log')"
+            >利息券明细</v-col
+          >
+          <v-col cols="2" @click="jump(router, '/Documentary')">
+            <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
+          </v-col>
+          <v-divider color="#3E5AF7"></v-divider>
+          <v-col cols="2" class="text-center">
             <img src="@/assets/static/user_01_49.png" width="24" />
           </v-col>
           <v-col

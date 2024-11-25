@@ -549,7 +549,7 @@ import {
   marketDataFormat,
   fuyingAmount,
 } from "@/utils/helper";
-import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+// import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
 import MarqueeText from "vue-marquee-text-component";
 import { useRouter, useRoute } from "vue-router";

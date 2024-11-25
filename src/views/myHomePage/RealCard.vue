@@ -65,7 +65,7 @@
 import { onMounted, ref, getCurrentInstance, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import PageHeader from "../../components/topWrap.vue";
-import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+// import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import { store } from "@/store";
 const $router = useRouter();
 const isApply = ref(true);

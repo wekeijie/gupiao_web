@@ -108,7 +108,7 @@ import {
   nextTick,
 } from "vue";
 
-import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
+// import { VBottomSheet } from "vuetify/lib/labs/vBottomSheet/index";
 import PageHeader from "../../components/topWrap.vue";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/store";

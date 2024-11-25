@@ -3,7 +3,7 @@
     <v-bottom-sheet v-model="isProp">
       <v-list>
         <div class="flexBetween sheet-top">
-          <div @click="isProp=false">取消</div>
+          <div @click="isProp = false">取消</div>
           <div class="sheet-sure">完成</div>
         </div>
         <v-list-item
@@ -20,34 +20,41 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from "vue"
+import {
+  defineProps,
+  defineEmits,
+  defineExpose,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
 
-import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
+// import { VBottomSheet } from 'vuetify/lib/labs/vBottomSheet/index'
 
-import { useRouter, useRoute } from "vue-router"
-const $router = useRouter()
-const $route = useRoute()
+import { useRouter, useRoute } from "vue-router";
+const $router = useRouter();
+const $route = useRoute();
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false
-  }
-}
-)
-const isProp = ref(props.isOpen)
-onMounted(() => {
-})
+    default: false,
+  },
+});
+const isProp = ref(props.isOpen);
+onMounted(() => {});
 
-watch(
-  isProp, (val) => {
-    console.log(val, 'val12312')
-  }
-)
+watch(isProp, (val) => {
+  console.log(val, "val12312");
+});
 const tiles = ref([
-  { title: '全部状态' },
-  { title: '正常' },
-  { title: '冻结' },
-],)
+  { title: "全部状态" },
+  { title: "正常" },
+  { title: "冻结" },
+]);
 </script>
 <style lang="scss" scoped>
 .sheet-top {

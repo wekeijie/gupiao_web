@@ -33,6 +33,22 @@ const routes = [
         },
       },
       {
+        path: "/user/interest-log",
+        name: "user.interestLog",
+        component: () => import("@/views/user/UserInterest.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/user/interest-show",
+        name: "user.interestShow",
+        component: () => import("@/views/user/UserInterestShow.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "/news",
         name: "newsNotice",
         component: () => import("@/views/tabPage/News.vue"),
