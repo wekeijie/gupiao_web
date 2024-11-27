@@ -36,12 +36,16 @@ import {
   watch,
 } from "vue";
 import { store } from "@/store";
-import { debounce } from "lodash-es";
+import { debounce, throttle } from "lodash-es";
 
 const code = ref("");
 
 const cardRef = ref(null);
 const isCardVisible = ref(false);
+
+const throttledSearch = throttle((value) => {
+  store.dispatch("market/search", value);
+}, 1000);
 
 const searchWithDebounce = debounce((value) => {
   if (value.length > 0) {

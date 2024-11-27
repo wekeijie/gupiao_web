@@ -13,6 +13,7 @@ const excludedUrls = [
   "market/main-index",
   "market/board-list",
   "market/board-stock-list",
+  "market/search",
 ];
 
 service.interceptors.request.use(
