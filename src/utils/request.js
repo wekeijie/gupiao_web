@@ -7,7 +7,13 @@ const service = axios.create({
   timeout: 10000,
 });
 
-const excludedUrls = ["market/buy-sell-five"];
+const excludedUrls = [
+  "market/buy-sell-five",
+  "watchlist/list",
+  "market/main-index",
+  "market/board-list",
+  "market/board-stock-list",
+];
 
 service.interceptors.request.use(
   (config) => {

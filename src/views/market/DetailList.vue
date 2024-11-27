@@ -74,21 +74,49 @@ let pageInfo = reactive({
   limit: 20,
 });
 
+let refreshTimer = null;
+
 onMounted(() => {
   title.value = $route.query.title;
   pageInfo.cate = $route.query.code;
   getNewList();
   window.addEventListener("scroll", handleScroll);
+  startRefreshTimer();
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
   // store.dispatch("market/clearList");
+  stopRefreshTimer();
 });
 
-const getNewList = () => {
+const startRefreshTimer = () => {
+  // 清除可能存在的旧定时器
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+  }
+
+  // 设置新的定时器，每5秒执行一次 initData
+  refreshTimer = setInterval(() => {
+    getNewList();
+  }, 5000);
+};
+
+const stopRefreshTimer = () => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+};
+
+const getNewList = (is_page = false) => {
   store.dispatch("market/getBoardStockList", pageInfo).then((d) => {
-    listData.value = [...listData.value, ...d.diff];
+    if (is_page) {
+      listData.value = [...listData.value, ...d.diff];
+    } else {
+      listData.value = d.diff;
+    }
+
     page.value = Math.ceil(d.total / pageInfo.limit);
   });
 };
@@ -109,7 +137,7 @@ const updatePage = () => {
     });
     return;
   }
-  getNewList();
+  getNewList(true);
 };
 const handleScroll = () => {
   let scrollHeight = document.documentElement.scrollHeight;

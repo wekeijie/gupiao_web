@@ -167,6 +167,7 @@ import {
   watch,
   nextTick,
   reactive,
+  onUnmounted,
 } from "vue";
 import { marketDataFormat } from "@/utils/helper";
 import { useRouter, useRoute } from "vue-router";
@@ -191,10 +192,39 @@ let pageInfo = reactive({
   limit: 6,
 });
 
+let refreshTimer = null;
+
 onMounted(() => {
   if ($route.query.tab) {
     model.value = parseInt($route.query.tab);
   }
+  initData();
+  startRefreshTimer();
+});
+onUnmounted(() => {
+  stopRefreshTimer();
+});
+
+// 开始定时刷新
+const startRefreshTimer = () => {
+  // 清除可能存在的旧定时器
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+  }
+
+  // 设置新的定时器，每5秒执行一次 initData
+  refreshTimer = setInterval(() => {
+    initData();
+  }, 5000);
+};
+const stopRefreshTimer = () => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+};
+
+const initData = () => {
   store.dispatch("market/getMainIndex").then((d) => {
     mainIndex.value = d.diff;
     mainTotal.fell = d.diff.reduce((acc, item) => acc + item.f105, 0);
@@ -213,7 +243,7 @@ onMounted(() => {
   if (store.getters.token) {
     store.dispatch("watchlist/getList");
   }
-});
+};
 
 const goRouter = (path, item, code = "") => {
   $router.push({

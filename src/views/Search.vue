@@ -59,6 +59,7 @@ import { symbolCodeFormat } from "@/utils/helper";
 const $router = useRouter();
 const $route = useRoute();
 const searchCont = ref();
+import { debounce } from "lodash-es";
 
 onMounted(() => {
   if ($route.query.keyword) {
@@ -75,16 +76,22 @@ const searchValue = (value) => {
   } else {
   }
 };
+const searchWithDebounce = debounce((value) => {
+  if (searchCont.value.length > 0) {
+    store.dispatch("market/search", searchCont.value);
+  }
+}, 1000); // 1秒延迟
 
 const handleSubmit = () => {
-  if (searchCont.value.length <= 0) {
-    // store.dispatch("snackbar/warning", {
-    //   active: true,
-    //   body: "请输入名称或者编码",
-    // });
-    return;
-  }
-  store.dispatch("market/search", searchCont.value);
+  searchWithDebounce();
+  // if (searchCont.value.length <= 0) {
+  //   // store.dispatch("snackbar/warning", {
+  //   //   active: true,
+  //   //   body: "请输入名称或者编码",
+  //   // });
+  //   return;
+  // }
+  // store.dispatch("market/search", searchCont.value);
 };
 
 const goCaRouter = (path, name, code, prefix) => {

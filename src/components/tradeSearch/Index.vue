@@ -36,23 +36,34 @@ import {
   watch,
 } from "vue";
 import { store } from "@/store";
+import { debounce } from "lodash-es";
 
 const code = ref("");
 
 const cardRef = ref(null);
 const isCardVisible = ref(false);
 
-const updateCode = (value) => {
-  if (value.length <= 0) {
-    // store.dispatch("snackbar/warning", {
-    //   active: true,
-    //   body: "请输入名称或者编码",
-    // });
+const searchWithDebounce = debounce((value) => {
+  if (value.length > 0) {
+    store.dispatch("market/search", value);
+    isCardVisible.value = true;
+  } else {
     isCardVisible.value = false;
-    return;
   }
-  store.dispatch("market/search", value);
-  isCardVisible.value = true;
+}, 1000); // 1秒延迟
+
+const updateCode = (value) => {
+  // if (value.length <= 0) {
+  //   // store.dispatch("snackbar/warning", {
+  //   //   active: true,
+  //   //   body: "请输入名称或者编码",
+  //   // });
+  //   isCardVisible.value = false;
+  //   return;
+  // }
+  // store.dispatch("market/search", value);
+  // isCardVisible.value = true;
+  searchWithDebounce(value);
 };
 
 watch(
