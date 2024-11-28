@@ -71,6 +71,7 @@
               prepend-inner-icon="mdi-minus"
               class="mt-3 symbol-code"
               v-model="constuserPost.price"
+              @click:prependInner="userDeductPrice"
             ></v-text-field>
             <div class="d-flex text-body-2 mt-2">
               <div class="w-50">
@@ -170,6 +171,7 @@
               density="compact"
               hide-details
               prepend-inner-icon="mdi-minus"
+              @click:prependInner="userDeductPrice"
               class="mt-3 symbol-code"
               v-model="constuserPost.price"
             ></v-text-field>
@@ -601,6 +603,14 @@ const userAddPrice = () => {
   constuserPost.value.price = Number(
     (constuserPost.value.price + base_price).toFixed(2)
   );
+};
+
+const userDeductPrice = () => {
+  if (constuserPost.value.price > 0) {
+    constuserPost.value.price = parseFloat(
+      (constuserPost.value.price - base_price).toFixed(2)
+    );
+  }
 };
 
 const changeTabeAndSymbol = (code_id) => {
