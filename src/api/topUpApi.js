@@ -8,6 +8,10 @@ export const rechargeTypeInfoApi = (code) => {
   return request.get("recharge-type/info?code=" + code);
 };
 
+export const rechargeAutoChannelApi = (code) => {
+  return request.get("recharge-type/channel?code=" + code);
+};
+
 export const putApi = (data) => {
   return request.post("recharge/put", data);
 };

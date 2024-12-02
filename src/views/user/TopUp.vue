@@ -8,7 +8,7 @@
       class="ma-0 bg-white rounded-lg mb-2"
       v-for="item in channel"
       :key="item.slug"
-      @click="goPayView(item.slug, item.id)"
+      @click="goPayView(item.type, item.slug, item.id)"
     >
       <v-col cols="2">
         <img :src="item.icon" class="w-100 rounded-pill" />
@@ -112,12 +112,15 @@ const maintenance = () => {
   });
 };
 
-const goPayView = (type, id) => {
-  if (type == "alipay" || type == "weixin") {
+const goPayView = (type, sulg, id) => {
+  if (type == "manually_type" && (sulg == "alipay" || sulg == "weixin")) {
     router.push("/TopUp/weixin?code=" + id);
   }
-  if (type == "unionpay") {
+  if (type == "manually_type" && sulg == "unionpay") {
     router.push("/TopUp/UnionPay?code=" + id);
+  }
+  if (type == "auto_type") {
+    router.push("/TopUp/auto?code=" + id);
   }
 };
 </script>

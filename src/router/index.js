@@ -297,6 +297,14 @@ const routes = [
     },
   },
   {
+    path: "/TopUp/auto",
+    name: "topUpAuto",
+    component: () => import("@/views/user/AutoTopup.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/TopUp/manually",
     name: "topUpManually",
     component: () => import("@/views/myHomePage/rechargeManually.vue"),
