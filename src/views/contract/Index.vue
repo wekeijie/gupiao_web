@@ -45,7 +45,7 @@
                     >
                   </v-col>
                 </v-row>
-                <v-row class="ma-0 pa-0 mt-4">
+                <v-row class="ma-0 pa-0 mt-4 text-body-2">
                   <v-col cols="3" class="text-center px-0">
                     <div class="font-weight-bold">{{ item.total_amount }}</div>
                     <div class="text-caption order-color">操盘资金</div>
@@ -177,7 +177,7 @@
                     >
                   </v-col>
                 </v-row>
-                <v-row class="ma-0 pa-0 mt-4">
+                <v-row class="ma-0 pa-0 mt-4 text-body-2">
                   <v-col cols="3" class="text-center px-0">
                     <div class="font-weight-bold">{{ item.total_amount }}</div>
                     <div class="text-caption order-color">操盘资金</div>

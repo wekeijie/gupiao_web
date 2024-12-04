@@ -1,15 +1,24 @@
 import { setItem, getItem, removeItem } from "./storage";
 export const httpErrorFormat = (errors) => {
   let message = "";
-  if (Object.keys(errors).length === 0) {
+
+  if (!errors || Object.keys(errors).length === 0) {
     return "Network link failed, please try again!";
-  } else if (errors.hasOwnProperty("response")) {
-    Object.keys(errors.response.data.errors).forEach(function (key) {
-      message += errors.response.data.errors[key][0] + ";\n\r";
+  } else if (
+    errors.response &&
+    errors.response.data &&
+    errors.response.data.errors
+  ) {
+    const errorData = errors.response.data.errors;
+    Object.keys(errorData).forEach((key) => {
+      message += errorData[key][0] + ";\n\r";
     });
-  } else {
+  } else if (errors.message) {
     message += errors.message;
+  } else {
+    message = "An unknown error occurred.";
   }
+
   return message;
 };
 
@@ -33,6 +42,19 @@ export const chartDataFormat = (
     timestamp: timestamp * 1000,
     volume: volume,
   };
+};
+
+export const symbolChartCodeFormat = (code, prefix) => {
+  if (prefix == 0) {
+    return code + ".SZ";
+  }
+  if (prefix == 1) {
+    return code + ".SH";
+  }
+  if (prefix == 116) {
+    return code + ".hk";
+  }
+  return code;
 };
 
 export const symbolCodeFormat = (code, prefix) => {

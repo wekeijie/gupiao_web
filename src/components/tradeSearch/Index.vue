@@ -7,6 +7,7 @@
     placeholder="股票代码/简拼"
     class="symbol-code"
     @update:modelValue="updateCode"
+    @update:focused="changeFocused"
   ></v-text-field>
   <v-card
     class="mx-auto position-fixed"
@@ -55,6 +56,12 @@ const searchWithDebounce = debounce((value) => {
     isCardVisible.value = false;
   }
 }, 1000); // 1秒延迟
+
+const changeFocused = () => {
+  if (code.value) {
+    updateCode(code.value);
+  }
+};
 
 const updateCode = (value) => {
   // if (value.length <= 0) {

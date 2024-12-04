@@ -1,86 +1,93 @@
 <template>
-  <div class="chanrt-box">
+  <div>
     <page-header>
       <template v-slot:headerCenter>
-        <h2>{{ title }}（{{ symbolCodeFormat(Symbol, prefix) }}）</h2>
-        <p v-show="store.state.market.stock_new_info.f292 != 2">
-          <span>{{
-            extractTxtValue(store.state.market.stock_new_info.f292)
-          }}</span>
-        </p>
+        <h2>{{ title }}（{{ showSymbolCode }}）</h2>
       </template>
       <template v-slot:headerRight>
-        <img
-          class="refresh"
-          src="../../assets/img/refresh.png"
-          alt=""
-          @click="resetDataKline"
-        />
+        <img class="refresh" src="../../assets/img/refresh.png" alt="" />
       </template>
     </page-header>
+
     <div
-      class="flexCenter argument-box"
+      class="w-50 mx-auto mt-3 d-flex"
       :class="
         'text-' + watchStringToColor(store.state.market.stock_new_info.f170)
       "
     >
-      <h2>
+      <div
+        class="w-50 text-h5 font-weight-bold d-flex justify-center align-center"
+      >
         {{
           marketDataFormat(
             store.state.market.stock_new_info.f43,
             store.state.market.stock_new_info.f59
           )
         }}
-      </h2>
-      <div>
-        <p>
+      </div>
+      <div class="w-50 text-body-2">
+        <div>
           {{
             marketDataFormat(
               store.state.market.stock_new_info.f169,
               store.state.market.stock_new_info.f59
             )
           }}
-        </p>
-        <p>
+        </div>
+        <div>
           {{
             marketDataFormat(
               store.state.market.stock_new_info.f170,
               store.state.market.stock_new_info.f59
             ) + "%"
           }}
-        </p>
+        </div>
       </div>
     </div>
-    <v-tabs grow v-model="model">
-      <v-tab
-        @click="ChangeChartTab(item.Name, index)"
-        v-for="(item, index) in PeriodList"
-        :key="index"
-        >{{ item.Name }}</v-tab
+    <div class="mt-4">
+      <v-tabs
+        v-model="currentItem"
+        fixed-tabs
+        @update:modelValue="userChangePeroid"
       >
-      <div style="width: 80px; height: 20px">
-        <v-select
-          v-model="select"
-          :hint="`${select.Name}, ${select.Value}`"
-          :items="more"
-          item-title="Name"
-          item-value="Value"
-          label="Select"
-          persistent-hint
-          return-object
-          single-line
-          density="compact"
-          hide-details
-          loader-height="5"
-          height="auto"
-        ></v-select>
-      </div>
-    </v-tabs>
-    <div id="app2">
-      <!-- <div id="minute" ref="minute"></div> -->
+        <v-tab
+          v-for="item in items"
+          :key="item"
+          :text="item"
+          :value="item"
+          min-width="70"
+        ></v-tab>
 
-      <div id="minuteChart" ref="minute" v-show="Minute.IsShow"></div>
-      <div id="kline" ref="kline" v-show="Kline.IsShow"></div>
+        <v-menu v-if="more.length">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              class="align-self-center me-4"
+              height="100%"
+              rounded="0"
+              variant="plain"
+              v-bind="props"
+            >
+              {{ showFiveTitle }}
+
+              <v-icon icon="mdi-menu-down" end></v-icon>
+            </v-btn>
+          </template>
+
+          <v-list class="bg-grey-lighten-3">
+            <v-list-item
+              v-for="item in more"
+              :key="item"
+              :title="item"
+              @click="changeFiveKile(item)"
+            ></v-list-item>
+          </v-list>
+        </v-menu>
+      </v-tabs>
+    </div>
+    <div id="app" ref="DivApp" class="">
+      <div>
+        <div id="kline" ref="DivKLine" class="hqchart"></div>
+      </div>
     </div>
     <div class="flexStart stati-box">
       <div class="stati-list">
@@ -184,7 +191,6 @@
         }}</span>
       </div>
     </div>
-
     <div class="flexBetween trading-box">
       <div @click="pushMeQuote">
         <img
@@ -210,7 +216,9 @@
           class="text-white rounded-e-pill px-10"
           rounded="0"
           size="large"
-          @click="goTrading('/Trading', title, Symbol, prefix_symbol)"
+          @click="
+            goTrading('/Trading', title, HQChartData.Symbol, HQChartData.Symbol)
+          "
           >交易</v-btn
         >
       </div>
@@ -219,107 +227,124 @@
 </template>
 
 <script setup>
+import PageHeader from "../../components/topWrap.vue";
 import HQChart from "hqchart";
 
 import "hqchart/src/jscommon/umychart.resource/css/tools.css";
 import "hqchart/src/jscommon/umychart.resource/font/iconfont.css";
 
-import {
-  defineProps,
-  defineEmits,
-  defineExpose,
-  reactive,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  computed,
-  watch,
-  nextTick,
-  onUnmounted,
-} from "vue";
-
-import PageHeader from "../../components/topWrap.vue";
-import { useRouter, useRoute } from "vue-router";
-import request from "@/utils/request";
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { store } from "@/store";
 import {
+  symbolChartCodeFormat,
   symbolCodeFormat,
   extractTxtValue,
   marketDataFormat,
 } from "@/utils/helper";
 
-const $router = useRouter();
-const $route = useRoute();
-function DefaultData() {}
-const select = ref({ Name: "15分钟", Value: 5 });
-const collect = ref(true);
-const toggleValue = ref("trade");
-
-const TabTextIndex = ref(0);
-const Name = ref("分时");
-const Symbol = ref("300466");
+const periodToKlt = { 0: "d", 1: "w", 2: "m" };
+const klt = ref("d");
 const title = ref("");
-const is_open = ref(false);
-const last_update_date = ref();
 
-const more = ref([
-  { Name: "5分钟", Value: 5 },
-  { Name: "15分钟", Value: 6 },
-  { Name: "30分钟", Value: 7 },
-  { Name: "60分钟", Value: 8 },
-]);
-const PeriodList = ref([
-  { Name: "分时", Value: 1 },
-  { Name: "日线", Value: 0 },
-  { Name: "周线", Value: 1 },
-  { Name: "月线", Value: 2 },
-]);
-watch(
-  () => select.value,
-  (newVlue, oldValue) => {
-    ChangeChartTab(select.value.Name, select.value.Value);
+const items = ref(["分时", "日线", "周线", "月线"]);
+const more = ref(["5分", "15分", "30分", "60分"]);
+const currentItem = ref("");
+const showFiveTitle = ref("5分钟");
+const route = useRoute();
+const router = useRouter();
+const showSymbolCode = ref("");
+const collect = ref(true);
+
+const userChangePeroid = (item) => {
+  if (item == "分时") {
+    ChangeMinute();
+  } else if (item == "日线") {
+    ChangePeriod(0);
+  } else if (item == "周线") {
+    ChangePeriod(1);
+  } else if (item == "月线") {
+    ChangePeriod(2);
   }
-);
+};
 
-DefaultData.GetKlineOption = function (symbol) {
-  let data = {
-    Type: "历史K线图",
+const changeFiveKile = (id) => {
+  if (id == "15分") {
+    showFiveTitle.value = id;
+    ChangePeriod(6);
+  } else if (id == "30分") {
+    showFiveTitle.value = id;
+    ChangePeriod(7);
+  } else if (id == "60分") {
+    showFiveTitle.value = id;
+    ChangePeriod(8);
+  } else if (id == "5分") {
+    showFiveTitle.value = id;
+    ChangePeriod(5);
+  }
+};
+
+function DefaultData() {}
+
+DefaultData.GetKLineOption = function () {
+  //K线配置信息
+  var option = {
+    Type: "历史K线图", //创建图形类型
+
+    //窗口指标
     Windows: [
-      { Index: "均线", Modify: false, Change: false },
-      { Index: "VOL", Modify: false, Change: false, IsDrawTitleBG: true },
+      { Index: "均线", Modify: true, Change: false },
+      // { Index: "MA", Modify: true, Change: true },
+      { Index: "VOL", Modify: true, Change: true, Close: true },
       { Index: "MACD", Modify: false, Change: false, IsDrawTitleBG: true },
-    ], //窗口指标
-    Symbol: symbol,
-    IsAutoUpate: true, //是自动更新数据
+    ],
 
+    IsAutoUpdate: true, //是自动更新数据
+    AutoUpdateFrequency: 10000, //数据更新频率
     IsShowRightMenu: false, //右键菜单
+    ToolbarButtonStyle: 1,
 
+    IsApiPeriod: true, //复权,周期都使用后台数据
+
+    //CorssCursorTouchEnd:true,
+    //StepPixel:5,        //移动一个K线需要的手势移动的像素(默认4)
+    //ZoomStepPixel:8,    //缩放一次,2个手指需要移动的间距像素(默认5)
+
+    //K线设置
     KLine: {
-      DragMode: 3, //拖拽模式 0 禁止拖拽 1 数据拖拽 2 区间选择
-      Right: 1, //复权 0 不复权 1 前复权 2 后复权
+      DragMode: 1, //拖拽模式 0 禁止拖拽 1 数据拖拽 2 区间选择
+      Right: 0, //复权 0 不复权 1 前复权 2 后复权
       Period: 0, //周期 0 日线 1 周线 2 月线 3 年线
-      MaxReqeustDataCount: 1000, //日线数据最近1000天
-      MaxRequestMinuteDayCount: 15, //分钟数据最近15天
-      PageSize: 50, //一屏显示多少数据
-      IsShowTooltip: false, //是否显示K线提示信息
+      MaxReqeustDataCount: 1000, //数据个数
+      MaxRequestMinuteDayCount: 10, //分钟数据取5天
+      PageSize: 40, //一屏显示多少数据
+      IsShowTooltip: false, //是否显示 div K线提示信息 (手机端要填false)
+      DrawType: 0, //K线类型 0=实心K线柱子 1=收盘价线 2=美国线 3=空心K线柱子 4=收盘价面积图
+      RightSpaceCount: 1,
     },
 
     //标题设置
     KLineTitle: {
-      IsShowName: false, //不显示股票名称
-      IsShowSettingInfo: false, //不显示周期/复权
+      IsShowName: true, //不显示股票名称
+      IsShowSettingInfo: true, //不显示周期/复权
     },
 
     //边框
     Border: {
-      Left: 20, //左边间距
-      Right: 20, //右边间距
-      Top: 1,
-      Bottom: 1,
+      Left: 1, //左边间距
+      Right: 30, //右边间距
+      Bottom: 25, //底部间距
+      Top: 25, //顶部间距
     },
 
     //子框架设置
     Frame: [
+      // {
+      //   SplitCount: 3,
+      //   IsShowLeftText: false,
+      //   Height: 8,
+      //   Custom: [{ Type: 0, Position: "right" }],
+      // },
       {
         SplitCount: 3,
         IsShowLeftText: false, //不显示左边刻度文字
@@ -331,313 +356,304 @@ DefaultData.GetKlineOption = function (symbol) {
           },
         ],
       },
-      { SplitCount: 2, StringFormat: 0 },
-      { SplitCount: 2, StringFormat: 0 },
+
+      // { SplitCount: 2, IsShowLeftText: false, Height: 2 },
+      { SplitCount: 2, StringFormat: 0, IsShowLeftText: false },
+      { SplitCount: 2, StringFormat: 0, IsShowLeftText: false },
+    ],
+
+    //扩展图形
+    ExtendChart: [
+      //{Name:'KLineTooltip' }  //手机端tooltip
     ],
   };
-  return data;
+
+  return option;
 };
 
-DefaultData.GetMinuteOption = function (symbol) {
-  let data = {
-    Type: "分钟走势图", //历史分钟走势图
-    Symbol: symbol,
-    IsAutoUpate: true, //是自动更新数据
-    IsShowRightMenu: false, //右键菜单
-    IsShowCorssCursorInfo: false, //是否显示十字光标的刻度信息
-    DayCount: 1,
+DefaultData.GetMinuteOption = function () {
+  //分时图配置信息
+  var option = {
+    Type: "分钟走势图", //创建图形类型
+    //Type:'分钟走势图横屏',
+
+    //窗口指标
+    Windows: [
+      { Index: "MACD", Modify: true, Change: false, Close: false },
+      // { Index: "涨跌趋势", Modify: false, Change: false },
+    ],
+
+    IsAutoUpdate: true, //是自动更新数据
+    AutoUpdateFrequency: 1000, //数据更新频率
+    DayCount: 1, //1 最新交易日数据 >1 多日走势图
+    IsShowRightMenu: true, //是否显示右键菜单
+
+    //CorssCursorInfo:{  Left:2, Right:2, Bottom:1,RightTextFormat:1 },
+    CorssCursorInfo: {
+      Left: 2,
+      Right: 1,
+      Bottom: 1,
+      RightTextFormat: 0,
+      IsFixXLastTime: true,
+      RightButton: { Enable: true },
+      PriceFormatType: 0,
+      DataFormatType: 0,
+    },
+
+    MinuteLine: {
+      IsDrawAreaPrice: true, //是否画价格面积图
+      // IsShowAveragePrice: true, //不显示均线
+    },
+
+    MinuteTitle: {
+      IsShowTime: true,
+      IsShowName: true,
+      IsShowDate: false,
+      IsShowVolTitle: true,
+    },
+
+    //EnableBorderDrag:false,
+
+    MinuteVol: {
+      BarColorType: 1,
+    },
+
+    EnableBorderDrag: true,
+
+    IsDrawPictureXY: true,
+
+    SelectedChart: { EnableSelected: true, EnableMoveOn: true },
+
+    EnableIndexChartDrag: true,
+
+    EnableSelectRect: true,
+
     //边框
     Border: {
-      Left: 1,
+      Left: 1, //左边间距
       Right: 1, //右边间距
       Top: 25,
       Bottom: 25,
     },
-    //标题设置
-    KLineTitle: {
-      IsShowName: false, //不显示股票名称
-      IsShowSettingInfo: false, //不显示周期/复权
-    },
 
-    //子框架设置,刻度小数位数设置
+    //子框架设置
     Frame: [
-      { SplitCount: 5, StringFormat: 0 },
-      { SplitCount: 3, StringFormat: 0 },
+      {
+        SplitCount: 5,
+        Custom: [
+          {
+            Type: 1,
+            Position: "left",
+            LineType: 0,
+            Data: [
+              {
+                Value: 15.8,
+                Color: "rgb(0,34,255)",
+                TextColor: "rgb(255,255,255)",
+              },
+            ],
+          },
+        ],
+      },
+      { SplitCount: 3 },
+    ],
+
+    //扩展图形
+    ExtendChart: [
+      //{Name:'MinuteTooltip' }  //手机端tooltip
     ],
   };
-  return data;
+
+  return option;
 };
 
-DefaultData.GetPeriodData = function (name) {
-  const mapPeriod = new Map([
-    ["分时", { Value: 1, KLineShow: false, MinuteShow: true }],
-    ["日线", { Value: 0, KLineShow: true, MinuteShow: false }],
-    ["周线", { Value: 1, KLineShow: true, MinuteShow: false }],
-    ["月线", { Value: 2, KLineShow: true, MinuteShow: false }],
-    ["年线", { Value: 3, KLineShow: true, MinuteShow: false }],
-    ["5分钟", { Value: 5, KLineShow: true, MinuteShow: false }],
-    ["15分钟", { Value: 6, KLineShow: true, MinuteShow: false }],
-    ["30分钟", { Value: 7, KLineShow: true, MinuteShow: false }],
-    ["60分钟", { Value: 8, KLineShow: true, MinuteShow: false }],
-  ]);
-  if (!mapPeriod.has(name)) return null;
+HQChart.Chart.MARKET_SUFFIX_NAME.GetMarketStatus = function (symbol) {
+  var nowDate = new Date();
+  var day = nowDate.getDay();
+  var time = nowDate.getHours() * 100 + nowDate.getMinutes();
 
-  return mapPeriod.get(name);
+  if (day == 6 || day == 0) return 0; //周末
+
+  //9:30 - 15:40
+  if (time > 1530) return 0;
+  if (time < 925) return 1;
+  return 2;
 };
-const Minute = ref({
-  JSChart: null,
-  IsShow: true,
-  Option: DefaultData.GetMinuteOption(Symbol.value),
-});
-const Kline = ref({
-  JSChart: null,
-  IsShow: false,
-  Option: DefaultData.GetKlineOption(Symbol.value),
-});
 
-const prefix_symbol = ref();
-const stock_date = ref();
-const prefix = ref(0);
+let HQChartData = {
+  Symbol: "0.000001", //代码
+  Chart: null, //图形控件
+};
 
-var chart;
+if (route.query.prefix) {
+  HQChartData.Symbol = route.query.prefix + "." + route.query.code;
+} else {
+  HQChartData.Symbol = route.query.code;
+}
 
 onMounted(() => {
-  title.value = $route.query.title;
-  Symbol.value = $route.query.code;
-  if ($route.query.prefix) {
-    prefix.value = $route.query.prefix;
-    prefix_symbol.value = $route.query.prefix + "." + Symbol.value;
-  } else {
-    prefix_symbol.value = Symbol.value;
+  if (route.query.title) {
+    title.value = route.query.title;
   }
+  const parts = HQChartData.Symbol.split(".");
+  showSymbolCode.value = symbolCodeFormat(parts[1], parts[0]);
+
   getNewStockInfo();
-  OnSize();
-  // CreateKLineChart()
+  window.onresize = () => {
+    OnSize();
+  };
 
-  ChangeChartTab(Name.value, TabTextIndex.value);
-  // store.dispatch("market/getStockInfo", prefix_symbol.value);
-
+  OnSize(); //子组件的mounted在父组件的mounted之前执行了
+  // CreateKLineChart(0);
+  ChangeMinute();
   if (store.getters.token) {
-    store.dispatch("watchlist/get", prefix_symbol.value);
+    store.dispatch("watchlist/get", HQChartData.Symbol);
     if (store.state.watchlist.status) {
       collect.value = true;
     }
   }
-
-  chart.ChartDestroy();
 });
-
-const resetDataKline = () => {
-  ChangeChartTab(Name.value, TabTextIndex.value);
-};
 
 onUnmounted(() => {
-  chart.ChartDestroy();
+  // HQChart.Chart.ChartDestroy();
+  if (HQChartData.Chart) {
+    HQChartData.Chart.ChartDestroy();
+    HQChartData.Chart = null;
+  }
 });
 
-const getNewStockInfo = () => {
-  store.dispatch("market/getStockNewInfo", prefix_symbol.value);
+var DivApp = ref(null);
+var DivKLine = ref(null);
+var DivButtons = ref(null);
+
+//内部接口
+const OnSize = function () {
+  var app = DivApp.value;
+  //获取屏幕大小 动态设置K线的div大小
+  // var height = window.innerHeight;
+  var height = 554;
+  var width = document.documentElement.clientWidth;
+  var kline = DivKLine.value;
+  kline.style.width = width + "px";
+  kline.style.height = height - 60 + "px";
+
+  if (HQChartData.Chart) HQChartData.Chart.OnSize();
 };
 
-let klineRef = ref();
-let minuteRef = ref();
+const ClearChart = function () {
+  if (HQChartData.Chart) {
+    HQChartData.Chart.ChartDestroy();
+    HQChartData.Chart = null;
+  }
 
-const OnSize = () => {
-  var chartHeight = 354;
-  var chartWidth = window.innerWidth;
-
-  klineRef.value = document.getElementById("kline");
-  klineRef.value.style.width = chartWidth + "px";
-  klineRef.value.style.height = chartHeight + "px";
-
-  minuteRef.value = document.getElementById("minuteChart");
-  minuteRef.value.style.width = chartWidth + "px";
-  minuteRef.value.style.height = chartHeight + "px";
+  var divKLine = document.getElementById("kline");
+  while (divKLine.hasChildNodes()) {
+    divKLine.removeChild(divKLine.lastChild);
+  }
 };
 
-const CreateMinuteChart = () =>
-  //创建日线图
-  {
-    if (Minute.value.JSChart) return;
-    Minute.value.Option.Symbol = Symbol.value;
-    chart = HQChart.Chart.JSChart.Init(minuteRef.value);
-    Minute.value.Option.NetworkFilter = (data, callback) => {
-      MinuteNetworkFilter(data, callback);
-    };
-    chart.SetOption(Minute.value.Option);
-    Minute.value.JSChart = chart;
+//创建走势图
+const CreateKLineChart = function (period) {
+  ClearChart();
+
+  var option = DefaultData.GetKLineOption();
+  option.Symbol = HQChartData.Symbol;
+  option.Period = period;
+  option.KLine.Period = period;
+
+  var divKLine = document.getElementById("kline");
+  var chart = HQChart.Chart.JSChart.Init(divKLine);
+  option.NetworkFilter = (data, callback) => {
+    KLineNetworkFilter(data, callback);
   };
-
-const CreateKLineChart = () =>
-  //创建K线图
-  {
-    if (Kline.value.JSChart) return;
-    Kline.value.Option.Symbol = Symbol.value;
-    chart = HQChart.Chart.JSChart.Init(klineRef.value);
-    Kline.value.Option.NetworkFilter = (data, callback) => {
-      NetworkFilter(data, callback);
-    };
-    chart.SetOption(Kline.value.Option);
-    // chart.AddEventCallback({event:JSCommon.JSCHART_EVENT_ID.ON_CLICK_INDEXTITLE, callback:this.OnClickIndexTitle});//点击事件通知回调
-    Kline.value.JSChart = chart;
-  };
-const cutTime = () => {
-  // console.log('time1321')
+  chart.SetOption(option);
+  HQChartData.Chart = chart;
+  HQChart.Chart.JSChart.GetResource().FrameLogo.Text = null;
 };
 
-const ChangeChartTab = (name, index) => {
-  // this.IsLinetype = false;
-  // this.IsLinetype = false;
-  // this.TabTextIndex = index;
-  var period = DefaultData.GetPeriodData(name);
-  if (!period) return;
-  if (period.KLineShow) ChangeKLinePeriod(period.Value);
-  Kline.value.IsShow = period.KLineShow;
-  if (period.MinuteShow) ChangeMinutePeriod(period.Value);
-  Minute.value.IsShow = period.MinuteShow;
+const ChangePeriod = function (
+  period //K线图切换周期
+) {
+  if (period < 3) {
+    updateKlt(period);
+  } else {
+    if (period == 4) {
+      klt.value = 1;
+    } else if (period == 5) {
+      klt.value = 5;
+    } else if (period == 6) {
+      klt.value = 15;
+    } else if (period == 7) {
+      klt.value = 30;
+    } else if (period == 8) {
+      klt.value = 60;
+    } else {
+      klt.value = 15;
+    }
+  }
+  CreateKLineChart(period);
+  // if (IsKLineChart()) {
+  //   // HQChartData.Chart.ChangePeriod(period);
+  //   CreateKLineChart(period);
+  // } else {
+  //   CreateKLineChart(period);
+  // }
 };
 
-//走势图多日切换
-const ChangeMinutePeriod = (period) => {
-  if (!Minute.value.JSChart) {
-    //不存在创建
-    Minute.value.Option.DayCount = period;
+const ChangeMinute = function () //分时图
+{
+  if (IsMinuteChart()) return;
+  else {
+    klt.value = 1;
     CreateMinuteChart();
-  } else {
-    // if (period == 1) {
-    //   this.IsFiveminute = false;
-
-    // } else if (period == 5) {
-    //   this.IsFiveminute = true;
-    // }
-    OnSize();
-    Minute.value.JSChart.OnSize();
-    Minute.value.JSChart.ChangeDayCount(period);
   }
 };
 
-const ChangeKLinePeriod = (
-  period //历史K线周期切换
-) => {
-  if (!Kline.value.JSChart) {
-    //不存在创建
-    Kline.value.Option.KLine.Period = period;
-    CreateKLineChart();
-  } else {
-    Kline.value.JSChart.ChangePeriod(period);
-  }
+const ChangeSymbol = function (
+  symbol //切换股票
+) {
+  HQChartData.Symbol = symbol;
+  HQChartData.Chart.ChangeSymbol(HQChartData.Symbol);
 };
 
-//切换代码
-// data.KLine.Option.Symbol = '000001.sz'; //000001.sz 平安银行 600999.sh 招商银行
-
-const NetworkFilter = (data, callback) => {
-  switch (data.Name) {
-    case "KLineChartContainer::ReqeustHistoryMinuteData": //分钟全量数据下载
-      ReqeustHistoryMinuteData(data, callback, { PageSize: 50 });
-      break;
-    case "KLineChartContainer::RequestHistoryData": //日线全量数据下载
-      RequestHistoryData(data, callback);
-      break;
-    // case 'KLineChartContainer::RequestMinuteRealtimeData':  //分钟实时数据更新
-    //     this.RequestMinuteRealtimeData(data,callback);
-    //     break;
-    // case 'KLineChartContainer::RequestRealtimeData':        //日线实时数据更新
-    //     this.RequestRealtimeData(data,callback);
-    //     break;
-  }
+const IsKLineChart = function () {
+  if (!HQChartData.Chart || !HQChartData.Chart.JSChartContainer) return;
+  return HQChartData.Chart.JSChartContainer.ClassName == "KLineChartContainer";
 };
 
-const ReqeustHistoryMinuteData = (data, callback, option) => {
+const IsMinuteChart = function () {
+  if (!HQChartData.Chart || !HQChartData.Chart.JSChartContainer) return;
+  return HQChartData.Chart.JSChartContainer.ClassName == "MinuteChartContainer";
+};
+
+const KLineNetworkFilter = function (data, callback) {
+  data.PreventDefault = true; //设置hqchart不请求数据
+  RequestHistoryData(data, callback);
+  // HQData.HQData.NetworkFilter(data, callback);
+};
+
+const MinuteNetworkFilter = function (data, callback) {
+  data.PreventDefault = true;
+  if (data.Name == "MinuteChartContainer::RequestMinuteData") {
+    RequestHoursMinuteData(data, callback, { PageSize: 100 });
+  }
+  // HQData.HQData.NetworkFilter(data, callback);
+};
+
+const RequestHoursMinuteData = (data, callback, option) => {
   store
     .dispatch("market/getStockKlineNew", {
-      symbol: prefix_symbol.value,
-      klt: 1,
-    })
-    .then((d) => {
-      let klineData = jsonToHQChartKLineMinuteData(d.klines);
-      let hqChartData = { code: 0, data: klineData };
-      hqChartData.symbol = Symbol.value;
-      hqChartData.name = title.value;
-      data.Self.PageSize = option.PageSize;
-      callback(hqChartData);
-    });
-  // request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
-  //   let klineData = jsonToHQChartKLineMinuteData(d.items);
-  //   let hqChartData = { code: 0, data: klineData };
-  //   hqChartData.symbol = d.code + ".sh";
-  //   hqChartData.name = d.name;
-  //   data.Self.PageSize = option.PageSize;
-  //   callback(hqChartData);
-  // });
-};
-
-const jsonToHQChartKLineMinuteData = (data) => {
-  let new_arr = [];
-  data.forEach(function (item) {
-    let arr = item.split(",");
-    let [date, time] = arr[0].split(" ");
-    let formatDate = date.replace(/-/g, "");
-    let formatTime = time.replace(/:/g, "");
-    new_arr.push([
-      parseInt(formatTime),
-      parseFloat(arr[1]),
-      parseFloat(arr[3]),
-      parseFloat(arr[4]),
-      parseFloat(arr[1]),
-      parseInt(arr[5]),
-      parseInt(arr[6]),
-      parseFloat(arr[4]),
-      parseInt(formatDate),
-      // 'yclose':parseFloat(arr[2])
-    ]);
-  });
-  return new_arr;
-};
-
-const MinuteNetworkFilter = (data, callback) => {
-  switch (data.Name) {
-    case "MinuteChartContainer::RequestMinuteData": //分钟全量数据下载
-      RequestMinuteData(data, callback, { PageSize: 100 });
-      break;
-    // case 'KLineChartContainer::RequestMinuteRealtimeData':  //分钟实时数据更新
-    //     this.RequestMinuteRealtimeData(data,callback);
-    //     break;
-    case "MinuteChartContainer::RequestHistoryMinuteData":
-      RequestHistoryMinuteData(data, callback, { PageSize: 100 });
-      break;
-  }
-};
-
-const RequestHistoryMinuteData = (data, callback, option) => {
-  request
-    .post("market/fiveStock", { symbol: prefix_symbol.value })
-    .then((d) => {
-      let klineData = jsonToFiveHQChartMinuteData(d, d["prePrice"]);
-      let hqChartData = {
-        symbol: d.code + ".sh",
-        name: d.name,
-        data: klineData,
-        code: 0,
-      };
-      callback(hqChartData);
-    });
-};
-
-const RequestMinuteData = (data, callback, option) => {
-  store
-    .dispatch("market/getStockKlineNew", {
-      symbol: prefix_symbol.value,
-      klt: 1,
+      symbol: HQChartData.Symbol,
+      klt: klt.value,
     })
     .then((d) => {
       let klineData = jsonToHQChartMinuteData(d.klines, "");
       let hqChartData = {
         stock: [
           {
-            symbol: Symbol.value + ".sh",
+            symbol: symbolChartCodeFormat(d.code, d.market),
             minute: klineData,
-            name: title.value,
+            name: d.name,
             yclose: d.prePrice,
             // date: d.split("-").join(""),
           },
@@ -645,62 +661,15 @@ const RequestMinuteData = (data, callback, option) => {
         code: 0,
       };
       // stock_date.value = d.date;
-      checkDateStatus();
       callback(hqChartData);
     });
-  // request.post("market/stock", { symbol: prefix_symbol.value }).then((d) => {
-  //   let klineData = jsonToHQChartMinuteData(d, d["prePrice"]);
-  //   let hqChartData = {
-  //     stock: [
-  //       {
-  //         symbol: d.code + ".sh",
-  //         minute: klineData,
-  //         name: d.name,
-  //         yclose: d["prePrice"],
-  //         date: d.date.split("-").join(""),
-  //       },
-  //     ],
-  //     code: 0,
-  //   };
-  //   stock_date.value = d.date;
-  //   checkDateStatus();
-  //   callback(hqChartData);
-  // });
+  getNewStockInfo();
 };
-
-const jsonToFiveHQChartMinuteData = (data, yClose) => {
-  let newData = [];
-  data.items.forEach(function (item) {
-    item.date = item.date.replace(/-/g, "");
-    item.yClose = yClose;
-    let temp = [];
-    item.minute.forEach(function (value) {
-      let arr = value.split(",");
-      let [date, time] = arr[0].split(" ");
-      let formatDate = date.replace(/-/g, "");
-      let formatTime = time.replace(/:/g, "");
-      temp.push([
-        parseInt(formatTime),
-        parseFloat(arr[1]),
-        parseFloat(arr[3]),
-        parseFloat(arr[4]),
-        parseFloat(arr[1]),
-        parseInt(arr[5]),
-        parseInt(arr[6]),
-        parseFloat(arr[4]),
-        parseInt(formatDate),
-        // 'yclose':parseFloat(arr[2])
-      ]);
-      yClose = parseFloat(arr[2]);
-    });
-    item.minute = temp;
-    newData.push(item);
-  });
-  return newData;
-};
-
 const jsonToHQChartMinuteData = (data, yClose) => {
   let newData = [];
+  if (!data) {
+    return newData;
+  }
   data.forEach(function (item) {
     let arr = item.split(",");
     let [date, time] = arr[0].split(" ");
@@ -726,26 +695,58 @@ const jsonToHQChartMinuteData = (data, yClose) => {
 };
 
 const RequestHistoryData = (data, callback) => {
-  // request.post("market/dayKLine", { symbol: prefix_symbol.value }).then((d) => {
-  //   let config = {};
-  //   config.name = d.name;
-  //   config.symbol = d.code;
-  //   resetDayFotmat(d, callback, config);
-  // });
   store
     .dispatch("market/getStockKlineNew", {
-      symbol: prefix_symbol.value,
-      klt: "d",
+      symbol: HQChartData.Symbol,
+      klt: klt.value,
     })
     .then((d) => {
       let config = {};
-      config.name = title.value;
-      config.symbol = Symbol.value;
-      resetDayFotmat(d.klines, callback, config);
+      config.name = d.name;
+      config.symbol = d.code;
+      config.code = 0;
+      let data = {};
+      if (klt.value == "d" || klt.value == "w" || klt.value == "m") {
+        data = GetDaySymbolDataFormat(d.klines, config);
+      } else if (
+        klt.value == 1 ||
+        klt.value == 5 ||
+        klt.value == 15 ||
+        klt.value == 30 ||
+        klt.value == 60
+      ) {
+        data = GetMinuteSymbolDataFormat(d.klines, config);
+      }
+
+      callback(data);
     });
+  getNewStockInfo();
 };
 
-const resetDayFotmat = (data, callback, config) => {
+const GetMinuteSymbolDataFormat = (data, config) => {
+  let newData = [];
+  let yclose = 0;
+  data.forEach(function (item) {
+    let arr = item.split(",");
+    const [date, time] = arr[0].split(" ");
+    newData.push([
+      date.replace(/-/g, ""),
+      yclose,
+      parseFloat(arr[1]),
+      parseFloat(arr[3]),
+      parseFloat(arr[4]),
+      parseFloat(arr[2]),
+      parseFloat(arr[5]),
+      parseFloat(arr[6]),
+      time.replace(":", ""),
+    ]);
+    yclose = parseFloat(arr[2]);
+  });
+  config.data = newData;
+  return config;
+};
+
+const GetDaySymbolDataFormat = (data, config) => {
   let newData = [];
   let yclose = null;
   data.forEach(function (item) {
@@ -762,21 +763,38 @@ const resetDayFotmat = (data, callback, config) => {
     ]);
     yclose = parseFloat(arr[2]);
   });
-  config.code = 0;
+
   config.data = newData;
-  callback(config);
+  return config;
 };
 
-const watchStringToColor = (price) => {
-  if (price < 0) {
-    return "green";
-  } else if (price === 0 || price === "") {
-    return "black";
-  } else if (price > 0) {
-    return "red";
+//创建分时图
+const CreateMinuteChart = function () {
+  ClearChart();
+
+  var option = DefaultData.GetMinuteOption();
+  option.Symbol = HQChartData.Symbol;
+
+  var divKLine = document.getElementById("kline");
+  var chart = HQChart.Chart.JSChart.Init(divKLine);
+  option.NetworkFilter = (data, callback) => {
+    MinuteNetworkFilter(data, callback);
+  };
+  chart.SetOption(option);
+  HQChartData.Chart = chart;
+  HQChart.Chart.JSChart.GetResource().FrameLogo.Text = null;
+};
+const updateKlt = (period) => {
+  if (periodToKlt.hasOwnProperty(period)) {
+    klt.value = periodToKlt[period];
+  } else {
+    klt.value = "d";
   }
 };
 
+const getNewStockInfo = () => {
+  store.dispatch("market/getStockNewInfo", HQChartData.Symbol);
+};
 const toWanString = (number) => {
   let convertedNumber = (number / 10000).toFixed(2);
   return convertedNumber + "万";
@@ -786,19 +804,37 @@ const toYiString = (number) => {
   let convertedNumber = (number / 1_000_000_000).toFixed(2);
   return convertedNumber + "亿";
 };
-
+const watchStringToColor = (price) => {
+  if (price < 0) {
+    return "green";
+  } else if (price === 0 || price === "") {
+    return "black";
+  } else if (price > 0) {
+    return "red";
+  }
+};
+const goTrading = (path, name, code, prefix) => {
+  router.push({
+    path,
+    query: {
+      code: code,
+      title: name,
+      prefix: prefix,
+    },
+  });
+};
 const pushMeQuote = () => {
   if (!store.getters.token) {
     store.dispatch("snackbar/warning", {
       active: true,
       body: "请现登录！",
     });
-    $router.push("Login");
+    router.push("Login");
   }
 
   store
     .dispatch("watchlist/push", {
-      code: parseFloat(prefix_symbol.value),
+      code: parseFloat(HQChartData.Symbol),
       name: title.value,
       price: marketDataFormat(
         store.state.market.stock_new_info.f43,
@@ -824,70 +860,6 @@ const pushMeQuote = () => {
         });
       }
     });
-};
-
-const checkDateStatus = () => {
-  let beijingDate = new Date()
-    .toLocaleDateString("zh-CN", {
-      timeZone: "Asia/Shanghai",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .replace(/\//g, "-");
-  let beijingTime = new Date().toLocaleString("zh-CN", {
-    timeZone: "Asia/Shanghai",
-    hour12: false,
-    timeStyle: "short",
-  });
-
-  if (beijingDate != stock_date.value || checkTime() == false) {
-    is_open.value = true;
-    last_update_date.value = stock_date.value;
-  }
-};
-
-const checkTime = () => {
-  let currentBeijingTime = new Date(
-    new Date().toLocaleString("zh-CN", {
-      timeZone: "Asia/Shanghai",
-      hour12: false,
-    })
-  );
-  let morningStart = new Date(currentBeijingTime);
-  morningStart.setHours(9, 30, 0, 0); // 设置时间为当天的9:30:00.000
-
-  let morningEnd = new Date(currentBeijingTime);
-  morningEnd.setHours(11, 30, 0, 0); // 设置时间为当天的11:30:00.000
-
-  let afternoonStart = new Date(currentBeijingTime);
-  afternoonStart.setHours(13, 0, 0, 0); // 设置时间为当天的13:00:00.000
-
-  let afternoonEnd = new Date(currentBeijingTime);
-  afternoonEnd.setHours(15, 0, 0, 0); // 设置时间为当天的15:00:00.000
-
-  if (currentBeijingTime > morningStart && currentBeijingTime < morningEnd) {
-    return true;
-  }
-  if (
-    currentBeijingTime > afternoonStart &&
-    currentBeijingTime < afternoonEnd
-  ) {
-    return true;
-  }
-  return false;
-};
-
-const goTrading = (path, name, code, prefix) => {
-  console.log(name, code, prefix);
-  $router.push({
-    path,
-    query: {
-      code: code,
-      title: name,
-      prefix: prefix,
-    },
-  });
 };
 </script>
 <style scoped lang="scss">
@@ -1016,5 +988,10 @@ const goTrading = (path, name, code, prefix) => {
 #minuteChart {
   width: 100%;
   height: 286px;
+}
+.test button {
+  margin-right: 5px;
+  background-color: #fb5c39;
+  color: #fff;
 }
 </style>

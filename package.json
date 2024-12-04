@@ -13,7 +13,7 @@
     "@vuepic/vue-datepicker": "^6.1.0",
     "amfe-flexible": "^2.2.1",
     "axios": "^1.5.0",
-    "hqchart": "^1.1.12314",
+    "hqchart": "^1.1.14197",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
+    "babel-runtime": "^6.26.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
     "jquery": "^3.7.1",

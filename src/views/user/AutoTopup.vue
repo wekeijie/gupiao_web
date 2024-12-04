@@ -95,6 +95,7 @@ onMounted(async () => {
     amount_list.value = channel.value.ext?.amount_list?.list;
     info.value.min = channel.value.ext?.amount_list?.min;
     info.value.max = channel.value.ext?.amount_list?.max;
+    money.value = info.value.min;
   } else {
     info.value.min = channel.value.min;
   }

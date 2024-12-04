@@ -14,6 +14,8 @@ const excludedUrls = [
   "market/board-list",
   "market/board-stock-list",
   "market/search",
+  "market/stock-kline",
+  "market/stock-info",
 ];
 
 service.interceptors.request.use(
