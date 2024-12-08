@@ -472,7 +472,17 @@ const expend = () => {
   });
 };
 const getList = () => {
-  store.dispatch("contract/getList", tab.value);
+  store.dispatch("contract/getList", tab.value).then((d) => {
+    if (tab.value == 0) {
+      const result = d.find((item) => item.has_balance_success == 0);
+      if (result) {
+        store.dispatch("snackbar/warning", {
+          active: true,
+          body: "你的余额不足以支付合约利息，请注意充值以避免合约被关闭使用!",
+        });
+      }
+    }
+  });
 };
 </script>
 <style scoped>
