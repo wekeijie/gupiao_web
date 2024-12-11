@@ -166,6 +166,41 @@ const routes = [
     path: "/agency",
     name: "agency",
     component: () => import("@/views/index/Agency.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/agency/sub-user",
+    name: "agency.subuser",
+    component: () => import("@/views/index/SubUser.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/agency/sub-contract",
+    name: "agency.subcontract",
+    component: () => import("@/views/index/SubContract.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/agency/sub-commission",
+    name: "agency.subcommission",
+    component: () => import("@/views/index/SubCommissionList.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/agency/sub-delivery",
+    name: "agency.subdelivery",
+    component: () => import("@/views/index/SubDeliver.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
 
   {

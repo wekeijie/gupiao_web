@@ -75,7 +75,7 @@
       :to="'/RealCipher'"
     >
       <v-row class="ma-0 pa-0">
-        <v-col cols="6" class="text-subtitle-1">账户密码</v-col>
+        <v-col cols="6" class="text-subtitle-1">登录密码</v-col>
         <v-col cols="6" class="text-right text-body-1 right-color">
           <span>已设置</span>
           <v-icon size="large">mdi-chevron-right</v-icon>

@@ -1,113 +1,150 @@
 <template>
-  <page-header>
-    <template v-slot:headerCenter>代理中心</template>
-  </page-header>
-  <div class="bg-color pb-8">
-    <div class="agency-top-bg">
-      <div class="px-3 w-100 h-100 relative">
-        <v-btn
-          color="white"
-          class="text-blue absolute"
-          rounded="xl"
-          style="bottom: 83px; left: 32px"
-          :to="'/Invite'"
-        >
-          马上领取
-        </v-btn>
+  <div class="bg-color ui-min-height">
+    <page-header>
+      <template v-slot:headerCenter>代理中心</template>
+    </page-header>
+    <div class="agenr-top-bg rounded-b-lg px-4 pt-6">
+      <div class="d-flex align-center">
+        <div class="" style="width: 60px">
+          <img src="@/assets/static/agency_03.png" width="60" />
+        </div>
+        <div class="text-white font-size-12 font-weight-bold d-flex ml-3">
+          <span>专属邀请码:{{ store.state.user.code.toUpperCase() }}</span>
+          <span class="ml-2">
+            <v-icon @click="copy">mdi-content-copy</v-icon>
+          </span>
+        </div>
       </div>
     </div>
-    <div class="px-3 mt-n16">
-      <v-sheet class="bg-while py-4" rounded="lg">
-        <v-row class="ma-0 pa-0">
-          <v-col cols="5" class="text-center">
-            <div class="text-h5 font-weight-bold">
-              {{ store.state.user.child.child_total }}
+    <div class="px-4 mt-n130">
+      <v-img
+        src="@/assets/static/agency_07.png"
+        cover=""
+        height="200"
+        class="rounded-lg position-relative"
+      >
+        <div
+          class="text-h3 font-weight-bold tag-color position-absolute tag-poine font-italic"
+        >
+          {{ info.title }}
+        </div>
+        <v-row
+          class="ma-0 pa-0 text-center text-white text-subtitle-2 font-weight-bold position-relative mt-8"
+        >
+          <v-col cols="4" class="pa-0">
+            <div class="text-h6">
+              {{ info.active_user }}/{{ info.user_number }}
             </div>
-            <div class="text-body-2">累计下线</div>
+            <div>有效/累计下线</div>
           </v-col>
-          <v-col cols="1">
-            <v-divider
-              class="ms-3"
-              color="#4760EE"
-              :thickness="2"
-              inset
-              vertical
-              style="height: 33px"
-            ></v-divider>
+          <v-col cols="4" class="pa-0">
+            <div class="text-h6">{{ info.amount }}</div>
+            <div>累计返佣金额</div>
           </v-col>
-          <v-col cols="5" class="text-center">
-            <div class="text-h5 font-weight-bold">
-              {{ store.state.user.child.commission }}
-            </div>
-            <div class="text-body-2">累计返佣</div>
+          <v-col cols="4" class="pa-0">
+            <div class="text-h6">{{ parseInt(info.interest) }}%</div>
+            <div>返利息比例</div>
+          </v-col>
+          <v-col cols="4" class="pa-0 mt-6">
+            <div class="text-h6">{{ parseInt(info.level_rate) }}%</div>
+            <div>逐级返佣比例</div>
+          </v-col>
+          <v-col cols="4" class="pa-0 mt-6">
+            <div class="text-h6">0%</div>
+            <div>返其它费用比例</div>
+          </v-col>
+          <v-col cols="4" class="pa-0 mt-6">
+            <div class="text-h6">{{ parseInt(info.commission) }}%</div>
+            <div>返佣金比例</div>
           </v-col>
         </v-row>
-      </v-sheet>
+      </v-img>
+    </div>
 
-      <v-sheet class="mt-3 py-3 rounded-t-lg">
-        <img src="@/assets/static/agency_vip.png" width="110" class="ml-3" />
-        <div
-          class="d-flex flex-wrap text-center text-body-1 list-line-bg py-3 text-white font-weight-bold"
-        >
-          <div class="flex-1-0">邀请人员等级</div>
-          <div class="flex-1-0">返佣比例</div>
+    <div class="px-4 mt-5">
+      <v-sheet class="py-5 rounded-lg d-flex text-center">
+        <div class="w-20" @click="router.push('/agency/sub-user')">
+          <img src="@/assets/static/agency_11.png" width="30" />
+          <div class="text-body-2 mt-2">下线列表</div>
         </div>
-        <div
-          class="d-flex flex-wrap text-center text-body-1 py-3"
-          v-for="item in store.state.agen.list"
-          :key="item.title"
-        >
-          <div class="flex-1-0">{{ item.title }}</div>
-          <div class="flex-1-0 text-red">{{ item.commission + "%" }}</div>
+        <div class="w-20" @click="router.push('/agency/sub-contract')">
+          <img src="@/assets/static/agency_13.png" width="30" />
+          <div class="text-body-2 mt-2">下线合约</div>
         </div>
-      </v-sheet>
-      <v-sheet class="mt-4 rounded-t-lg">
-        <div
-          class="d-flex flex-wrap text-center text-body-1 list-line-bg py-3 text-white font-weight-bold rounded-t-lg"
-        >
-          <div class="flex-1-0">邀请人员等级</div>
-          <div class="flex-1-0">有效邀请</div>
-          <div class="flex-1-0">额外福利</div>
+        <div class="w-20" @click="router.push('/Invite')">
+          <img src="@/assets/static/agency_15.png" width="30" />
+          <div class="text-body-2 mt-3">邀请好友</div>
         </div>
-        <div
-          class="d-flex flex-wrap text-center text-body-1 py-3"
-          v-for="item in store.state.agen.list"
-          :key="item.title"
-        >
-          <div class="flex-1-0">{{ item.title }}</div>
-          <div class="flex-1-0 text-red-darken-4">{{ item.number }}</div>
-          <div class="flex-1-0 text-red">{{ parseInt(item.coupon) }}</div>
+        <div class="w-20" @click="router.push('/agency/sub-commission')">
+          <img src="@/assets/static/agency_17.png" width="30" />
+          <div class="text-body-2 mt-3">返佣明细</div>
         </div>
-      </v-sheet>
-      <v-sheet class="mt-3 py-3" rounded="lg">
-        <img src="@/assets/static/agency_active.png" width="110" class="ml-3" />
-        <div
-          class="px-3 mt-2 text-ui-grey text-body-2"
-          style="line-height: 28px !important"
-        >
-          <p>1.被推荐人使用利息券抵扣管理费的部分，则推荐人不享有返佣。</p>
-          <p>2.推荐人级别越高，则享有的返佣越高。</p>
-          <p>3.被推荐人充值并且申请合约买票后即为有效邀请。</p>
-          <p>4.达到有效邀请人数后，可立即享有额外的利息券福利，仅奖励一次。</p>
+        <div class="w-20" @click="router.push('/agency/sub-delivery')">
+          <img src="@/assets/static/agency_19.png" width="30" />
+          <div class="text-body-2 mt-1">交割记录</div>
         </div>
       </v-sheet>
     </div>
+
+    <div class="px-4 mt-5">
+      <v-sheet class="rounded py-3">
+        <div class="text-center text-h6">会员等级说明</div>
+        <div class="d-flex mt-4 py-3 text-center text-body-2 tab-bg-color">
+          <div class="w-20">会员等级</div>
+          <div class="w-20">晋级条件</div>
+          <div class="w-20">返佣比例</div>
+          <div class="w-20">返利息</div>
+          <div class="w-20">逐级返佣</div>
+        </div>
+        <div
+          class="d-flex py-3 text-center text-body-2"
+          v-for="item in store.state.agen.list"
+          :key="item.title"
+        >
+          <div class="w-20">{{ item.title }}</div>
+          <div class="w-20">{{ item.number }}</div>
+          <div class="w-20">{{ parseInt(item.commission) }}%</div>
+          <div class="w-20">{{ parseInt(item.interest) }}%</div>
+          <div class="w-20">{{ parseInt(item.level_rate) }}%</div>
+        </div>
+      </v-sheet>
+    </div>
+    <div class="py-6"></div>
   </div>
 </template>
 <script setup>
 import PageHeader from "../../components/topWrap.vue";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import useClipboard from "vue-clipboard3";
 import { store } from "@/store";
 import { jump } from "@/utils/constName";
 import { useRouter } from "vue-router";
+import { infoApi } from "@/api/agenApi";
 const router = useRouter();
+const { toClipboard } = useClipboard();
 
-onMounted(() => {
+const info = ref({});
+
+onMounted(async () => {
   store.dispatch("agen/getList");
-  if (store.getters.token) {
-    store.dispatch("user/getChild");
-  }
+  const rsp = await infoApi();
+  info.value = rsp;
 });
+
+const copy = async () => {
+  try {
+    await toClipboard(store.state.user.code);
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "复制成功!",
+    });
+  } catch (e) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "复制失败!",
+    });
+  }
+};
 </script>
 <style scoped>
 .agency-top-bg {
@@ -115,5 +152,23 @@ onMounted(() => {
   background-repeat: no-repeat;
   background-size: contain;
   height: 253px;
+}
+.agenr-top-bg {
+  width: 100%;
+  height: 240px;
+  background-color: #4e63f5;
+}
+.mt-n130 {
+  margin-top: -130px !important ;
+}
+.tag-color {
+  color: #c19f58;
+}
+.tag-poine {
+  right: 14px;
+  top: 8px;
+}
+.tab-bg-color {
+  background-color: #d3deff;
 }
 </style>
