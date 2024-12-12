@@ -22,6 +22,7 @@ export default {
       const rsp = await listApi(info.page, info.type, info.date);
 
       content.commit("setList", rsp);
+      return rsp;
     },
   },
 };

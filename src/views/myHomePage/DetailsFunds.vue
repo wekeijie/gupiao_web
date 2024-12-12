@@ -47,7 +47,7 @@
         @click="goRouter('/BillingDetails')"
       > -->
       <div
-        v-for="item in store.state.fundrecord.list"
+        v-for="item in rsp.data"
         :key="item.date"
         class="flexBetween order-list"
       >
@@ -63,6 +63,14 @@
           :class="'text-' + watchStringToColor(item.amount)"
         >
           {{ item.amount }}
+        </div>
+      </div>
+      <div class="d-flex justify-space-between mt-5 px-6">
+        <div class="w20">
+          <v-btn color="#5865f2" @click="upPage">上一页</v-btn>
+        </div>
+        <div class="w20">
+          <v-btn color="#5865f2" @click="nextPage">下一页</v-btn>
         </div>
       </div>
     </div>
@@ -130,6 +138,11 @@ const selectDate = ref("");
 const typeModel = ref("");
 const page = ref(1);
 
+const rsp = ref({
+  data: [],
+  last_page: 1,
+});
+
 const setDate = (value) => {
   selectDate.value = value;
 };
@@ -139,29 +152,53 @@ onMounted(() => {
   selectDate.value = now_date.getFullYear() + "-" + (now_date.getMonth() + 1);
   store.dispatch("fundrecord/getTypeList");
   getList();
-  window.addEventListener("scroll", handleScroll);
-});
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
 });
 
 const changeType = () => {
   typeOpen.value = false;
   getList();
 };
-const getList = () => {
-  store.dispatch("fundrecord/getList", {
+const getList = async () => {
+  const r = await store.dispatch("fundrecord/getList", {
     page: page.value,
     type: typeModel.value,
     date: selectDate.value,
   });
+  rsp.value = r;
 };
 
-const updatePage = () => {
+const upPage = () => {
   // Your update logic here
+  if (!checkPage("up")) return;
+  page.value = page.value - 1;
+  getList();
+};
+
+const nextPage = () => {
+  // Your update logic here
+  if (!checkPage("next")) return;
   page.value = page.value + 1;
   getList();
 };
+
+const checkPage = (type) => {
+  if (type == "next" && page.value + 1 > rsp.value.last_page) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "已经是最后一页",
+    });
+    return false;
+  }
+  if (type == "up" && page.value - 1 < 1) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "已经是第一页",
+    });
+    return false;
+  }
+  return true;
+};
+
 const handleScroll = () => {
   let scrollHeight = document.documentElement.scrollHeight;
   let scrollTop = document.documentElement.scrollTop;
