@@ -13,7 +13,7 @@
             istype = false;
           "
         >
-          <span class="mr-1">全部交易类型</span>
+          <span class="mr-1">{{ type_name }}</span>
           <img src="../../assets/img/downPac.png" alt="" />
         </div>
       </v-col>
@@ -89,7 +89,7 @@
           class="type-list"
         >
           <v-list @click:select="selectSubType">
-            <v-list-item value="all">全部交易类型</v-list-item>
+            <v-list-item value="all">全部合约类型</v-list-item>
             <v-list-item
               v-for="(item, index) in store.state.fundrecord.typeList"
               :key="index"
@@ -128,6 +128,7 @@ const $router = useRouter();
 const $route = useRoute();
 const isApply = ref(false);
 const istype = ref(true); //false 为全部交易， true 为时间
+const type_name = ref("全部交易类型");
 
 const month = ref({
   month: new Date().getMonth(),
@@ -222,7 +223,12 @@ const handleDate = () => {
 };
 
 const selectSubType = (info) => {
+  console.log(info);
   typeModel.value = getKeyByValue(info.id);
+  type_name.value = info.id;
+  if (info.id == "all") {
+    type_name.value = "全部合约类型";
+  }
 };
 
 function getKeyByValue(value) {
