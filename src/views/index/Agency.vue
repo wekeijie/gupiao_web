@@ -32,8 +32,22 @@
           class="ma-0 pa-0 text-center text-white text-subtitle-2 font-weight-bold position-relative mt-8"
         >
           <v-col cols="4" class="pa-0">
-            <div class="text-h6">
+            <div class="text-h6 position-relative">
               {{ info.active_user }}/{{ info.user_number }}
+              <v-icon
+                size="min"
+                color="pink-accent-2"
+                class="position-absolute top-0"
+                style="right: 12px"
+                @click="tipshow = !tipshow"
+                >mdi-comment-processing-outline
+              </v-icon>
+              <v-tooltip activator="parent" location="bottom" v-model="tipshow">
+                <div>累计下线：好友通过您的邀请码注册成为一个累计下线</div>
+                <div>
+                  有效下线：好友通过您的邀请码注册并申请合约成功成为一个有效下线。
+                </div>
+              </v-tooltip>
             </div>
             <div>有效/累计下线</div>
           </v-col>
@@ -124,6 +138,7 @@ const router = useRouter();
 const { toClipboard } = useClipboard();
 
 const info = ref({});
+const tipshow = ref(false);
 
 onMounted(async () => {
   store.dispatch("agen/getList");

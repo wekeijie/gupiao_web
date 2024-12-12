@@ -294,7 +294,13 @@
           <v-col cols="8" class="text-caption text-right py-1">{{
             order.order_id
           }}</v-col>
-          <v-col cols="6" class="text-caption px-0 py-1">余额</v-col>
+          <v-col
+            cols="6"
+            class="text-caption px-0 py-1"
+            v-if="model_title == '提盈'"
+            >可提盈金额</v-col
+          >
+          <v-col cols="6" class="text-caption px-0 py-1" v-else>余额</v-col>
           <v-col
             cols="6"
             class="text-caption text-right py-1"
