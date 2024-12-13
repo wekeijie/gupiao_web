@@ -195,7 +195,7 @@
             @click="jump(router, '/user/interest-log')"
             >利息券明细</v-col
           >
-          <v-col cols="2" @click="jump(router, '/Documentary')">
+          <v-col cols="2" @click="jump(router, '/user/interest-log')">
             <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
           </v-col>
           <v-divider color="#3E5AF7"></v-divider>

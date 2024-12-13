@@ -4,21 +4,28 @@
       <template v-slot:headerCenter>利息券消费</template>
     </page-header>
     <div class="mx-2">
-      <v-infinite-scroll :height="730" @load="load" mode="manual">
-        <template v-for="item in data" :key="item.id">
-          <v-row class="ma-0 pa-0 bg-white rounded mb-2">
-            <v-col cols="5" class="text-h6">¥{{ item.amount }}</v-col>
-            <v-col
-              cols="7"
-              class="text-right text-body-2 pt-6 text-grey-darken-1"
-              >{{ item.date }}</v-col
-            >
-            <v-col cols="12" class="pt-1 text-body-1">
-              <div>{{ item.contract_title }}</div>
-              <div class="text-body-2">{{ item.order_id }}</div>
-            </v-col>
-          </v-row>
-        </template>
+      <v-infinite-scroll
+        :height="730"
+        @load="load"
+        mode="manual"
+        class="d-flex flex-column align-items-start"
+      >
+        <div class="w-100">
+          <template v-for="item in data" :key="item.id">
+            <v-row class="ma-0 pa-0 bg-white rounded mb-2">
+              <v-col cols="5" class="text-h6">¥{{ item.amount }}</v-col>
+              <v-col
+                cols="7"
+                class="text-right text-body-2 pt-6 text-grey-darken-1"
+                >{{ item.date }}</v-col
+              >
+              <v-col cols="12" class="pt-1 text-body-1">
+                <div>{{ item.contract_title }}</div>
+                <div class="text-body-2">{{ item.order_id }}</div>
+              </v-col>
+            </v-row>
+          </template>
+        </div>
         <template v-slot:load-more="{ props }">
           <v-btn
             icon="mdi-refresh"
