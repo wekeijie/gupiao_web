@@ -150,29 +150,23 @@
           <v-col cols="2" class="text-center">
             <img src="@/assets/static/user_01_38.png" width="26" />
           </v-col>
-          <v-col
-            class="text-body-1 pl-0"
-            cols="8"
-            @click="jump(router, '/InvestorPlan')"
+          <v-col class="text-body-1 pl-0" cols="8" @click="watingAlert"
             >明星投资者</v-col
           >
-          <v-col cols="2" @click="jump(router, '/InvestorPlan')">
+          <v-col cols="2" @click="watingAlert">
             <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
           </v-col>
           <v-divider color="#3E5AF7"></v-divider>
           <v-col cols="2" class="text-center">
             <img src="@/assets/static/user_01_42.png" width="26" />
           </v-col>
-          <v-col
-            class="text-body-1 pl-0 pt-3"
-            cols="8"
-            @click="jump(router, '/Documentary')"
+          <v-col class="text-body-1 pl-0 pt-3" cols="8" @click="watingAlert"
             >我要跟单</v-col
           >
-          <v-col cols="2" @click="jump(router, '/Documentary')">
+          <v-col cols="2" @click="watingAlert">
             <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
           </v-col>
-          <v-divider color="#3E5AF7"></v-divider>
+          <!-- <v-divider color="#3E5AF7"></v-divider>
           <v-col cols="2" class="text-center">
             <img src="@/assets/static/user_01_46.png" width="24" />
           </v-col>
@@ -184,10 +178,10 @@
           >
           <v-col cols="2" @click="jump(router, '/FollowList')">
             <v-icon size="large" color="#8E8E8E">mdi-chevron-right</v-icon>
-          </v-col>
+          </v-col> -->
           <v-divider color="#3E5AF7"></v-divider>
           <v-col cols="2" class="text-center">
-            <img src="@/assets/static/user_01_42.png" width="26" />
+            <img src="@/assets/static/user_01_46.png" width="24" />
           </v-col>
           <v-col
             class="text-body-1 pl-0 pt-3"
@@ -252,6 +246,14 @@ const copy = async () => {
     });
   }
 };
+
+const watingAlert = () => {
+  store.dispatch("snackbar/warning", {
+    active: true,
+    body: "敬请期待!",
+  });
+};
+
 const openUrlInNewWindow = (url) => {
   if (url) {
     window.open(url, "_blank");

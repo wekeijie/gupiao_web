@@ -5,11 +5,22 @@
     </page-header>
     <div style="background-color: rgb(245, 245, 245); height: 5px"></div>
 
-    <div class="active-list" v-for="item in 1">
+    <div class="active-list px-2 mb-2" v-for="item in info.data" :key="item.id">
       <img
-        src="../../assets/img/longPicture/inviteFrend.jpg"
-        alt=""
-        @click="goRouter('/InviteDetail')"
+        :src="item.thumb"
+        :alt="item.title"
+        v-if="item.path"
+        @click="$router.push(item.path)"
+        height="128"
+        class="w-100 rounded"
+      />
+      <img
+        :src="item.thumb"
+        :alt="item.title"
+        v-else
+        @click="$router.push('/ActiveShow?id=' + item.id)"
+        height="128"
+        class="w-100 rounded"
       />
     </div>
     <div class="new-box" v-if="1 != 1">
@@ -19,31 +30,33 @@
 </template>
 
 <script setup>
-import {
-  defineProps,
-  defineEmits,
-  defineExpose,
-  reactive,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  computed,
-  watch,
-  nextTick
-} from 'vue'
-import NoData from '../../components/noData.vue'
-import PageHeader from '../../components/topWrap.vue'
-import { useRouter, useRoute } from 'vue-router'
-const $router = useRouter()
-const $route = useRoute()
-const openBotom = () => {}
+import { ref, onMounted } from "vue";
+import NoData from "../../components/noData.vue";
+import PageHeader from "../../components/topWrap.vue";
+import { useRouter, useRoute } from "vue-router";
+import { getListApi } from "@/api/activityApi";
+const $router = useRouter();
+const $route = useRoute();
+const openBotom = () => {};
 const goRouter = (path) => {
-  $router.push(path)
-}
+  $router.push(path);
+};
+const page = ref(1);
+const info = ref({
+  data: [],
+  last_page: 1,
+});
+
+onMounted(() => {
+  getList();
+});
+
+const getList = async () => {
+  info.value = await getListApi(page.value);
+};
 </script>
 <style lang="scss" scoped>
 .active-list {
-  padding: 15px;
   img {
     width: 100%;
   }

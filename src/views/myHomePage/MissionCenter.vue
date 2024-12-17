@@ -49,7 +49,7 @@
             </div>
             <div :class="item.status ? 'status-full' : 'status-await'">
               <span v-if="item.status">完成</span>
-              <span v-else>待完成</span>
+              <span v-else @click="$router.push(item.path)">待完成</span>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
                 :class="item.status ? 'status-full' : 'status-await'"
               >
                 <span v-if="item.status">已完成</span>
-                <span v-else>待完成</span>
+                <span v-else @click="$router.push(item.path)">待完成</span>
               </div>
             </div>
             <div class="task-lable">{{ item.summary }}</div>

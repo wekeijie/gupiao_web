@@ -234,6 +234,11 @@ const routes = [
     component: () => import("@/views/home/ActiveList.vue"),
   },
   {
+    path: "/ActiveShow",
+    name: "activeShow",
+    component: () => import("@/views/home/ActiveShow.vue"),
+  },
+  {
     path: "/InviteDetail",
     name: "inviteDetail",
     component: () => import("@/views/home/InviteDetail.vue"),

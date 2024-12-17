@@ -27,6 +27,13 @@
           <v-col cols="2" class="text-right" v-if="code.public_key">姓名</v-col>
           <v-col cols="10" class="d-indent-flex" v-if="code.public_key">
             <div class="text-body-2">{{ code.public_key }}</div>
+            <v-icon
+              color="blue-accent-2"
+              size="x-small"
+              class="ml-1"
+              @click="copyUser"
+              >mdi-content-copy</v-icon
+            >
           </v-col>
         </v-row>
 
@@ -112,6 +119,20 @@ const submitJump = () => {
 const copy = async () => {
   try {
     await toClipboard(code.value.app_id);
+    store.dispatch("snackbar/success", {
+      active: true,
+      body: "复制成功！",
+    });
+  } catch (e) {
+    store.dispatch("snackbar/warning", {
+      active: true,
+      body: "操作错误！",
+    });
+  }
+};
+const copyUser = async () => {
+  try {
+    await toClipboard(code.value.public_key);
     store.dispatch("snackbar/success", {
       active: true,
       body: "复制成功！",
