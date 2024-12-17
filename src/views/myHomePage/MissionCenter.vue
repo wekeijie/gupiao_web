@@ -81,7 +81,7 @@
               </div>
 
               <div
-                @click="goRouter('/CouponDetail')"
+                @click="goRouter(item.path)"
                 :class="item.status ? 'status-full' : 'status-await'"
               >
                 <span v-if="item.status">已完成</span>
