@@ -25,7 +25,7 @@
       </div>
       <div class="amount-list" @click="tipshow = !tipshow">
         <span>{{ store.state.contract.detail.stop_loss }}</span>
-        <p class="double-decoration">触发止损</p>
+        <p class="double-decoration text-blue-accent-4">触发止损</p>
         <v-tooltip activator="parent" location="bottom" v-model="tipshow">
           <div>距离强制平仓还差: {{ stop_deficit }}</div>
         </v-tooltip>
@@ -221,7 +221,9 @@
                   @click="goChanrt(item.id)"
                 >
                   <td class="tr-one">
-                    <h4 class="double-decoration">{{ item.title }}</h4>
+                    <h4 class="double-decoration text-blue-accent-4">
+                      {{ item.title }}
+                    </h4>
                   </td>
                   <td class="tr-two">
                     <div class="tr-two-number" v-if="item.type == 'BUY'">
