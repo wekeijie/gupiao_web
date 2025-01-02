@@ -23,9 +23,12 @@
         <span>{{ store.state.contract.detail.caution_line }}</span>
         <p>触发警戒</p>
       </div>
-      <div class="amount-list">
+      <div class="amount-list" @click="tipshow = !tipshow">
         <span>{{ store.state.contract.detail.stop_loss }}</span>
-        <p>触发止损</p>
+        <p class="double-decoration">触发止损</p>
+        <v-tooltip activator="parent" location="bottom" v-model="tipshow">
+          <div>距离强制平仓还差: {{ stop_deficit }}</div>
+        </v-tooltip>
       </div>
 
       <div class="amount-list">
@@ -218,7 +221,7 @@
                   @click="goChanrt(item.id)"
                 >
                   <td class="tr-one">
-                    <h4>{{ item.title }}</h4>
+                    <h4 class="double-decoration">{{ item.title }}</h4>
                   </td>
                   <td class="tr-two">
                     <div class="tr-two-number" v-if="item.type == 'BUY'">
@@ -315,9 +318,12 @@ const model = ref(0);
 const mouneyIndex = ref(0);
 const order_id = ref(0);
 const underlined = ref(0);
+const tipshow = ref(false);
 
 const stock_amount_total = ref(0);
 const stock_ref_list = ref([]);
+const total_amount = ref(0);
+const stop_deficit = ref(0);
 
 onMounted(() => {
   if ($route.query.code) {
@@ -374,6 +380,10 @@ watch(
     let temp =
       parseFloat(amount) + parseFloat(store.state.contract.detail.unrealized);
     underlined.value = parseFloat(temp.toFixed(2));
+    stop_deficit.value =
+      underlined.value +
+      parseFloat(store.state.contract.detail.total_amount) -
+      parseFloat(store.state.contract.detail.stop_loss);
   }
 );
 const goChanrt = (id) => {

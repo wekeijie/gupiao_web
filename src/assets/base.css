@@ -72,3 +72,8 @@
 .font-size-50 {
   font-size: 50px !important;
 }
+.double-decoration {
+  text-decoration: underline !important;
+  text-decoration-color: red !important;
+  text-decoration-style: double !important;
+}
